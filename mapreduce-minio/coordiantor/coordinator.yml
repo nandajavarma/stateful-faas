@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  coordinator:
+    lang: python3
+    handler: ./coordinator
+    image: nandajavarma/coordinator:latest
+    environment:
+      gateway_hostname: http://172.31.48.240:8080
+
