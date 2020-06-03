@@ -1,5 +1,6 @@
 import os
 import requests
+import sys
 
 from minio import Minio
 
@@ -39,13 +40,14 @@ def handle(req):
             "BUCKET": BUCKET,
             "FILENAME": FILENAME,
             "NMAPPERS": NMAPPERS,
-            "length": length
+            "length": length,
+            "node_number": 0,
             }
-        # data = mc.get_partial_object(BUCKET, FILENAME, offset, length)
-        # print(data.read())
-    url = gateway_hostname + "/function/mapper"
-    print(url)
-    r = requests.get(url, data=info)
+    url = "http://34.207.121.118:8080/function/mapper"
+    r = requests.post(url, data=info)
     if r.status_code != 200:
+        print(r.content)
+        print(r.status_code)
         sys.exit("Error with mapper, expected: %d, got: %d\n" % (200, r.status_code))
+    print(r.status_code, r.content)
     return req
