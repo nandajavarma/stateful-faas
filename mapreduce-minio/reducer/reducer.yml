@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://34.207.121.118:8080
+functions:
+  reducer:
+    lang: python3
+    handler: ./reducer
+    image: nandajavarma/reducer:latest
+

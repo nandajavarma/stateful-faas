@@ -14,7 +14,7 @@ FILENAME = "sample.csv"
 def get_chunk_size(data_size):
     global NMAPPERS
     chunksize = data_size // NMAPPERS
-    print(data_size, NMAPPERS)
+    print("Chunksize is {}".format(str(chunksize)))
     if chunksize < MINBLOCKSIZE:
         chunksize = MINBLOCKSIZE
         NMAPPERS = (data_size // MINBLOCKSIZE) + 1
@@ -46,8 +46,5 @@ def handle(req):
     url = "http://34.207.121.118:8080/function/mapper"
     r = requests.post(url, data=info)
     if r.status_code != 200:
-        print(r.content)
-        print(r.status_code)
         sys.exit("Error with mapper, expected: %d, got: %d\n" % (200, r.status_code))
-    print(r.status_code, r.content)
     return req
