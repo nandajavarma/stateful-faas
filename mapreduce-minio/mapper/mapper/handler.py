@@ -13,7 +13,6 @@ def handle(req):
     Args:
         req (str): request body
     """
-    print(req)
     match = re.match(r"BUCKET=(.+)&FILENAME=(.+)&NMAPPERS=(.+)&length=(.+)&node_number=(.+)", req)
     bucket, filename, nmappers, length, node_number = match.groups(0)
     node_number = int(node_number)

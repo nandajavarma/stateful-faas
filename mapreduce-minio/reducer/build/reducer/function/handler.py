@@ -9,20 +9,6 @@ from minio import Minio
 NREDUCERS = 3
 
 
-def laucher(node_number, nreducers, BUCKET):
-    # This math shows how many nodes are currently being launched by coordinator and other mappers
-    if node_number > 0:
-        return
-    next_node = node_number + 1
-    while next_node < nreducers:
-        info = {
-                "BUCKET": BUCKET,
-                "node_number": next_node,
-                'NREDUCERS': 3
-                }
-        url = "http://34.207.121.118:8080/function/reducer"
-        r = requests.post(url, data=info)
-        next_node = next_node + 1
 
 
 def handle(req):
@@ -36,7 +22,18 @@ def handle(req):
     nreducers = int(nreducers)
 
     # Launch other mappers nodes to make the complexity logarithmic
-    laucher(node_number, nreducers, bucket)
+    if node_number == 0:
+        print("Launching more reducers")
+        next_node = node_number + 1
+        while next_node < nreducers:
+            info = {
+                    "BUCKET": bucket,
+                    "node_number": next_node,
+                    'NREDUCERS': 3
+                    }
+            url = "http://34.207.121.118:8080/function/reducer"
+            r = requests.post(url, data=info)
+            next_node = next_node + 1
 
     mc = Minio('172.31.48.240:9000',
                   access_key='minioadmin',
@@ -54,4 +51,12 @@ def handle(req):
     ret = {k: v for k, v in sorted(results.items(), key=lambda item: item[0])}
     value_as_a_stream = io.BytesIO(bytes(str(ret).encode('utf-8')))
     mc.put_object('output3', str(key), value_as_a_stream, len(bytes(str(ret).encode('utf-8'))))
+    print("Reducer {} out of {}".format(node_number, nreducers))
+    if node_number >= (nreducers  - 1):
+        # Merge all the files
+        full_data = []
+        for i in range(0, nreducers-1):
+            full_data.append(mc.get_object('output3', str(i)).read())
+        value_as_a_stream = io.BytesIO(bytes(str(full_data).encode('utf-8')))
+        mc.put_object('final', "result", value_as_a_stream, len(bytes(str(full_data).encode('utf-8'))))
     return req
