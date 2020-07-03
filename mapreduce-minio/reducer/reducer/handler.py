@@ -35,7 +35,7 @@ def handle(req):
             r = requests.post(url, data=info)
             next_node = next_node + 1
 
-    mc = Minio('172.31.48.240:9000',
+    mc = Minio('34.207.121.118:9000',
                   access_key='minioadmin',
                   secret_key='minioadmin',
                   secure=False)

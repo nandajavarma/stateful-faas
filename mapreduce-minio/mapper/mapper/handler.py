@@ -36,7 +36,7 @@ def handle(req):
         next_launch = currently_launching + node_number
         r = requests.post(url, data=info)
 
-    mc = Minio('172.31.48.240:9000',
+    mc = Minio('34.207.121.118:9000',
                   access_key='minioadmin',
                   secret_key='minioadmin',
                   secure=False)
