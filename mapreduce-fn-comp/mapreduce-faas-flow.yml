@@ -1,0 +1,18 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://34.207.121.118:8080
+functions:
+  mapreduce-faas-flow:
+    lang: faas-flow
+    handler: ./mapreduce-faas-flow
+    image: nandajavarma/mapreduce-faas-flow:latest
+    labels:
+      faas-flow: 1
+    annotations:
+      faas-flow-desc: "This adds the function composition to mapreduce"
+    environment_file:
+      - flow.yml
+    secrets:
+      - s3-secret-key
+      - s3-access-key
