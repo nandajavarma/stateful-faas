@@ -1,6 +1,7 @@
 environment:
-  gateway: "34.207.121.118:8080" # The address of OpenFaaS gateway
+  gateway: "faas.quickalgorithm.com" # The address of OpenFaaS gateway
   enable_tracing: true # tracing allows to monitor requests
   trace_server: "jaeger-agent.faasflow:5775" # The address of jaeger tracing agent
   consul_url: "consul.faasflow:8500" # The address of consul
   s3_url: "minio.faasflow:9000" # The address of minio
+

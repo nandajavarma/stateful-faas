@@ -1,12 +1,12 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://34.207.121.118:8080
+  gateway: https://faas.quickalgorithm.com
 functions:
   mapreduce-faas-flow:
     lang: faas-flow
     handler: ./mapreduce-faas-flow
-    image: nandajavarma/mapreduce-faas-flow:latest
+    image: nandajavarma/greet:latest
     labels:
       faas-flow: 1
     annotations:
