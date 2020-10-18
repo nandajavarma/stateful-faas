@@ -2,9 +2,10 @@ package function
 
 import (
 	"fmt"
+	pocketDataStore "github.com/nandajavarma/faas-flow-pocket-datastore"
 	faasflow "github.com/s8sg/faas-flow"
 	consulStateStore "github.com/s8sg/faas-flow-consul-statestore"
-	minioDataStore "github.com/s8sg/faas-flow-minio-datastore"
+	// minioDataStore "github.com/s8sg/faas-flow-minio-datastore"
 	"log"
 	"os"
 	"strconv"
@@ -35,7 +36,7 @@ func Define(flow *faasflow.Workflow, context *faasflow.Context) (err error) {
 				log.Print("The number is even")
 				return []string{"buzz"}
 			} else {
-				log.Print("The number is even")
+				log.Print("The number is odd")
 				return []string{"fizz"}
 			}
 		},
@@ -56,7 +57,7 @@ func Define(flow *faasflow.Workflow, context *faasflow.Context) (err error) {
 		time.Sleep(5 * time.Second)
 		return []byte(result), nil
 	})
-	conditiondags["fizz"].Node("node2").Modify(func(data []byte) ([]byte, error) {
+	conditiondags["fizz"].Node("node2").Apply("func1").Modify(func(data []byte) ([]byte, error) {
 		log.Print("I am inside the fizz node 2")
 		log.Print(data)
 		result := fmt.Sprintf("fizz-node2(%s)", string(data))
@@ -72,7 +73,7 @@ func Define(flow *faasflow.Workflow, context *faasflow.Context) (err error) {
 		time.Sleep(5 * time.Second)
 		return []byte(result), nil
 	})
-	conditiondags["buzz"].Node("node2").Modify(func(data []byte) ([]byte, error) {
+	conditiondags["buzz"].Node("node2").Apply("func2").Modify(func(data []byte) ([]byte, error) {
 		log.Print("I am inside the buzz node 2")
 		log.Print(data)
 		result := fmt.Sprintf("buzz-node2(%s)", string(data))
@@ -119,9 +120,9 @@ func OverrideStateStore() (faasflow.StateStore, error) {
 // ProvideDataStore provides the override of the default DataStore
 func OverrideDataStore() (faasflow.DataStore, error) {
 	// initialize minio DataStore
-	miniods, err := minioDataStore.InitFromEnv()
+	pocket, err := pocketDataStore.Init()
 	if err != nil {
 		return nil, err
 	}
-	return miniods, nil
+	return pocket, nil
 }
