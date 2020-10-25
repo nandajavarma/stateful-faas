@@ -310,8 +310,52 @@ following properties of the platform.
 
 *** Properties of FaaS
 **** Statelessness
-- the functions execute, they just take in data, process and output. 
+Statelessness in deployments is a conscious decision that was taken during the
+conception of the Serverless infrastructure model to make the management of the
+platform straight forward and less cumbersome. Statelessness simply means that
+the applications that are to be deployed on the said platform exists as
+independent functions that are pure in nature. As in, the same data input given
+to the function always produces the same output at any point in time. This can
+be considered as the side-effect less programming. The data source and sink of
+the function can be any supported platform or tool as per the requirement, but
+there won't be any intermediate state or cache for the function. This means that
+the function at any execution will have no information about the previous
+execution unless explicitly specified.
+
+The main advantage with this method for the infrastructure manager is pretty
+obvious. The fact that there are no volumes necessary to store any internal
+state means that the function can be scaled up and down independently and the
+whole infrastructure can stay elastic. Along with this, the provider can
+schedule the function in any node in the cluster that they use to host the
+application, move it around as per the usage burst, have multi-tenant
+deployments in a single machine ensuring the proper isolation for maximum
+profitability, and the list goes on.
+
+In short, the notion of function is of prime importance in a
+Function-as-a-Service workload like the name suggests.
+
 **** Triggers
+The functions that are hosted on a FaaS solution need to get triggered on a timely
+basis or based on an event. Usually most cloud providers provide more than a few
+ways to trigger the functions which the developer can choose from. Some of the
+most common triggers for FaaS applications are
+***** HTTP requests
+An endpoint will be provided by the platform for the function that was deployed.
+This endpoint can be called as an REST API endpoint and the event handler of
+the function will get the payload from the call.
+***** Data arrival in a storage or data broker system
+This is the most popular and heavily used triggering mechanism in FaaS. The idea
+is that the function gets triggered as soon as a new data arrives in whatever
+format at a particular storage setup. This can be arrival of a file object in
+the S3 block storage, arrival of streamed data in Kafka message broker system,
+etc. This method is the most suited for big data and streaming data applications
+since the function can be activated as soon as the new data is detected in the
+source. Usually the FaaS infrastructure provide supports more than a bunch of
+source storage to be used as the sources for the trigger.
+***** Crons
+Another very common way to trigger function is based on a schedule. The
+programmer can choose how often the function should be triggered on what days of
+the week, month, year, etc. 
 **** Parallelism
 **** Developer friendliness
 ***** Dependency management
@@ -322,7 +366,43 @@ following properties of the platform.
 
 *** How programming models are getting affected by this
 **** Faas + Microservices
+In Software Systems Design, a very heavily discussed topic is if to design the
+application in a monolithic fashion or a micro-services fashion. Monolith is the
+kind of design pattern where you have one big application doing multiple
+functions and maintained as one solid stack. On the contrary, when one designs
+their app in a microservices pattern, they will have split up their application
+into multiple smaller parts which can be independently built and deployed, and
+yet working together with inter app communications. Both of these methods has
+its advantages and challenges. When monoliths are easier to develop and
+maintain, it can be very hard to test and manage due to the size, and usually if
+one part is buggy, it tends to break the whole system. On the other hand,
+microservices, since they work as independent units don't usually affect each
+others working and can be very easily tested and maintained. It is although
+often a very tedious task developing a system that fragmented and maintaining it
+that way. 
+
+With the advent of FaaS, a very interesting pattern has been adapted in the
+industry. The pattern pushed microservices one step further. The idea is that
+instead of having microservices that are available and on at all time, the huge
+applications are split up into functions that can be deployed to a FaaS
+infrastructure and triggered with the help of HTTP endpoints to act as a part of
+web application setup. This method is very effective resource usage wise and
+much easier to deploy and manage compared to vanilla microservices which has to
+be built and deployed independently.
 **** Statelessness a.k.a Functional programming model
+Like mentioned earlier, the notion of function is very important for the
+serverless platforms. It is intrinsically linked with functional programming. It
+is very interesting to note that Amazon named their FaaS solution Lambda which
+is a very basic concept of functional programming. Stateless clean functions
+that produce no side effect was objectively the perfect choice for an
+infrastructure solution of this scale.
+
+What this change bought about is a thriving interest in functional programming
+languages. A lot of the functional programming languages belonging to the LISP
+family and some purely functional ones have seen a very increasing adaptation in
+the past few years in Serverless platforms. Since these languages are perfectly
+suited for stateless program it is only natural that they can be efficiently
+used to code for this environment.
 *** Popular commercial offerings
 **** AWS Lambda
 **** Google cloud functions
@@ -347,6 +427,7 @@ computing which is actually a domain that needs very fine grained communication
 between the functions and usually a lot of resources are wastefully dedicated to
 ensure high availability.
 ***** Coordination issues among functions
+No open endpoints for functions. docker containers can't be easily discovered.
 ****** ETL
 ****** Distributed Computing
 **** Latency IO
