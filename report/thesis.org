@@ -1,0 +1,65 @@
+* [[file+emacs:~/.emacs.d/organizing/thesis_report.org][Thesis Report]]
+* Annotations
+** [[file+emacs:~/.emacs.d/organizing/thesis_annotations.org][Notes]]
+* Literature Survey
+** FaaS performance evaluation
+*** Increased interest in academic world
+*** better trigger strategy may be? - pub/sub? 
+*** Weconclude that the integration of external services in FaaSperformance evaluations in a meaningful way remains agap in current literature.
+
+* MapReduce on AWS paper
+** User specify the number of mappers and reducers.
+** Data arrives in the s3 bucket and coordinator gets triggered
+** Coordinator does the following:
+*** Find the chunksize first
+**** chunk_size = totalDataSize
+                  -------------
+                    #mappers
+*** if chunksize < MINBLOCKSIZE, then
+    chunksize = MINBLOCKSIZE
+    #mappers = int(totalDataSize/MINBLOCKSIZE) + 1
+*** if chunksize > safeMemorySize 
+
+* <2020-06-28 Sun 15:18>
+- The basic idea of faas is that it is essentially stateless so we don't have 
+to worry about where the data store is located etc. But for real world
+applications we have to have this. currently, in what I do, we use object store
+for intermediate data.  
+* <2020-07-01 Wed 07:18> - Morning paper readings - annotation on firefox
+** Serverless one step forward tw
+** DONE [#A] REad about SPL and openwhisk                           :thesis:
+CLOSED: [2020-07-13 Mon 06:45] DEADLINE: <2020-07-07 Tue>
+** DONE [#A] Shredder 
+CLOSED: [2020-07-06 Mon 05:26] DEADLINE: <2020-07-02 Thu>
+
+* <2020-07-03 Fri 07:32>
+** Summary of the idea
+*** Improving efficiency of data intensive FaaS tasks, even streaming
+*** OpenFaaS to do the PoC, with the application MapReduce - possibility to extend to streaming
+*** Requirements:
+**** Partitioning of data and parallel execution of each function based on the roles.
+**** Functions calling each other
+**** Intermediate Storage
+*** Current development - benchmarks RTT
+**** partitioning - add an extra coordinator function which basically checks 
+the size of the file and decide how many mappers and reducers are necessary, and
+sends this data to one mapper, this mapper sort of chain propogates this to more
+mappers ( logarithmic time). The result of mapping stored in miniodb, The last
+mapper, creates the reducers.
+**** Function calling each other - In the current setup, it is calling via the   
+gateway, as requests. the total RTT is a bit less that 7 seconds. I then replace
+this with faas flow. which basically calls the functions lets you sort of define
+a datastore and statestore.   
+**** Intermediate state store - currently used to store the DAG structure and function flows(consul is used) 
+**** Intermediate data store - current object store is being used which is minio
+**** Problems with the current setup 
+- function composition without going through the gateway
+  - May be this is fine for now
+- object storage is very slow and this is inefficient. 
+  - Replacing this with KVS. How to deal with the scaling factor here - replace
+    consul with Anna. 
+  - [[https://www.cs.utah.edu/~lifeifei/papers/shredder.pdf][Shredder]] - take function to data. sort of like procedures in databases (
+    uses v8)
+**** Scaling down - how fast is it?
+**** Dynamic data, I have to think of it like this, to a function endpoint I get some data,  
+which I have to pass to another stage, then to another and so on. 

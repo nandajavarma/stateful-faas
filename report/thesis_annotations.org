@@ -1,0 +1,56 @@
+Abstract:
+Importance on serverless computing. It is being widely used today in
+applications like web, data processing ETLs. But state is usually a third party
+data storage. It is a new sort of programming paradigm design. A lot of
+traditional programming do not hold anymore. Biggest problem for real time data
+is the latency introduced by the storage. ephermeral state storage is necessary.
+along with this function composition & triggering can be made better. 
+
+My suggestion is DAG + trigger flow + OpenFaaS with FaaSM + Pocket
+
+Read till page 64
+
+
+The aspect of serverless that I want to focus on is it's pay as you use kind of
+billing system and fine grained scalability without which cloud provider cannot
+have that much control over the system.
+This works for a lot of applications, but the problem when it comes to
+data-intensive ETLs and streaming applications is the latency added by cold
+starts and heavy block storage as intermediate data stores and state stores.
+We need a multi-tenant setup, since the service can have multiple tenants or
+data belonging to multiple clients by the same tenant
+Another important thing I want achieve from this thesis is to reduce the
+operational gap between theoretical ideas and practical usability in the
+industry. So I hope to come up with a solution that can be adapted in the
+industry for data intensive applications.
+In the current providers of FaaS treat code as primary citizen and not data,
+although in recent researches(SAND, cloudburst) there is a shift towards a
+function being shipped to data paradigm than the other way around. This is most
+because of the fact that colocating data is quite expensive, expecially for
+big-data applications
+I propose that the way to balance this is by providing storage caches locally to
+each function to store data and state so the latency of data transfer would be
+minimal.
+The problem that this introduces is the fact that the billing becomes hard since
+the key values stores are not very scalable, so I would like to integrate Pocket
+key value store which is scalable storage implemented for serverless
+applications.
+I propose the usage of Prometheus to track the usage of this storage tier,
+thereby providing independent monitoring and billing of this resource.
+I propose the usage of a representational language to define the control
+flow and data flow between functions so the data and functions can
+be co-located and triggered in the right order.
+[If time permits and operationally possible] Along with this, usually huge latency is created by the coldstarts and the
+sloppy triggering mechanisms. The biggest problem for this is how most of the
+FaaS providers use containers for isolation and sandboxing. Although much
+lighter than a VM, containers are quite heavy on the memory and this increases
+the start up time and cost. A lot of industrial providers (AWS, cloudflare) use
+alternatives to containers(firecracker, v8 isolates, etc.) instead of containers
+mostly because of this and the security reasons. A project with very high
+potential in my opinion that came out recently is FaaSM which introductes
+faaslets which are lightweight alternatives to containers, that share regions of
+memory giving low latency concurrent access. I would like to try and integrate
+this with OpenFaas thereby providing and enterprise quality cloud native FaaS
+infrastructure which a lighter isolation layer
+The benchmarking of the whole setup will be done using wrk2, inspired by the
+project FaaSDOM
