@@ -1,0 +1,252 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script>try {
+                        Object.defineProperty(screen, "availTop", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availLeft", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availWidth", { value: 1600 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availHeight", { value: 900 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "colorDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "pixelDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "hardwareConcurrency", { value: 8 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "appVersion", { value: "5.0 (X11)" });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "doNotTrack", { value: "unspecified" });
+                    } catch (e) {}
+                    
+            try {
+                window.screenY = 45
+            } catch (e) { }
+        
+            try {
+                window.screenTop = 45
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerHeight = 853
+            } catch (e) { }
+        
+            try {
+                window.screenX = 800
+            } catch (e) { }
+        
+            try {
+                window.screenLeft = 800
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerWidth = 796
+            } catch (e) { }
+        </script><script>try {
+                        Object.defineProperty(screen, "availTop", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availLeft", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availWidth", { value: 1600 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availHeight", { value: 900 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "colorDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "pixelDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "hardwareConcurrency", { value: 8 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "appVersion", { value: "5.0 (X11)" });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "doNotTrack", { value: "unspecified" });
+                    } catch (e) {}
+                    
+            try {
+                window.screenY = 45
+            } catch (e) { }
+        
+            try {
+                window.screenTop = 45
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerHeight = 853
+            } catch (e) { }
+        
+            try {
+                window.screenX = 800
+            } catch (e) { }
+        
+            try {
+                window.screenLeft = 800
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerWidth = 796
+            } catch (e) { }
+        </script><script>try {
+                        Object.defineProperty(screen, "availTop", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availLeft", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availWidth", { value: 1600 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availHeight", { value: 900 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "colorDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "pixelDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "hardwareConcurrency", { value: 8 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "appVersion", { value: "5.0 (X11)" });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "doNotTrack", { value: "unspecified" });
+                    } catch (e) {}
+                    
+            try {
+                window.screenY = 45
+            } catch (e) { }
+        
+            try {
+                window.screenTop = 45
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerHeight = 853
+            } catch (e) { }
+        
+            try {
+                window.screenX = 800
+            } catch (e) { }
+        
+            try {
+                window.screenLeft = 800
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerWidth = 796
+            } catch (e) { }
+        </script><script>(function inject() {
+        var open = XMLHttpRequest.prototype.open;
+
+        XMLHttpRequest.prototype.open = function () {
+          this.requestMethod = arguments[0];
+          open.apply(this, arguments);
+        };
+
+        var send = XMLHttpRequest.prototype.send;
+
+        XMLHttpRequest.prototype.send = function () {
+          var onreadystatechange = this.onreadystatechange;
+
+          this.onreadystatechange = function () {
+            function GenerateQuickId() {
+              var randomStrId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+              return randomStrId.substring(0, 22);
+            }
+
+            try {
+              if (this.readyState === 4) {
+                var id = 'detector';
+                var mes = {
+                  posdMessageId: 'PANELOS_MESSAGE',
+                  posdHash: GenerateQuickId(),
+                  type: 'VIDEO_XHR_CANDIDATE',
+                  from: id,
+                  to: id.substring(0, id.length - 2),
+                  content: {
+                    requestMethod: this.requestMethod,
+                    url: this.responseURL,
+                    type: this.getResponseHeader('content-type'),
+                    content: this.response
+                  }
+                };
+                window.postMessage(mes, '*');
+              }
+            } catch (e) {}
+
+            if (onreadystatechange) {
+              return onreadystatechange.apply(this, arguments);
+            }
+          };
+
+          return send.apply(this, arguments);
+        };
+      })();</script><script>try {
+                        Object.defineProperty(screen, "availTop", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availLeft", { value: 0 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availWidth", { value: 1600 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "availHeight", { value: 900 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "colorDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(screen, "pixelDepth", { value: 24 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "hardwareConcurrency", { value: 8 });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "appVersion", { value: "5.0 (X11)" });
+                    } catch (e) {}
+                    try {
+                        Object.defineProperty(navigator, "doNotTrack", { value: "unspecified" });
+                    } catch (e) {}
+                    
+            try {
+                window.screenY = 45
+            } catch (e) { }
+        
+            try {
+                window.screenTop = 45
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerHeight = 853
+            } catch (e) { }
+        
+            try {
+                window.screenX = 800
+            } catch (e) { }
+        
+            try {
+                window.screenLeft = 800
+            } catch (e) { }
+        
+            try {
+                window.top.window.outerWidth = 796
+            } catch (e) { }
+        </script></head><body bis_status="ok" bis_frame_id="10737418257"></body></html>

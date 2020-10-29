@@ -1,4 +1,4 @@
-% Created 2020-10-27 Tue 16:08
+% Created 2020-10-29 Thu 17:07
 % Intended LaTeX compiler: pdflatex
 \documentclass[12pt,titlepage]{article}
 \usepackage[utf8]{inputenc}
@@ -16,13 +16,14 @@
 \usepackage{hyperref}
 \usepackage[natbib=true]{biblatex} \DeclareFieldFormat{apacase}{#1} \addbibresource{./refs.bib}
 \usepackage{parskip}
+\usepackage{listings} \usepackage{color} \definecolor{dkgreen}{rgb}{0,0.6,0} \definecolor{gray}{rgb}{0.5,0.5,0.5} \definecolor{mauve}{rgb}{0.58,0,0.82} \lstset{frame=tb, language=Java, aboveskip=3mm, belowskip=3mm, showstringspaces=false, columns=flexible, basicstyle={\small\ttfamily}, numbers=none, numberstyle=\tiny\color{gray}, keywordstyle=\color{blue}, commentstyle=\color{dkgreen}, stringstyle=\color{mauve}, breaklines=true, breakatwhitespace=true, tabsize=3}
 \usepackage[T1]{fontenc}
 \usepackage{setspace}
 \usepackage[english]{babel}
 \usepackage[hyperref,x11names]{xcolor}
 \usepackage[colorlinks=true,linkcolor=SteelBlue4,urlcolor=Firebrick4]{hyperref}
 \author{Nandaja Varma Nandakumar}
-\date{\textit{<2020-10-24 Sat>}}
+\date{}
 \title{Stateful FaaS}
 \hypersetup{
  pdfauthor={Nandaja Varma Nandakumar},
@@ -72,7 +73,7 @@ necessary in this field.
 
 
 \section{Introduction}
-\label{sec:orgddd6a0e}
+\label{sec:org83bb847}
 
 Serverless can easily be considered as the new generation of platform as a
 service. It can be thought of as an infrastructure where the programmer send
@@ -157,7 +158,7 @@ In Section 7, the future work that can be done in this direction is laid out
 before the reader.
 
 \section{Background and Motivation}
-\label{sec:org870964d}
+\label{sec:orgd0ddcb3}
 The term serverless have been vaguely thrown around the domain of cloud
 infrastructure in the past decade as the breakthrough resource(and hence money)
 saving tool that lets the developers focus on application logic rather than the
@@ -179,7 +180,7 @@ We will also analyze the popular data processing and streaming pipelines in the
 industries these days and why serverless computing fall short in being the right
 tool of development and deployment here.
 \subsection{Evolution of cloud resource management}
-\label{sec:org8089d81}
+\label{sec:org6cf6a24}
 In the past 3 decades, software deployments and infrastructure management has
 seen a lot of innovation and evolution. Before diving into the current
 industrial standards, it is important to understand the evolutions in this field
@@ -187,7 +188,7 @@ to get a better grasp on the technological innovations that bought this about.
 
 
 \subsubsection{Dedicated servers}
-\label{sec:org2c8dd3b}
+\label{sec:org225c375}
 Even as recent as 15 years ago this was the industry standard for deployments. Dedicated servers
 are physical machines. The general practice was to have server racks on the premise
 of the company which are maintained by system administrators and all your
@@ -200,7 +201,7 @@ footprint and e-wastes.
 
 
 \subsubsection{Dedicated virtual machines(BaaS)}
-\label{sec:org67d0d03}
+\label{sec:org014b3de}
 Virtualization technology changed the face of software infrastructure by decoupling
 applications from the underlying hardware. Virtualized servers are not physical
 machines, they are a software construct. Virtual servers run on dedicated
@@ -259,7 +260,7 @@ even if the load/traffic to and fro the application is not constant. This meant 
 lot of resources were still being wasted.
 
 \paragraph{Linux Containers}
-\label{sec:orgc98cedb}
+\label{sec:org0911da7}
 A game changer in the world of virtualization was containerization. Containers
 are yet another packaged computing environment that combine various IT
 components and isolate them from the rest of the system just like a virtual
@@ -296,7 +297,7 @@ deployment. One could also limit and fine tune the resources used by a running
 containers giving a lot more control over the application.
 
 \paragraph{Autoscaling}
-\label{sec:orgf04a675}
+\label{sec:org8d376a7}
 The ease in which one can limit the resources and tweak the runtime parameters externally contributed heavily
 to the service offering called autoscaling which basically meant resources for an
 application runtime were added or removed as per the usage. All the commercial
@@ -309,7 +310,7 @@ etc. to the community. These solutions aim at mitigating the shortcomings of
 Containers which we will discuss in Section 2.2.4
 
 \subsubsection{Serverless}
-\label{sec:org6b28609}
+\label{sec:org3b953a9}
 Like mentioned earlier, in the past two years the terms Serverless and Function-as-a-Service are quite
 often used interchangeably. In terms of the resource reservation, Serverless can
 be considered as a platform as a service solution that scales. Your application
@@ -331,7 +332,7 @@ We will dive more into the properties and nature of the solution
 Function-as-a-Service(FaaS) in the following session. 
 
 \subsection{FaaS}
-\label{sec:org9ecf607}
+\label{sec:org95ea4f5}
 So far, we have covered the infrastructure management style of FaaS or
 Serverless in general. Let us get a bit in detail into the specifics of the
 hosting platform that provides the FaaS functionality.
@@ -349,9 +350,9 @@ understand the flow of FaaS workloads, it is important to be aware of the
 following properties of the platform.
 
 \subsubsection{Properties of FaaS}
-\label{sec:org0cf411b}
+\label{sec:org3032d42}
 \paragraph{Statelessness}
-\label{sec:orgc870928}
+\label{sec:org45db990}
 Statelessness in deployments is a conscious decision that was taken during the
 conception of the Serverless infrastructure model to make the management of the
 platform straight forward and less cumbersome. Statelessness simply means that
@@ -377,7 +378,7 @@ In short, the notion of function is of prime importance in a
 Function-as-a-Service workload like the name suggests.
 
 \paragraph{Triggers}
-\label{sec:org5b5f124}
+\label{sec:org3459818}
 The functions that are hosted on a FaaS solution need to get triggered on a timely
 basis or based on an event. Usually most cloud providers provide more than a few
 ways to trigger the functions which the developer can choose from. Some of the
@@ -403,13 +404,13 @@ source storage to be used as the sources for the trigger.
 programmer can choose how often the function should be triggered on what days of
 the week, month, year, etc. 
 \paragraph{Parallelism}
-\label{sec:org850ec15}
+\label{sec:org6b2cfeb}
 \paragraph{Billing}
-\label{sec:orgbe59a88}
+\label{sec:org2972d4d}
 \subsubsection{How programming models are getting affected by this}
-\label{sec:org3ef5aa9}
+\label{sec:orgd3763b6}
 \paragraph{Faas + Microservices}
-\label{sec:orgd483d9c}
+\label{sec:org545c527}
 In Software Systems Design, a very heavily discussed topic is if to design the
 application in a monolithic fashion or a micro-services fashion. Monolith is the
 kind of design pattern where you have one big application doing multiple
@@ -434,7 +435,7 @@ web application setup. This method is very effective resource usage wise and
 much easier to deploy and manage compared to vanilla microservices which has to
 be built and deployed independently.
 \paragraph{Statelessness a.k.a Functional programming model}
-\label{sec:orgc60c793}
+\label{sec:orga99b187}
 Like mentioned earlier, the notion of function is very important for the
 serverless platforms. It is intrinsically linked with functional programming. It
 is very interesting to note that Amazon named their FaaS solution Lambda which
@@ -449,22 +450,22 @@ the past few years in Serverless platforms. Since these languages are perfectly
 suited for stateless program it is only natural that they can be efficiently
 used to code for this environment.
 \subsubsection{Popular commercial offerings}
-\label{sec:org874674c}
+\label{sec:org4c745ef}
 \paragraph{AWS Lambda}
-\label{sec:org8b681bb}
+\label{sec:orgc701811}
 \paragraph{Google cloud functions}
-\label{sec:org5842fe0}
+\label{sec:org5c4c8ca}
 \paragraph{Azure functions}
-\label{sec:orgf100e80}
+\label{sec:orgd572f27}
 \subsubsection{Where Serverless computing fall short}
-\label{sec:org9e9951e}
+\label{sec:org1fb5283}
 Although serverless computing might sound like the silver bullet of the
 deployment solutions, it is a field that is still being rapidly grown and
 researched on. There are several staggering shortcomings for this technology
 that makes it unsuitable for certain applications. The current offering have the
 following noticeable limitations.
 \paragraph{Lack of state}
-\label{sec:orgb6477dc}
+\label{sec:org97f89a5}
 As mentioned earlier, statelessness is a primary nature for serverless workloads
 making it easy to deploy and port agnostic of the environment and server.
 Hence serverless/auto-scaling paradigm generally push for a development style
@@ -489,7 +490,7 @@ this adds, it is a violation of the elastic nature of the Serverless
 paradigm.
 
 \subparagraph{I/O Latency}
-\label{sec:orgd37fc2f}
+\label{sec:org79ad623}
 Like was mentioned earlier, FaaS have had a lot of influences in the system
 architecture and programming paradigms like would with any new infrastructure
 management system. It is quite unfortunate though that, even with a paradigm
@@ -504,7 +505,7 @@ architecture is procedures that you run in databases. The code is moved to the
 data than the other way around in this.
 
 \paragraph{Coordination issues among functions}
-\label{sec:orgf47c536}
+\label{sec:org336996d}
 As we saw in the previous sections, FaaS workloads are usually containerized by
 the cloud provider to deploy it easily in their node pool or cluster. By nature,
 docker containers are indiscoverable units that need to be opened up explicitly
@@ -539,7 +540,7 @@ batch data alike.
 CITE[onestepforward]
 
 \paragraph{Vendor lock-in}
-\label{sec:orgd73bc32}
+\label{sec:org1f715ab}
 It is no secret that the most widely used FaaS/serverless offerings are the ones by
 proprietary cloud providers where they hand twist the developers into complying
 to their programming environment and runtime thereby forcing devs to use their
@@ -555,7 +556,7 @@ zero control over the infrastructure and the pipeline is not transparent at all
 for any kind of performance optimization or fine tuning.
 
 \paragraph{Fixed timeouts}
-\label{sec:orgb71357f}
+\label{sec:org398b0f7}
 This is the one of the other bigger reasons that hinder the usage of FaaS in big
 data applications. In applications that involve heavy number crunching
 algorithms, there are chances that often the function needs to run for a longer
@@ -570,7 +571,7 @@ These are all extremely bounding as conditions especially for functions that are
 composed and a function should wait for the other functions to finish executing. 
 
 \paragraph{Cold Start}
-\label{sec:org1ea970e}
+\label{sec:orgf184eb3}
 Cold start it the delay that the function incurs after the invocation or
 triggering of the function till the execution of the function. In the
 background, FaaS uses containers to encapsulate and execute the functions. When
@@ -610,7 +611,7 @@ innovative and introduce lighter alternatives to Linux containers in the FaaS
 platform these days.
 
 \paragraph{Security issues in a multi-tenant environment}
-\label{sec:orge1380b5}
+\label{sec:org401bf28}
 Like was previously mentioned, the whole FaaS infrastructure offering is
 economical for the cloud provider because they get to share their node pool
 among all their standard customers making the resource cost for them very low.
@@ -626,7 +627,7 @@ cold start time. But recently the innovative new alternatives for Linux
 containers are also aimed at to fix these issues.
 
 \subparagraph{Function caches}
-\label{sec:org6c5ec3f}
+\label{sec:orgb0e7b7a}
 Along with the above mentioned issue with multi-tenancy across customers, a
 similar issue can occur under the same customer who runs an application across
 multiple of their client. The problem is that each function has an inaccessible
@@ -637,7 +638,7 @@ by the other. If the developers are not cautious enough while coding and usage
 of variables, there is a high chance for data corruption and leakage on the platform.
 
 \paragraph{Developer friendliness}
-\label{sec:org4ac32b6}
+\label{sec:org4e6e58c}
 \begin{itemize}
 \item Dependency management
 \item Debugging and testing
@@ -645,9 +646,9 @@ of variables, there is a high chance for data corruption and leakage on the plat
 \item Logging and monitoring
 \end{itemize}
 \subsection{Stream Processing/ETLs}
-\label{sec:org4b97221}
+\label{sec:org0d03d95}
 \subsection{Problem statement}
-\label{sec:org24e1e27}
+\label{sec:org977c9d2}
 From the above set of evaluations, there is no doubt that Serverless is the way
 of the future infrastructure maintenance and deployment. Even with the current
 state of art FaaS offerings, 21\% of the entire workload is Data processing
@@ -689,7 +690,7 @@ stable enough for production workloads, and easily integratable with the common
 development tools like Github, CI/CD pipelines etc.
 
 \section{Related work}
-\label{sec:org2e0184b}
+\label{sec:org352e243}
 Serverless has gained a lot of attention and traction from the scientific
 community in the past few years because of its massive implications in resource
 conservation and innovative programming when one doesn't have to worry about
@@ -722,7 +723,7 @@ potential as an idea, although currently the usability of the platform is
 terrible and it can be quite bloated as a entry point to a FaaS system
 especially since it is not a very elastic platform.
 \subparagraph{Serverless in the wild: characterizing and optimising the serverless workload at a large cloud provider}
-\label{sec:orgd1e539b}
+\label{sec:orga7f0d00}
 
 Published date: 6 Jun 2020
 
@@ -732,7 +733,7 @@ For better results we can switch to ARIMA model.
 Use cases on both azure \& openwhisk
 
 \subparagraph{FaaSdom: A Benchmark Suite For Serverless Computing}
-\label{sec:org126891b}
+\label{sec:org9c81f85}
 
 Published date: 5 Jun 2020
 
@@ -740,7 +741,7 @@ It is a docker based platform that implements wrk2
 This would be a really great tool to benchmark cross platform. Code
 
 \subparagraph{Towards Fine-Grained Billing For Cloud Networking}
-\label{sec:orgfdfd857}
+\label{sec:org6fda5df}
 
 Published: 24 Mar 2020
 
@@ -748,7 +749,7 @@ This is suggesting methods for the cloud provider to offer a fine grained billin
 This is an interesting read but beyond the scope of my research.
 
 \subparagraph{Firecracker: lightweight virtualization for serverless applications}
-\label{sec:orgffd86ac}
+\label{sec:org04a924b}
 
 Published date: 25 Feb 2020
 
@@ -756,7 +757,7 @@ This is the isolation solution used by AWS based on KVM
 Although from the security pov firecracker is great, from the performance pov it is comparable to containers.
 
 \subparagraph{INFINICACHE: Exploiting Ephemeral Serverless Functionsto Build a Cost-Effective Memory Cache}
-\label{sec:orgceb73f2}
+\label{sec:org6a3ce41}
 
 Published date: 20 Feb 2020
 
@@ -764,7 +765,7 @@ This is an in memory object cache. Super interesting. It uses erasure coding and
 They implement it with AWS lambda. Lambda runtime is connected to a priority based queue. Could be useful to think of something like this for streaming data.
 
 \subparagraph{Cloudburst: stateful functions-as-a-service}
-\label{sec:org0a6fb3f}
+\label{sec:org46fffc5}
 
 Published date: 14 Jan 2020
 
@@ -774,7 +775,7 @@ It uses a DAGs for chaining functions. This is not yet wire speed though.
 The isolation is very weak, and it has a long way to come to be applied in production. 
 
 \subparagraph{Serverless Computing: A Survey Of Opportunities, Challenges and Applications}
-\label{sec:orgf3b99ed}
+\label{sec:orgeb648d1}
 
 Published date: 23 Dec 2019
 
@@ -782,7 +783,7 @@ Doesn’t introduce anything new. Issues like, function invocation latency, stor
 They suggest the use of a distributed queue for function composition. I could use inifinicache this way.
 
 \subparagraph{Understanding Open Source Serverless Platforms:Design Considerations and Performance}
-\label{sec:org7a9e2d8}
+\label{sec:org567f08b}
 
 Published Date: 13 Dec 2019
 
@@ -791,14 +792,14 @@ The CPU usage is almost comparable in all the platform
 OpenFaas is said to have the most flexible architecture
 
 \subparagraph{Formalizing Event-Driven Behavior of ServerlessApplications}
-\label{sec:orgb8be5a6}
+\label{sec:org2971786}
 
 Published on: 8 Dec 2019
 
 Provides a detailed operational semantics for FaaS. It includes, object stores, key values etc. Could be useful to conceptualize control flows.
 
 \subparagraph{Narrowing the Gap Between Serverless and its State withStorage Functions}
-\label{sec:org2a4302a}
+\label{sec:orga2ce25e}
 
 Published date: 20 Nov 2019
 
@@ -806,7 +807,7 @@ Shredder is super interesting because it implements the function shipping approa
 It uses v8 isolates to implement the sandboxes
 
 \subparagraph{Formal foundations of serverless computing}
-\label{sec:orgeb1b405}
+\label{sec:org052d56d}
 
 Published date: 20 Nov 2019
 
@@ -817,49 +818,49 @@ SPL, a serverless composition language
 Function composition is being well done by this. 
 
 \subparagraph{Caching Techniques to Improve Latency inServerless Architectures (}
-\label{sec:org5704618}
+\label{sec:org12b7e8a}
 
 Published date: 17-Nov-2019
 
 Vaguely mentions an in memory cache for aws lambda
 
 \subparagraph{In Search of a Fast and Efficient Serverless DAG Engine}
-\label{sec:org51a3fbe}
+\label{sec:org28a8e83}
 
 Published date: 14 Oct 2019
 
 They introduce a system to do scheduling of jobs specified as DAGs. I think the memory footprint of this implementation is quite heavy. Trigger flow is an improvement.
 
 \subparagraph{SERVERMIX: TRADEOFFS AND CHALLENGES OF SERVERLESS DATA ANALYTICS}
-\label{sec:org35db9a5}
+\label{sec:org987716f}
 
 Published date: 26 Jul 2019
 
 A big date serverless piece. A lot of it sounded like mission statements. 
 
 \subparagraph{Fog Function: Serverless Fog Computing for DataIntensive IoT Services}
-\label{sec:org9867dad}
+\label{sec:org1000a10}
 
 Date: 18 Jul 2019
 
 Out of scope. For edge devices.
 
 \subparagraph{Cloud Programming Simplified: A Berkeley View onServerless Computing}
-\label{sec:orgb926f71}
+\label{sec:org49ca40a}
 
 Date: 10 Feb 2019
 
 Mentions a lot of issues like need for ephemeral storage, coordination, security, hardware heterogeneity, etc. 
 
 \subparagraph{A framework and a performance assessment for serverless MapReduce on AWS Lambda}
-\label{sec:orgae1f590}
+\label{sec:org68311a2}
 
 Date: 02 Feb 2019
 
 This is a very practical paper. I used this to implement my first version of mapreduce on OpenFaaS. Code is on my github
 
 \subparagraph{Serverless Computing: One Step Forward, Two Steps Back}
-\label{sec:orge8d3263}
+\label{sec:orgc61e94c}
 
 Date: Jan 2019
 
@@ -868,7 +869,7 @@ Shows weak parallelism and hence distributed computing is terrible.
 Recommends a function shipping architecture.
 
 \subparagraph{Serverless architecture efficiency: an exploratory study}
-\label{sec:orga45aa9b}
+\label{sec:org67690ad}
 
 Published date: 13 Jan 2019
 
@@ -877,7 +878,7 @@ Concludes that the lambda implementation is suboptimal after benchmarking.
 Costless: Optimizing Cost of Serverless Computing through Function Fusion and Placement (23 Nov 2018)
 
 \subparagraph{Pocket: Elastic Ephemeral Storage for Serverless Analytics}
-\label{sec:orgbfdcb61}
+\label{sec:orga675c43}
 
 Date: Oct 2018
 
@@ -886,28 +887,21 @@ Implements dynamic block allocation based on kubernetes hueritics
 Project is not super active but I could deploy it and try it out
 
 \subparagraph{Anna: A KVS For Any Scale}
-\label{sec:orgb91b244}
+\label{sec:orgeb9f592}
 
 Published date: 8 Sep 2018
 
 Another brilliant key value store that scales as well. It is distributed in nature and has local caches for better data locality. It is the basis for cloudburst
 
 \subparagraph{SAND: Towards High-Performance Serverless Computing}
-\label{sec:org5a8d717}
+\label{sec:orgf16bde7}
 
 Published Date: 11 July 2018
 
 This is a similar idea to cloudburst and Faasm. A different sandboxing, function composition internally using a hierarchical message bus
 
-\subparagraph{First ​​International​​ Workshop​​ on​​ Serverless Computing​​(WoSC) ​​2017 Report​​ from​​ workshop ​​and​​ panel ​​on ​​the​​ Status ​​of Serverless ​​Computing​​ and ​​Function-as-a-Service(FaaS) ​​in​​ Industry ​​and​​ Research}
-\label{sec:orgb5e40e4}
-
-Published in 2017
-
-It is a bit outdated but defined a lot about what is serverless and if it is good for longer running processes, is state okay, etc.
-
 \subparagraph{Serverless Computing: Current Trends and Open Problems}
-\label{sec:org5acf89d}
+\label{sec:org940e0f4}
 
 Published Date: 10 Jun 2017
 
@@ -916,48 +910,317 @@ Talks about problems with deployment and the devops tools.
 It is yet again a bit outdated. 
 
 \subparagraph{Consistency analysis in Bloom: a CALM and collected approach}
-\label{sec:org8db3f48}
+\label{sec:org79fd72e}
 
 Published Date: 9 Jan 2011
 
 This is a distributed programming model with interesting state sharing ideas. This was mentioned in a paper as a potential alternative to the programming model for serverless since the traditional methods or way of thinking might not work for FaaS.
 
 \section{Proposed Solution}
-\label{sec:org8e70af2}
-\subsection{Introducing autoscaling ephermeral storage to ETLs.}
-\label{sec:org791b541}
-\subsubsection{Describe pocket and the way it works.}
-\label{sec:orgacc7c56}
-\subsection{Function composition to pass and retrieve the data in the middle stages}
-\label{sec:org6ea5d0b}
-\subsubsection{DAGs, branching and jumping}
-\label{sec:org4189bc8}
-\subsection{Multitenancy support by namespaces}
-\label{sec:org13924d7}
-\subsection{Tracking the usage fine grained and billing data accordingly}
-\label{sec:org216bc0b}
+\label{sec:orgcab881b}
+
+In this section we dig in deeper into the specifications of our proposal to
+build a production ready FaaS infrastructure stack that is completely elastic
+and not locked into any vendor. The idea is that, any party or enterprise should
+be able to reproduce this stack easily and developers should be able to deploy their
+application code from any git hosting service or command line to this platform
+without worrying about the server management. The platform we build also should
+be provider agnostic, in the sense that it should work with constant efficiency
+on any cloud provider the user may choose. The developer should be able to
+monitor the usage and performance of the application easily.
+
+In the light of the above discussion we propose the following extensions to the
+existing Serverless platforms:
+\begin{itemize}
+\item Ephermeral in-memory storage to store intermediate data
+\item Provision to compose functions by defining a computational graph
+\item Multi-tenancy support by separating function instances using namespaces
+\item Fine grained tracing and monitoring of the functions and the compositions
+\end{itemize}
+
+To clarify how the above mentioned steps will help solve major limitations of
+Serverless paradigm, we will have a platform agnostic look at how the above
+steps change the current state of art FaaS systems. In the section 5, we will
+get into platform specific study by implementing these suggestions on a flexible
+open source FaaS solution for our proof of concept.
+
+\subsection{Function compositions using computational graph}
+\label{sec:org23270d1}
+
+As we have already seen, in the current industrial requirements, big data
+processing is pretty inevitable as an application scenario. The nature of these
+data can be very varied including streaming, semi-regular burst streams, etc.
+making it a very good space to apply Serverless paradigm to, to save up
+resources and have fine grained scaling of the resources based on requirement.
+The aforementioned complexity in the application logic suggests that it make a
+lot of sense to split the application into multiple functions and compose them
+efficiently. If applied to the Serverless logic, this means that each function
+can be scaled independently based on the load in that logic.
+
+The above requirement exposes some issues that were discussed in the section
+2.2.4 of FaaS. Function composition is not something that has been cleanly
+supported by popular commercial FaaS offerings. The popular infrastructure today
+do not have any information about the dependencies between multiple functions.
+It is up to the developer to programatically call functions from each other
+which are packaged and deployed separately. If there are any heavy data to be
+transferred among these functions, which we can refer to as intermediate
+data, the developers are expected to use a block storage of some sort(eg: S3,
+google data store, etc.) adding heavily to the Input/Output latency of the
+service, not to mention the network latency if the infrastructure is in a
+different VPC.
+
+In a recent case study CITE\{\href{https://aws.amazon.com/solutions/case-studies/autodesk-serverless/}{STUDY}\}, Autodesk claims their FaaS-ification of
+their whole platform. Unfortunately, their account creation platform, which was
+implemented as a composition of multiple small functions on AWS lambda incurred
+a round trip time of 10 minutes. This is horrendous especially considering the
+vitality of the task in discussion. Overhead of Lambda in task management and
+the state management is explained as the causes.
+
+More products has been introduced by cloud providers, like AWS step functions
+CITE\{\href{https://aws.amazon.com/step-functions/?step-functions.sort-by=item.additionalFields.postDateTime\&step-functions.sort-order=desc}{Step functions}\}, instead of fixing the inherent architecture of FaaS
+solutions to help create data intensive workflows in FaaS. These systems work by
+introducing an event queue like AWS SQS to the equation. The problem with such
+solutions is that they violate the notion of Serverless in a way by introducing
+an element that is practically non scalable and can't be debugged easily. It
+becomes extremely difficult to develop and test the system locally. Not
+the mention, the fact that this introduces more lock in to the vendor. 
+
+Another approach can be found here CITE\{\href{https://aws.amazon.com/blogs/compute/ad-hoc-big-data-processing-made-simple-with-serverless-mapreduce/}{LINK}\}, where the function composition is
+done by triggering the other functions by pushing intermediate data to s3, which
+the following function considers as the trigger. The example in question is a
+very simple map reduce which is not very intensive computationally even with a
+heavy load of data. Even with that the setup takes around 2 minutes to complete
+the task for a dataset of size 25GB. It can be seen that the majority of the
+running time was spent on pushing and pulling data and not on the compute.
+
+It is quite clear that the ability of functions to call each other are rather
+important. There should be a way to define programatically the relationship
+between the functions in a FaaS infrastructure along with the data flow
+dependencies. If cloud provider exposes an API that would let the developer feed
+a computational graph for this function composition, this would not just
+improve the performance, but also would be useful for better function and data
+placement so the latency for data and control transfer would be minimum. This
+can be a very tricky thing conceptually since, containers are not directly
+addressable network wise.
+
+Before getting into the technicalities of the platform itself, let us look at
+different approaches in which functions can be composed in a serverless
+workload.
+
+\#+BEGIN\textsubscript{EXAMPLE}
+\subsubsection{Function composition patterns in Serverless}
+\label{sec:org25bc2eb}
+\paragraph{Manual Compilation}
+\label{sec:org29acd45}
+
+This the most basic and inefficient way of compiling the functions. This
+basically involves merging all the functions together to form a huge function.
+From FaaS executor's point of view, it is one big function.
+
+\begin{figure}
+\caption{Merged in the source code}
+\centering
+\includegraphics[width=80mm]{./thesis_images/manual_comp.png}
+\label{fig:Manual compilation}
+\end{figure}
+
+\begin{lstlisting}
+def funcA():
+  doStuff()
+
+def funcB():
+  doStuff()
+
+def main():
+  funcA()
+  funcB()
+\end{lstlisting}
+
+The above code block and Figure 4 explains how the control flow works in this
+kind of compilation scheme. As is pretty obvious, with this method one cannot
+scale individual functions independently and function can get really big. There
+is no necessity to store intermediate data or serialize and deserialize data
+between functions. But the problem is that this kind of violates the notion of
+serverless since each application is not an atomic functional unit. If the
+compute is complex, function might not even completely run because of the
+hardbound limit to the running time set on most FaaS platforms. 
+
+\paragraph{Direct function chaining}
+\label{sec:org4213e1f}
+
+\begin{figure}
+\caption{Direct function chaining}
+\centering
+\includegraphics[width=90mm]{./thesis_images/func_chain.png}
+\label{fig:Chaining}
+\end{figure}
+
+Like can be seen from Figure 5, here each task is a separate function. Each
+function directly call the succeeding function in a chain. Meaning the code is
+written so that the current knows the details of the next function, but not any
+further. Even here like before, there is no need for any serialization
+deserialization overhead since functions can directly send each other data. No
+external components are used either. Although the problem arises when the data
+load increases. The load on the network to transfer data via HTTP rises. Along
+with that each function will have to wait for the next function. If a function
+fails then the logic to retry/fallback etc. will have to be coded into each
+function. The following pseudo code shows how the function design would be.
+
+
+\begin{lstlisting}
+def funcA():
+  doStuff()
+\end{lstlisting}
+
+
+\begin{lstlisting}
+def funcB():
+  doStuff()
+\end{lstlisting}
+
+\paragraph{Composition via coordinator functions}
+\label{sec:org10249e1}
+
+In this method, a coordinator function will be used which manage the execution
+of all the functions by calling them directly. The individual functions will be
+unaware of each other. 
+
+\begin{figure}
+\caption{Coordination functions}
+\centering
+\includegraphics[width=150mm]{./thesis_images/coordination.png}
+\label{fig:Coordination}
+\end{figure}
+
+The win over the previous method here is that, the house keeping code need not
+be present in each individual task. Also it is very flexible in the sense that,
+each function can be tested independently and then the user can properly write
+the control flow in one place, that being the coordinator function. This comes
+at a cost of adding an extra function which is the coordinator function. This
+function will continue running the whole time, costing more and violating the
+FaaS paradigm a bit. An example of this kind of coordination can be found here
+CITE \{\href{https://www.researchgate.net/publication/331572138\_A\_framework\_and\_a\_performance\_assessment\_for\_serverless\_MapReduce\_on\_AWS\_Lambda}{PAPER}\}
+
+\paragraph{Event driven composition}
+\label{sec:org077f8d7}
+
+\begin{figure}
+\caption{Event driven function composition}
+\centering
+\includegraphics[width=150mm]{./thesis_images/event.png}
+\label{fig:Event}
+\end{figure}
+
+This is a powerful design pattern that supports a lot more fault tolerance and
+involves changing or extending the infrastructure of the FaaS platform. In this
+method, one introduces message queues in the architecture as can be referred
+from Figure 7. Functions emit events to these message queues. Alongside, all the
+functions listen to the same queues. So on receiving certain events, they react
+in the programmed ways. Contrary to all the previous methods, it is very
+interesting to note that in this method, the stress is given to the data flow
+instead of the control flow among functions. The intermediate data between the
+functions has to be managed separately by using a storage.
+
+This is a very commonly used and popular architecture. Message queues like Kafka
+or MQTT brokers like rabitMQ offer a lot of functionalities and features like
+fault tolerance, error handling, alerting, backup, etc. Functions can be
+completely decoupled. This is a very good solution for big data and streaming
+data applications.
+
+The problem with this method is though the very heavy dependencies which are
+very hard to manage. The fact that message queues are not inherently serverless
+makes the platform less elastic and thereby billing and usage tracking can be
+troublesome of the infrastructure manager. Alongside, message queues usually
+only supports limited control flow structures. Probably just conditional and
+on-error handles. It will be terribly complicated to do dynamic branching,
+iterations, etc. Along with this, since functions are so tightly dependent on
+the message queues, it will be slightly challenging to upgrade or version them. 
+
+\paragraph{Workflows}
+\label{sec:org60e0d5d}
+
+Workflows are a very interesting architectures pattern where the system supports
+the creation of a sort of flowchart of the functional interaction. Workflows are
+a very widely used pattern these days in a lot of big data processing tools. 
+
+An workflow is designed as a directed acyclic graph (DAG). This means that a new
+runtime has to be introduced in the FaaS system to manage the execution of the
+functions. When authoring a workflow, one should think how it could be divided
+into tasks which can be executed independently. The workflow runtime would let
+one to merge these tasks into a logical whole by combining them into a graph.
+
+This definitely adds the overhead of writing a runtime for the FaaS platform,
+providing an API to define the DAG to the runtime and then managing and
+executing the workflow based on the DAGs. But once the platform is in place, it
+provides numerous flexibility. One can get done dynamic branching, iteration,
+etc. very easily on this platform along with individual upgrade of the
+functions. The fact that no external infrastructure tool has to be managed to
+work as a triggering mechanism maintains the elastic nature of the tool. The
+only thing is that there has to be a storage unit to manage the state of the DAG
+for the workflow framework. Similarly just the event driven composition, the
+intermediate data store has to be handled separately.
+
+Logically, this method resembles the coordinate function setup, just that
+instead of a simple coordinator function, in this case we have a month more
+powerful framework that is added permanently to the infrastructure. This can be
+referred from Figure 8. 
+
+\begin{figure}
+\caption{Workflows}
+\centering
+\includegraphics[width=150mm]{./thesis_images/workflow_2.png}
+\label{fig:Workflows}
+\end{figure}
+
+The shape of the graph decides the overall logic of the workflow. A DAG can
+include multiple branches and you can decide which of them to follow and which
+to skip at the time of workflow execution. This creates a very resilient design,
+because each task can be retried multiple times if an error occurs. To give the
+reader clarity on what a DAG looks like, the Figure 9 from the Airflow's
+operator might shed some light.
+
+\begin{figure}
+\caption{Branching example with DAGs}
+\centering
+\includegraphics[width=80mm]{./thesis_images/workflow_1.png}
+\label{fig:DAG}
+\end{figure}
+
+
+
+
+
+
+
+It is arguably clear that workflows offer the most flexible and application
+independent solution as a 
+\#+END\textsubscript{EXAMPLE}
 \section{Implementation}
-\label{sec:org214f997}
-\subsection{Architecture}
-\label{sec:org80d1d1e}
+\label{sec:org46719c9}
 \subsection{Tools}
-\label{sec:org7232b31}
+\label{sec:orga41c270}
+\subsubsection{Container Orchestration}
+\label{sec:org8ff1f3c}
+\subparagraph{Docker}
+\label{sec:orga2e53d8}
+\subparagraph{Kubernetes}
+\label{sec:orge6fd97b}
 \subsubsection{OpenFaaS}
-\label{sec:orge310fd3}
-\subsubsection{Pocket}
-\label{sec:org11f98b3}
-\subsubsection{Kubernetes}
-\label{sec:orga01c271}
+\label{sec:org2a9315b}
 \subsubsection{FaaS-flow}
-\label{sec:org7d92976}
+\label{sec:orgf31d138}
+\subsubsection{Pocket}
+\label{sec:orgcdfda39}
 \subsubsection{Prometheus}
-\label{sec:org947c0ac}
+\label{sec:org8324249}
+\subsection{Architecture}
+\label{sec:org42b222d}
 \section{Evaluation}
-\label{sec:org6e18a0b}
+\label{sec:org3c9e3f7}
 \section{Future work}
-\label{sec:org33598a8}
+\label{sec:org48cb3ef}
 \section{Conclusion}
-\label{sec:orgcdb24d3}
+\label{sec:orgabaa607}
 
 
 :UNNUMBERED: t

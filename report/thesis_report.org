@@ -1,10 +1,12 @@
 #+PROPERTY: header-args :exports none :tangle "./refs.bib"
 #+LATEX_HEADER: \usepackage[natbib=true]{biblatex} \DeclareFieldFormat{apacase}{#1} \addbibresource{./refs.bib}
 #+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{listings} \usepackage{color} \definecolor{dkgreen}{rgb}{0,0.6,0} \definecolor{gray}{rgb}{0.5,0.5,0.5} \definecolor{mauve}{rgb}{0.58,0,0.82} \lstset{frame=tb, language=Java, aboveskip=3mm, belowskip=3mm, showstringspaces=false, columns=flexible, basicstyle={\small\ttfamily}, numbers=none, numberstyle=\tiny\color{gray}, keywordstyle=\color{blue}, commentstyle=\color{dkgreen}, stringstyle=\color{mauve}, breaklines=true, breakatwhitespace=true, tabsize=3}
+
 #+OPTIONS: <:nil c:nil todo:nil H:5 f:t toc:nil |:t
 #+TITLE: Stateful FaaS
 #+AUTHOR: Nandaja Varma Nandakumar
-#+DATE: <2020-10-24 Sat>
+#+DATE: 
 #+EMAIL: nandajavarma.nandakumar@mail.polimi.it
 #+LANGUAGE: en
 #+LATEX_CLASS: article
@@ -823,11 +825,11 @@ Published Date: 11 July 2018
 
 This is a similar idea to cloudburst and Faasm. A different sandboxing, function composition internally using a hierarchical message bus
 
-***** First ​​International​​ Workshop​​ on​​ Serverless Computing​​(WoSC) ​​2017 Report​​ from​​ workshop ​​and​​ panel ​​on ​​the​​ Status ​​of Serverless ​​Computing​​ and ​​Function-as-a-Service(FaaS) ​​in​​ Industry ​​and​​ Research
+# ***** First ​​International​​ Workshop​​ on​​ Serverless Computing​​(WoSC) ​​2017 Report​​ from​​ workshop ​​and​​ panel ​​on ​​the​​ Status ​​of Serverless ​​Computing​​ and ​​Function-as-a-Service(FaaS) ​​in​​ Industry ​​and​​ Research
 
-Published in 2017
+# Published in 2017
 
-It is a bit outdated but defined a lot about what is serverless and if it is good for longer running processes, is state okay, etc.
+# It is a bit outdated but defined a lot about what is serverless and if it is good for longer running processes, is state okay, etc.
 
 ***** Serverless Computing: Current Trends and Open Problems
 
@@ -844,20 +846,295 @@ Published Date: 9 Jan 2011
 This is a distributed programming model with interesting state sharing ideas. This was mentioned in a paper as a potential alternative to the programming model for serverless since the traditional methods or way of thinking might not work for FaaS.
 
 * Proposed Solution
-** Introducing autoscaling ephermeral storage to ETLs. 
-*** Describe pocket and the way it works.
-** Function composition to pass and retrieve the data in the middle stages
-*** DAGs, branching and jumping
-** Multitenancy support by namespaces
-** Tracking the usage fine grained and billing data accordingly
-* Implementation
-** Architecture
-** Tools
-*** OpenFaaS
+
+In this section we dig in deeper into the specifications of our proposal to
+build a production ready FaaS infrastructure stack that is completely elastic
+and not locked into any vendor. The idea is that, any party or enterprise should
+be able to reproduce this stack easily and developers should be able to deploy their
+application code from any git hosting service or command line to this platform
+without worrying about the server management. The platform we build also should
+be provider agnostic, in the sense that it should work with constant efficiency
+on any cloud provider the user may choose. The developer should be able to
+monitor the usage and performance of the application easily.
+
+In the light of the above discussion we propose the following extensions to the
+existing Serverless platforms:
+- Provision to compose functions by defining a computational graph
+- Ephermeral in-memory storage to store intermediate data
+- Multi-tenancy support by separating function instances using namespaces
+- Fine grained tracing and monitoring of the functions and the compositions
+
+To clarify how the above mentioned steps will help solve major limitations of
+Serverless paradigm, we will have a platform agnostic look at how the above
+steps change the current state of art FaaS systems. In the section 5, we will
+get into platform specific study by implementing these suggestions on a flexible
+open source FaaS solution for our proof of concept.
+
+** Function composition
+
+As we have already seen, in the current industrial requirements, big data
+processing is pretty inevitable as an application scenario. The nature of these
+data can be very varied including streaming, semi-regular burst streams, etc.
+making it a very good space to apply Serverless paradigm to, to save up
+resources and have fine grained scaling of the resources based on requirement.
+The aforementioned complexity in the application logic suggests that it make a
+lot of sense to split the application into multiple functions and compose them
+efficiently. If applied to the Serverless logic, this means that each function
+can be scaled independently based on the load in that logic.
+
+The above requirement exposes some issues that were discussed in the section
+2.2.4 of FaaS. Function composition is not something that has been cleanly
+supported by popular commercial FaaS offerings. The popular infrastructure today
+do not have any information about the dependencies between multiple functions.
+It is up to the developer to programatically call functions from each other
+which are packaged and deployed separately. If there are any heavy data to be
+transferred among these functions, which we can refer to as intermediate
+data, the developers are expected to use a block storage of some sort(eg: S3,
+google data store, etc.) adding heavily to the Input/Output latency of the
+service, not to mention the network latency if the infrastructure is in a
+different VPC.
+
+In a recent case study CITE{[[https://aws.amazon.com/solutions/case-studies/autodesk-serverless/][STUDY]]}, Autodesk claims their FaaS-ification of
+their whole platform. Unfortunately, their account creation platform, which was
+implemented as a composition of multiple small functions on AWS lambda incurred
+a round trip time of 10 minutes. This is horrendous especially considering the
+vitality of the task in discussion. Overhead of Lambda in task management and
+the state management is explained as the causes.
+
+More products has been introduced by cloud providers, like AWS step functions
+CITE{[[https://aws.amazon.com/step-functions/?step-functions.sort-by=item.additionalFields.postDateTime&step-functions.sort-order=desc][Step functions]]}, instead of fixing the inherent architecture of FaaS
+solutions to help create data intensive workflows in FaaS. These systems work by
+introducing an event queue like AWS SQS to the equation. The problem with such
+solutions is that they violate the notion of Serverless in a way by introducing
+an element that is practically non scalable and can't be debugged easily. It
+becomes extremely difficult to develop and test the system locally. Not
+the mention, the fact that this introduces more lock in to the vendor. 
+
+Another approach can be found here CITE{[[https://aws.amazon.com/blogs/compute/ad-hoc-big-data-processing-made-simple-with-serverless-mapreduce/][LINK]]}, where the function composition is
+done by triggering the other functions by pushing intermediate data to s3, which
+the following function considers as the trigger. The example in question is a
+very simple map reduce which is not very intensive computationally even with a
+heavy load of data. Even with that the setup takes around 2 minutes to complete
+the task for a dataset of size 25GB. It can be seen that the majority of the
+running time was spent on pushing and pulling data and not on the compute.
+
+It is quite clear that the ability of functions to call each other are rather
+important. There should be a way to define programatically the relationship
+between the functions in a FaaS infrastructure along with the data flow
+dependencies. If cloud provider exposes an API that would let the developer feed
+a computational graph for this function composition, this would not just
+improve the performance, but also would be useful for better function and data
+placement so the latency for data and control transfer would be minimum. This
+can be a very tricky thing conceptually since, containers are not directly
+addressable network wise.
+
+Before getting into the technicalities of the platform itself, let us look at
+different approaches in which functions can be composed in a serverless
+workload.
+
+*** Manual Compilation
+
+This the most basic and inefficient way of compiling the functions. This
+basically involves merging all the functions together to form a huge function.
+From FaaS executor's point of view, it is one big function.
+
+#+begin_figure
+    \caption{Merged in the source code}
+    \centering
+    \includegraphics[width=80mm]{./thesis_images/manual_comp.png}
+    \label{fig:Manual compilation}
+#+end_figure
+
+#+BEGIN_lstlisting
+# manual.py
+
+def funcA():
+  doStuff()
+
+def funcB():
+  doStuff()
+
+# This is the entrypoint
+def main():
+  funcA()
+  funcB()
+#+END_lstlisting
+
+The above code block and Figure 4 explains how the control flow works in this
+kind of compilation scheme. As is pretty obvious, with this method one cannot
+scale individual functions independently and function can get really big. There
+is no necessity to store intermediate data or serialize and deserialize data
+between functions. But the problem is that this kind of violates the notion of
+serverless since each application is not an atomic functional unit. If the
+compute is complex, function might not even completely run because of the
+hardbound limit to the running time set on most FaaS platforms. 
+
+*** Direct function chaining
+
+#+begin_figure
+    \caption{Direct function chaining}
+    \centering
+    \includegraphics[width=90mm]{./thesis_images/func_chain.png}
+    \label{fig:Chaining}
+#+end_figure
+
+Like can be seen from Figure 5, here each task is a separate function. Each
+function directly call the succeeding function in a chain. Meaning the code is
+written so that the current knows the details of the next function, but not any
+further. Even here like before, there is no need for any serialization
+deserialization overhead since functions can directly send each other data. No
+external components are used either. Although the problem arises when the data
+load increases. The load on the network to transfer data via HTTP rises. Along
+with that each function will have to wait for the next function. If a function
+fails then the logic to retry/fallback etc. will have to be coded into each
+function. The following pseudo code shows how the function design would be.
+
+
+#+BEGIN_lstlisting
+# funcA.py
+
+def funcA():
+  doStuff()
+  # HTTP call to funcB + error handling
+#+END_lstlisting
+
+
+#+BEGIN_lstlisting
+# funcB.py
+def funcB():
+  doStuff()
+#+END_lstlisting
+
+*** Composition via coordinator functions
+
+In this method, a coordinator function will be used which manage the execution
+of all the functions by calling them directly. The individual functions will be
+unaware of each other. 
+
+#+begin_figure
+    \caption{Coordination functions}
+    \centering
+    \includegraphics[width=150mm]{./thesis_images/coordination.png}
+    \label{fig:Coordination}
+#+end_figure
+
+The win over the previous method here is that, the house keeping code need not
+be present in each individual task. Also it is very flexible in the sense that,
+each function can be tested independently and then the user can properly write
+the control flow in one place, that being the coordinator function. This comes
+at a cost of adding an extra function which is the coordinator function. This
+function will continue running the whole time, costing more and violating the
+FaaS paradigm a bit. An example of this kind of coordination can be found here
+CITE {[[https://www.researchgate.net/publication/331572138_A_framework_and_a_performance_assessment_for_serverless_MapReduce_on_AWS_Lambda][PAPER]]}
+
+*** Event driven composition
+
+#+begin_figure
+    \caption{Event driven function composition}
+    \centering
+    \includegraphics[width=150mm]{./thesis_images/event.png}
+    \label{fig:Event}
+#+end_figure
+
+This is a powerful design pattern that supports a lot more fault tolerance and
+involves changing or extending the infrastructure of the FaaS platform. In this
+method, one introduces message queues in the architecture as can be referred
+from Figure 7. Functions emit events to these message queues. Alongside, all the
+functions listen to the same queues. So on receiving certain events, they react
+in the programmed ways. Contrary to all the previous methods, it is very
+interesting to note that in this method, the stress is given to the data flow
+instead of the control flow among functions. The intermediate data between the
+functions has to be managed separately by using a storage.
+
+This is a very commonly used and popular architecture. Message queues like Kafka
+or MQTT brokers like rabitMQ offer a lot of functionalities and features like
+fault tolerance, error handling, alerting, backup, etc. Functions can be
+completely decoupled. This is a very good solution for big data and streaming
+data applications.
+
+The problem with this method is though the very heavy dependencies which are
+very hard to manage. The fact that message queues are not inherently serverless
+makes the platform less elastic and thereby billing and usage tracking can be
+troublesome of the infrastructure manager. Alongside, message queues usually
+only supports limited control flow structures. Probably just conditional and
+on-error handles. It will be terribly complicated to do dynamic branching,
+iterations, etc. Along with this, since functions are so tightly dependent on
+the message queues, it will be slightly challenging to upgrade or version them. 
+
+*** Workflows
+
+Workflows are a very interesting architectures pattern where the system supports
+the creation of a sort of flowchart of the functional interaction. Workflows are
+a very widely used pattern these days in a lot of big data processing tools. 
+
+An workflow is designed as a directed acyclic graph (DAG). This means that a new
+runtime has to be introduced in the FaaS system to manage the execution of the
+functions. When authoring a workflow, one should think how it could be divided
+into tasks which can be executed independently. The workflow runtime would let
+one to merge these tasks into a logical whole by combining them into a graph.
+
+This definitely adds the overhead of writing a runtime for the FaaS platform,
+providing an API to define the DAG to the runtime and then managing and
+executing the workflow based on the DAGs. But once the platform is in place, it
+provides numerous flexibility. One can get done dynamic branching, iteration,
+etc. very easily on this platform along with individual upgrade of the
+functions. The fact that no external infrastructure tool has to be managed to
+work as a triggering mechanism maintains the elastic nature of the tool. The
+only thing is that there has to be a storage unit to manage the state of the DAG
+for the workflow framework. Similarly just the event driven composition, the
+intermediate data store has to be handled separately.
+
+Logically, this method resembles the coordinate function setup, just that
+instead of a simple coordinator function, in this case we have a month more
+powerful framework that is added permanently to the infrastructure. This can be
+referred from Figure 8. 
+
+#+begin_figure
+    \caption{Workflows}
+    \centering
+    \includegraphics[width=150mm]{./thesis_images/workflow_2.png}
+    \label{fig:Workflows}
+#+end_figure
+
+The shape of the graph decides the overall logic of the workflow. A DAG can
+include multiple branches and you can decide which of them to follow and which
+to skip at the time of workflow execution. This creates a very resilient design,
+because each task can be retried multiple times if an error occurs. To give the
+reader clarity on what a DAG looks like, the Figure 9 from the Airflow's
+operator might shed some light.
+
+#+begin_figure
+    \caption{Branching example with DAGs}
+    \centering
+    \includegraphics[width=80mm]{./thesis_images/workflow_1.png}
+    \label{fig:DAG}
+#+end_figure
+
+
+It is arguably clear that workflows offer the most flexible and application
+independent solution as a composition pattern. Of course the concern of having a
+storage for the running state of the workflow framework remains along with the
+storage of the intermediate data. We will look into the solution to this in
+section 4.2.
+
+
+** Ephermeral Storage
 *** Pocket
-*** Kubernetes
+*** Orlic
+
+** Multi-tenant security and isolation
+** Monitoring and tracing
+
+* Implementation
+** Tools
+*** Container Orchestration
+***** Docker
+***** Kubernetes
+*** OpenFaaS
 *** FaaS-flow
+*** Pocket
 *** Prometheus
+** Architecture
 * Evaluation
 * Future work
 * Conclusion
