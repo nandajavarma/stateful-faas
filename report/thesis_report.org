@@ -486,7 +486,7 @@ no way we can actually have efficient parallelism even if we have many powerful
 cores installed over the current state of FaaS since the block storage will
 always be a bottleneck.
 
-It goes without saying that most big data applications that need ephermeral
+It goes without saying that most big data applications that need ephemeral
 storages between function executions suffers from the very similar kind of
 latencies as well. This includes function compositions like ETL on streaming and
 batch data alike.
@@ -860,7 +860,7 @@ monitor the usage and performance of the application easily.
 In the light of the above discussion we propose the following extensions to the
 existing Serverless platforms:
 - Provision to compose functions by defining a computational graph
-- Ephermeral in-memory storage to store intermediate data
+- Ephemeral in-memory storage to store intermediate data
 - Multi-tenancy support by separating function instances using namespaces
 - Fine grained tracing and monitoring of the functions and the compositions
 
@@ -1110,6 +1110,14 @@ operator might shed some light.
     \label{fig:DAG}
 #+end_figure
 
+With this setup, we can get a lot more centralization to the compositional
+logic, making logging and visualization lot more easier. With this method the
+function scheduling and placement can also be improved. Meaning, functions that
+have compositions with each other can be scheduled in the same node, if we have
+a cluster or the intermediate data can be placed nearer, etc. One downside to
+this method is that the user will have to use the workflow specific language or
+DSL and not just the programming language used for the function implementation.
+
 
 It is arguably clear that workflows offer the most flexible and application
 independent solution as a composition pattern. Of course the concern of having a
@@ -1118,12 +1126,172 @@ storage of the intermediate data. We will look into the solution to this in
 section 4.2.
 
 
-** Ephermeral Storage
+** Ephemeral Storage
+
+In the previous section, we saw that flexible function composition can be
+achieved via workflow pattern. Although to make this efficient state storage is
+inevitable. The problem is that we have to not violate the notion of elasticity
+when it comes to Serverless. The resources involved in Serverless should be
+scalable up and down, only when we can have a per usage payment and resource
+conservation. Scaling up also affects the availability of the tool since one
+should be able to have all the requested served without much latency. Along with
+storing the state of the workflow or DAG, if function has to pass around data
+from one function to another, we should introduce some sort of intermediate
+storage since there is no direct communication between functions. The workflow
+framework take care of triggering each function based on its state and the data
+transferred between the functions will be via this intermediate storage as well.
+
+In traditional analytics framework, long running process in nodes takes care of
+managing the intermediate data in local storages. On contrary to this
+conventional approach, Serverless workloads do not have any long running
+processes. Because of the network addressing problem of containers, direct
+transfer of data is also pretty impossible between functions.
+
+In all the commercial service offerings of FaaS this intermediate storage is
+done via a block storage like S3. This is a very inefficient approach since a
+block storage adds a lot of I/O latency to the system. Along with that, it adds
+a non scalable entity to the equation. Conventional storage systems are not
+designed to meet the demands of serverless applications in terms of elasticity,
+performance, and cost. We are talking about data that has limited life span,
+which we can refer to as ephemeral data CITE{[[https://www.usenix.org/system/files/osdi18-klimovic.pdf][POCKET]]}.
+
+Traditional storages like RDBMS, NoSQL, block storage, etc. are not made for
+short lived data because of the latency involved in writing to the disk. An
+in-memory key value store seem like the most obvious choice. But unfortunately
+the industry standard key value stores like Redis doesn't scale very easily. One
+has to take care of the scale of the storage cluster, network configuration,
+maintenance, etc. Per use billing can also be very tricky in this case.
+
+We should be looking into innovative new ideas to use for serverless platforms when
+it comes to data storage because of the ephemeral and scalable nature of it.
+Since Serverless functions are deployed on clusters that exists across multiple
+nodes, a distributed key value cache that is scalable is the desirable option we
+are looking for.
+
+In our preferred storage medium, we should have automatic scaling, fine grained
+usage tracking & billing, low latency, high throughput, low cost, and unlimited
+availability. Key value stores like Redis and memcache offer low latency and
+high throughput but at the higher cost of DRAM. They also require users to
+manage their own storage instances and manually scale resources CITE{[[https://www.usenix.org/system/files/osdi18-klimovic.pdf][POCKET]]}. We look into
+two different storage solutions for the adaption to our FaaS extension: Pocket & Orlic
+  
 *** Pocket
-*** Orlic
+Pocket CITE{[[https://www.usenix.org/system/files/osdi18-klimovic.pdf][POCKET]]} is an ephemeral storage build for the Serverless workflows.
+It is a key value store suited for storing and exchanging data between hundreds
+of fine-grained, short-lived tasks. Pocket is an elastic distributed storage
+service for ephemeral data that automatically and dynamically  right sizes
+storage cluster resource allocations to provide high I/O performance while
+minimizing cost CITE. Pocket is not completely an in-memory storage
+infrastructure like expected. Instead, pocket has a smart data allocation system
+that leverages different storage media(DRAM, Flash, Disk) to store the data
+depending on the requirement of the application while minimizing the cost.
+
+Pocket has a tiered architecture. It has three planes - A control plane, a meta
+data plane and the data plane. Like the name suggests data plane stores the data
+ultimately. Meta data plane tracks the presence of the data distributed across
+this data plane. Finally the control plane manages cluster scaling and data
+placement. This layer keeps the platform elastic, in that it scales the storage
+resources based on the usage. Each of the aforementioned layers can scale
+independently. The project claims to have a sub-millisecond latency for I/O
+operations.
+
+\begin{figure}[!h]
+    \caption{Pocket system architecture}
+    \centering
+    \includegraphics[width=80mm]{./thesis_images/pocket_arch.png}
+    \label{fig:pocket}
+\end{figure}
+
+***** Architecture
+Like Figure 10 represents, Pocket system has one centralized controller server,
+one or more meta data servers, and multiple data plane storage servers. The
+meta data plane according to us is the most interesting in the architecture,
+since it enforces coarse-grain data placement policies generated by the
+controller. It manages data at the granularity of blocks whose size is
+configurable, defaulted to 64KB. Objects larger than this size is divided into
+blocks and are distributed across storage servers by the meta data server. Client
+access data blocks directly from storage servers. 
+
+\begin{figure}[!h]
+    \caption{Pocket Client API}
+    \centering
+    \includegraphics[width=180mm]{./thesis_images/pocket_client_api.png}
+    \label{fig:pocket client api}
+\end{figure}
+
+***** Client API
+Pocket provides an API to communicate with the system. There are system calls to
+each of the three planes. First of all it lets the client register and un-register of the
+jobs(control plane). The client gets to communicate with the meta data server
+multiple times during its lifetime. The data in pocket is stored as objects that
+goes in buckets. They are identified using names. Meta data plane provides
+system calls to create and delete these buckets, look up objects and delete
+these objects.
+
+Client put and get data directly to/from the object at a byte granularity. The
+put and get operations invoke the meta data layer with the Job ID of the client.
+This is to do the meta data look up operation to get the data placement of the
+object that is being looked up. When a put call is invoked, with a PERSIST flag
+to be true, the object will remain in the data even after the job terminates
+despite the ephemeral nature of the storage. It will remain until it is
+explicitly deleted or after a configurable timeout period. The get call with a
+DELETE flag set will get deleted right away after returning the value of the
+object. The nature of the ephemeral storage in discussion is assumed to be write
+and read once only. Figure 11, describes the system calls in detail.
+
+***** Implementation
+****** Controller:
+Pocket is run on Kubernetes with each layer as separate docker containers. A
+resource monitoring daemon is run on each node in the cluster sending resource
+utilization info to the controller. The controller right sizes the cluster by
+launching new nodes and sending the info of the existing meta data servers to
+it. The load is balanced using data steering new active job data to the newer
+server than balancing out existing data since this can add a heavy overhead
+especially since the data is short lived. The container also keeps the meta data
+server resource usage under the target limit by precalculating the load a job
+would  put on the meta data server from its throughput and capacity allocation.
+Based on this estimate the controller select the meta data server.
+****** Meta data and Storage tier:
+These are implemented on top of Apache Crail distributed data store CITE{[[https://crail.apache.org/][CRAIL]]}.
+Crail is designed for low latency, high throughput storage of arbitrarily sized
+data with low durability requirements. Crail provides a unified namespace across
+a set of heterogeneous storage resources distributed in a cluster. Its modular
+architecture separates the data and meta data plane and supports pluggable
+storage tier and RPC library implementations. As of the storage tier, Pocket
+project implements it on DRAM, NVMe on top of ReFlex and then on generic block
+storage.
+****** Client library:
+The API is written in Python to provide better adaptability of the tool. The
+core library although is in C++
+
+***** Analysis
+\begin{figure}[!h]
+    \caption{Pocket Performance for get and put requests}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/pocket_perf.png}
+    \label{fig:pocket perf}
+\end{figure}
+
+Pocket is seen to have pretty good performance almost comparable to Redis but
+much better economically when set up on DRAM. It is seen to be almost 300%
+faster than S3 storage for the GET requests. It can be seen from Figure 12.
+So considering that DRAM will be used as the storage tier, it can be the
+right tool for the ephemeral storage in Serverless platforms. 
+
+*** Olric
+Olric CITE{[[https://github.com/buraksezer/olric][Olric]]} is a distributed in-memory key/value data store. The idea is
+that we can create a shared pool of RAM across a cluster of computers to store
+the data in, in a scalable manner.
 
 ** Multi-tenant security and isolation
+Namespacing in kubernetes
+
 ** Monitoring and tracing
+It is quite curious to note from the survey of 2018 done by serverless CITE{[[https://www.serverless.com/blog/2018-serverless-community-survey-huge-growth-usage][SURVEY]]} that the
+second most thing the devs are worried about the development process of a FaaS
+application is monitoring.
+
+*** Jaeguer for tracing
 
 * Implementation
 ** Tools
@@ -1132,7 +1300,6 @@ section 4.2.
 ***** Kubernetes
 *** OpenFaaS
 *** FaaS-flow
-*** Pocket
 *** Prometheus
 ** Architecture
 * Evaluation
