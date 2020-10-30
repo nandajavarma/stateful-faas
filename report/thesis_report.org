@@ -3,7 +3,7 @@
 #+LATEX_HEADER: \usepackage{parskip}
 #+LATEX_HEADER: \usepackage{listings} \usepackage{color} \definecolor{dkgreen}{rgb}{0,0.6,0} \definecolor{gray}{rgb}{0.5,0.5,0.5} \definecolor{mauve}{rgb}{0.58,0,0.82} \lstset{frame=tb, language=Java, aboveskip=3mm, belowskip=3mm, showstringspaces=false, columns=flexible, basicstyle={\small\ttfamily}, numbers=none, numberstyle=\tiny\color{gray}, keywordstyle=\color{blue}, commentstyle=\color{dkgreen}, stringstyle=\color{mauve}, breaklines=true, breakatwhitespace=true, tabsize=3}
 
-#+OPTIONS: <:nil c:nil todo:nil H:5 f:t toc:nil |:t
+#+OPTIONS: <:nil c:nil todo:nil H:5 f:t toc:nil |:t 't
 #+TITLE: Stateful FaaS
 #+AUTHOR: Nandaja Varma Nandakumar
 #+DATE: 
@@ -1285,22 +1285,397 @@ the data in, in a scalable manner.
 
 ** Multi-tenant security and isolation
 Namespacing in kubernetes
+[[https://www.researchgate.net/publication/321637564_Cloud_Multi-Tenancy_Issues_and_Developments][Cloud Multi-tenancy]]
 
 ** Monitoring and tracing
 It is quite curious to note from the survey of 2018 done by serverless CITE{[[https://www.serverless.com/blog/2018-serverless-community-survey-huge-growth-usage][SURVEY]]} that the
 second most thing the devs are worried about the development process of a FaaS
 application is monitoring.
 
-*** Jaeguer for tracing
+Tracing
+Logging
+Monitoring
 
 * Implementation
+For implementing the aforementioned strategies and verifying its effectiveness
+in making the Servereless workflows efficient, it is important to trial it on a
+platform that calls for innovation. Extending platforms like AWS Lambda, which
+are closed in its source and vendor locked is practically impossible and
+stalling the growth of Serverless as a paradigm. Instead several Open Source
+FaaS infrastructure were analyzed for this thesis for the implementation of our
+ideas. Along with the platform, choosing the right orchestration and clustering tools, the
+workflow implementation tool, the right monitoring tools, etc. are also vital in
+the implementation. So before going in detail about the architectural specifics
+of the implementation, let us analyze the tools used in the process and the
+reasoning behind their choosing.
+
 ** Tools
 *** Container Orchestration
-***** Docker
-***** Kubernetes
+We are going to work with a containerized setup like was hinted at the beginning
+of the thesis description. Each function that is being written will be
+containerized and brought up and down, scaled up and down based on the
+configurations and usage requirement. We have to go with the right
+containerization platform and an clustering tool that would take care of
+managing, scheduling, scaling up and down, etc. of these containers across a
+cluster of nodes agnostic of the application specifics or the underlying systems
+specifics. We of course go with the industry standard here which are Docker and
+Kubernetes especially because all of the leading FaaS solutions these days work
+on both of these technologies. A gentle introduction to both tools before
+proceeding to FaaS specific solutions.
+**** Docker
+Docker CITE{[[https://www.docker.com/][Docker]]} one of the leading Linux Containers solution that is being
+adopted very widely across all kinds of software infrastructure maintenance
+environments. According to the Docker Inc., over 3.5 million applications have
+been placed in containers using Docker technology and over 37 billion
+containerized apps have been downloads CITE{[[https://www.zdnet.com/article/what-is-docker-and-why-is-it-so-darn-popular/][BLOG]]}. Advantages of using
+containers for application shipping was already seen in Section 2.1.2. Docker
+made the whole Linux Containerization landscape a lot more approachable as a
+packaging technology by the introduction of namespaces.
+
+Without delving too much into the technicalities of containerization, we would
+like to quickly explain the life of a containerized application with Docker.
+Some terminologies that would help with understanding the concept:
+- *Docker image*: Like in any virtual machine environment, images can be thought of somewhat a
+  snapshot of the current state of an execution environment(which is basically a
+  stripped down operating system with applications installed on it, ready to run).
+  What makes Docker images unique is its immutability. You cannot modify a docker
+  container. You can create copies or delete and recreate but not change the
+  state. This helps in guaranteeing that once your Docker image has reached a
+  working stage, it will always continue working no matter what. You can try an
+  add changing to the running instance of this image, but none of these changes
+  are persistent from the point of view of the image. You can shut it down and
+  start from the same image state as was created.
+  
+  Sharing these images is an extremely easy process. There are container
+  registries which are hosting services for docker images like Github is for git
+  tracked code. Popular publicly available container registry is DockerHub
+  CITE{[[https://hub.docker.com/][DockerHub]]}. Developers can push their docker image to docker with a simple
+  `docker push` command from their command like and share or make it publicly
+  available for other developers or software tools.
+  
+  To create a docker image, the most straightforward way is via a configuration
+  file called Dockerfile. According to the reference from CITE{[[https://docs.docker.com/engine/reference/builder/][Docker ref]]},
+  
+  
+  #+BEGIN_quote
+  
+  "Docker can build images automatically by reading the instructions from a
+  Dockerfile. A Dockerfile is a text document that contains all the commands a
+  user could call on the command line to assemble an image. Using docker build
+  users can create an automated build that executes several command-line
+  instructions in succession."
+  
+  #+END_quote
+  
+  For example, the following code block shows a Dockerfile written to dockerize a
+  simple Python app, that runs a simple flask HTTP server.
+  
+  #+BEGIN_lstlisting
+  # Dockerfile
+  
+  FROM python:3.6.1-alpine
+  WORKDIR /project
+  ADD . /project
+  RUN pip install -r requirements.txt
+  CMD ["python","app.py"]
+  
+  #+END_lstlisting
+
+- *Docker Container*: If Docker image is a digital photograph, a docker container is like a printout
+  of the photograph CITE{[[https://stackify.com/docker-image-vs-container-everything-you-need-to-know/][BLOG]]}. Containers can be thought of as a running instance
+  of the image. Each container is run separately and unlike the images, you can
+  change the running container. If you want to persist these changes though, you
+  will have to commit the running container it its running state by committing it
+  as a new image. Your host operating system isolated the running container from
+  the others in the computer. Each container instance will have its process
+  namespace, limits on the resource usage, allowed system calls, etc.
+  Communication across containers can be setup explicitly. Most production
+  applications, usually have multiple containers running together with
+  communication internally so as to isolate each process environment, to avoid
+  cascaded application damage, etc. A container is inherently not addressable
+  directly from external network, although one can open it up by exposing
+  corresponding service port to that of the host system, provided necessary
+  security precautions are taken.
+
+- *Orchestration tools*: Docker by default ship a couple of orchestration tools that are specific to
+  Docker. An significant one among this is a docker-compose. Docker-compose lets
+  one tie up multiple docker containers, expose certain ports in each docker
+  containers, pass environment variables, define the communication and storage
+  usage rules, etc with the help of a configuration file by default to be name
+  docker-compose.yml. This is a very simple tool to use that helps in most basic
+  usages of the application deployment. One can connect multiple nodes together
+  and deploy the containers across these nodes via docker-compose using a library
+  called docker-swarm. Docker swarm takes care of very basic scaling up and down
+  of containers etc.
+
+**** Kubernetes
+Now that we have seen a popular containerization solution called Docker, it is
+time to see the most popular orchestration solution. Docker swarm was already
+mentioned but when it comes to modern applications, the requirement goes far
+beyond this. The application needs better scaling heuristics, version rollout
+policies, cluster management, better networking and application discoverability,
+better monitoring and alerting systems, etc. This takes up to a much more
+advanced container orchestration platform called Kubernetes. It is worth noting
+that Kubernetes is not just built for Docker but for multiple flavors of Linux
+Container technologies.
+
+Kubernetes is an Open Source platform for managing containerized workloads and
+services, that facilitates both declarative configuration and automation CITE{[[https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/][DOCS]]}.  
+Contrary to the traditional deployment setups where applications ran on physical
+servers, we have moved to an era where we deploy packaged applications and are
+deployed across clusters of virtual nodes provided by cloud providers. We
+require smarter tools for this to manage complexities in different levels
+starting from application packaging to cluster management. Kubernetes can be
+considered as the most popular solution that deals with these complexities.
+
+Kubernetes provides the framework to run these applications along with the tools
+for the following purposes CITE{[[https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/][DOCS]]:
+- Service discovery and load balancing
+- Storage orchestration
+- Automated rollouts and rollbacks
+- Automatic bin packing to make sure optimal resource usage
+- Secret and configuration management
+- Monitoring the usage and load to the cluster and applications
+
+A great thing about Kubernetes as project these days, is the community support.
+It has a very large and widely adopted community. Along with that most cloud
+providers now support out of the box kubernetes engines making the development
+of infrastructure agnostic applications very easy. This is the way to go to be
+away from a deployment cycle that is not completely vendor locked in.
+
+\begin{figure}[!h]
+    \caption{Kubernetes infrastructure}
+    \centering
+    \includegraphics[width=180mm]{./thesis_images/k8s.png}
+    \label{fig:k8s}
+\end{figure}
+
+Kubernetes is an immensely complex piece of software with numeral tools and
+add-ons. Figure 13 depicts the architecture of Kubernetes. The control plane is
+the core component of the setup. It consists of the API server to the platform,
+etcd to store the state of the cluster, scheduler to deploy the Pods(collections
+of containers that makes up an application) to the corresponding node in the
+cluster evaluating the usage requirements and availability, cloud controller
+manager that links the logic of the cluster to the API of the cloud provider,
+etc. At the risk of getting out of this scope of the thesis, we do not analyze
+more of the technicalities of kubernetes.
+
+In our implementation, we will use the heuristics of scaling provided by
+kubernetes in multiple cases. Alongside, the web UI kubernetes provides lets us
+visualize the resource usage by the platform and applications to a great
+extending helping with the monitoring of the setup.
+
+- *Namespaces*: It is very useful to understand the concept of Namespaces in Kubernetes though.
+  We can logically divide each cluster into multiple virtual clusters called
+  namespaces. It is a way to divide the existing cluster into separate logical
+  partitions. The implications of this provision is huge. We will be utilizing
+  this feature of kubernetes to logically partition the function executors to
+  support multi tenancy. 
+  
+  Namespaces provide a scope for names. Names of resources need to be unique
+  within a namespace, but not across namespaces. Namespaces cannot be nested
+  inside one another and each Kubernetes resource can only be in one namespace. CITE{[[https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/][DOC]]}
+
+
 *** OpenFaaS
+Now that we have seen an overview of the packaging and clustering management
+systems, it is time to look at the right platform to test out our state-ful FaaS
+idea on. Considering that one main aim of the thesis is to move away from vendor
+locked platforms, it all makes sense that we investigate the available open
+source FaaS solutions to extend on.
+
+A survey was done comparing multiple open source FaaS offerings as explained in
+the section 2.2.3. From CITE{[[https://arxiv.org/pdf/1911.07449.pdf][PAPER]]}, it is quite clear that one of the most
+simplistic approach to architecture and flexibility belongs to OpenFaaS. The
+ease of setup and the community support also is a huge add on for the OpenFaaS
+to be chosen as out tool of preference.
+
+OpenFaaS was a one person project that was initially developed just to test out
+the power of vanilla docker orchestration tools to deploy event driven functions
+on demand and scale. The clean and scalable architecture soon put the project in
+spotlight. The best thing about OpenFaaS is that, the core modules of OpenFaaS
+are very light weight and all the other units can be added on to this core as
+necessary. The tool soon got to using Kubernetes as the default deployment
+platform due to the increased popularity and to make the best of Kubernetes
+heuristics for scaling.
+
+\begin{figure}[!h]
+    \caption{OpenFaaS workflow}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/openfaas_workflow.png}
+    \label{fig:Openfaas workflow}
+\end{figure}
+
+The following are the main components on an OpenFaaS setup to give the user a
+bit more intuition on how functions are scheduled, executed and scaled in the
+platform. Figure 14 goes along with the following description.
+
+**** OpenFaaS Gateway
+The gateway is the entrypoint to the FaaS infrastructure. It provides an API
+which opens an external route into the functions. The gateway does a lot of the
+main functions in the infrastructure. The gateway is basically responsible for
+collecting the metric information and scaling the functions accordingly. It has
+a built in UI portal for ease of deployment and invocations of functions for the
+user. When kubernetes is used as the orchestration platform, the conceptual
+design of OpenFaaS can be visualized as Figure 15.
+
+\begin{figure}[!h]
+    \caption{OpenFaaS conceptual design with Kubernetes}
+    \centering
+    \includegraphics[width=180mm]{./thesis_images/openfaas_diag.png}
+    \label{fig:Openfaas with Kubernetes}
+\end{figure}
+
+As can be noted in the image, Prometheus and Alertmanager are connected to the
+OpenFaaS Gateway API.
+
+- Prometheus is a monitoring system and time series database. Prometheus is now
+  the de-facto monitoring solution for Cloud Native projects. It combines a
+  simple interface with a powerful query language to monitor and observe
+  microservices and functions, which are the two primitives of any FaaS.
+  Prometheus basically does two functions. It gets metrics from machines in your
+  cluster. These machines can be actual nodes or virtual machines or containers.
+  One can define custom rules to check on these metrics and if any of the rules
+  are triggered, Prometheus will fire off alerts via AlertManager. OpenFaaS
+  Gateway exposes a lot of these collected metrics via Prometheus for
+  visualization and monitoring. We will be using these metrics for our monitoring.
+
+**** faas-provider
+faas-provider is a very flexible interface that provides CRUD(create, read,
+update, delete) to functions and the invoke capability. The information about
+the function that need to be created/updated/invoked gets fed directly from the
+OpenFaaS gateway which is the endpoint to which external world communicates to.
+
+The design of faas-provider makes OpenFaaS a unique platform. One can their own
+faas-provider and hence change the backend of the OpenFaaS infrastructure very
+easily. There are design guidelines available to develop your own faas-provider
+backend CITE {[[https://github.com/openfaas/faas-provider/][DOC]]}, which basically is defining how CRUD and invoke operations
+are handled by the backend. The most stable and popularly used faas-provider
+that is maintained  by the community is faas-netes, which is the Kubernetes
+backend for OpenFaaS.
+
+faas-provider takes care of scheduling the functions in the right node based on
+the availability and requirement. It also does the scaling up and down
+of the function instances based on the information from the gateway that it
+gathered via Prometheus. Figure 16 shows the conceptual view of just
+faas-provider stripping away the rest of the complexities.
+
+\begin{figure}[!h]
+    \caption{faas-provider}
+    \centering
+    \includegraphics[width=180mm]{./thesis_images/faas-provider.png}
+    \label{fig:faas-provider}
+\end{figure}
+
+**** OpenFaaS watchdog
+
+The OpenFaaS watchdog CITE {[[https://docs.openfaas.com/architecture/watchdog/][DOC]]} is responsible for starting and monitoring functions in
+OpenFaaS. Any binary can become a function through the use of watchdog.
+
+The watchdog becomes an "init process" with an embedded HTTP server written in
+Golang, it can support concurrent requests, timeouts and healthchecks. The newer
+of-watchdog mentioned below is similar, but ideal for streaming use-cases or
+when an expensive resource needs to be maintained between requests such as a
+database connection, ML model or other data. 
+
+**** Auto-scaling
+
+OpenFaaS ships with a single auto-scaling rule defined in the mounted configuration file for AlertManager. AlertManager reads usage (requests per second) metrics from Prometheus in order to know when to fire an alert to the API Gateway.
+
+The API Gateway handles AlertManager alerts through its /system/alert route.
+
+The auto-scaling provided by this method can be disabled by either deleting the AlertManager deployment or by scaling the deployment to zero replicas.
+
+One can specify the minimum number of replicas and the maximum replicas to be
+available. If minimum replicas is defined to be >0 then a warm copy of the
+function will always be idle-ing there by avoiding the cold start issue.
+Although this comes with an added cost of a docket container always up in the
+memory although the resource usage during the idle time is super low. We can
+also fine tune several other parameters like the factor by which the function
+should be scaled up or down when there is a burst or decline of the traffic,
+etc. This makes OpenFaaS extremely powerful and yet in the most simplistic way
+possible.
+
+When Kubernetes is used as the backend, instead of AlertManager the built-in
+Horizontal Pod Autoscaler CITE{[[https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/][DOC]]}. This is a lot more matured as a scaler
+scheduler and we will be using that for the thesis implementation.
+
+**** NATS streaming
+
+A curiously lightweight application that has been adapted into OpenFaaS is NATS.
+NATS provides simple and secure messaging functionality to the setup. It does
+event and data streaming in the cluster. OpenFaaS uses NATS Streaming which
+builds on top of the base NATS protocol to offer data streaming or a queue CITE
+{[[https://www.openfaas.com/blog/plonk-stack/][doc]]}. NATS streaming provides Queue worker in which the function invocation
+requests can be queued up by the API Gateway, and processed in parallel when the
+capacity becomes available. Asyncronous invocations can be very easily done
+since it is built in without making any changes to the gateway. Each function
+will have a separate endpoint that can be used to invoke it asynchronously. 
+
+NATS streaming is a Pub Sub protocol implementation like Kafka but with very
+high throughput compared to the latter. Publish-subscribe  pattern  corresponds
+to a mechanism where in producers publish messages that are grouped into
+categories and consumers subscribe to categories which they are interested CITE {[[https://arxiv.org/pdf/1912.03715.pdf][PAPER]]}. NATS
+is extremely lightweight as a 
+technology making it the right candidate for an elastic Serverless
+infrastructure, compared to a full blown message broker
+system like Kafka. Along side, considering the ephemeral nature of state in FaaS
+setup, an in-memory message delivery protocol like NAT could be extremely
+useful.
+
+**** Triggers
+OpenFaaS functions can be triggered easily by any kind of event. A small piece
+of code will convert from the event-source and trigger the function using the
+OpenFaaS Gateway API. Some of the most used triggers are:
+- HTTP: One can send POST requests to the function endpoint which follows the
+  patter `https://<gateway URL>:<port>/function/<function name>`
+- Cron
+- NATS streaming/Async: You can execute a function or microservice
+  asynchronously by replacing/function/ with /async-function/ when accessing the
+  endpoint via the OpenFaaS gateway.
+- CLI: we can trigger user faas-cli which is a command line application to
+  communicate with faas gateway
+- Apache Kafka
+- AWS SQS
+- Redis
+- Minio/S3
+- RabbitMQ
+  
+**** Runtime supports and templates
+
+OpenFaaS is one of the unique engines that supports any and all programming
+languages to write functions in because of its architecture. The way OpenFaaS
+works, it dockerize the application by adding an of-watchdog to the application
+container and deploy it to the kubernetes cluster. To make the process easier,
+OpenFaaS doesn't expect you to write the Dockerfile. Instead, it provides
+already packaged versions of language bundles called templates. The developer
+can just pull the right template from the template store and just edit the
+entrypoint script to add their application logic.
+
+Like was briefly hinted earlier, OpenFaaS provides a command line tool called
+faas-cli. This tool can be used to build, push and deploy the docker images from
+the code. With build, it build an image into the local Docker library. With
+push, it pushes that image to a remote container registry. With deploy, it
+deploys your function into a cluster.
+
+As an example, to build a simple python function, the developer will follow the
+proceeding commands:
+
+#+BEGIN_lstlisting
+faas-cli template store pull python3
+faas-cli new funcname --lang python3
+# A new directory funcname will created. Edit the file funcname/handler.py and
+# add application logic
+faas-cli build -f funcname.yml
+faas-cli push funcname
+faas-cli deploy -f funcname.yml
+
+#+END_lstlisting
+
 *** FaaS-flow
 *** Prometheus
+*** Jauguer
+*** Minio
 ** Architecture
 * Evaluation
 * Future work

@@ -1,4 +1,4 @@
-% Created 2020-10-30 Fri 00:28
+% Created 2020-10-30 Fri 17:28
 % Intended LaTeX compiler: pdflatex
 \documentclass[12pt,titlepage]{article}
 \usepackage[utf8]{inputenc}
@@ -73,7 +73,7 @@ necessary in this field.
 
 
 \section{Introduction}
-\label{sec:org9f78dca}
+\label{sec:org5a4521e}
 
 Serverless can easily be considered as the new generation of platform as a
 service. It can be thought of as an infrastructure where the programmer send
@@ -158,7 +158,7 @@ In Section 7, the future work that can be done in this direction is laid out
 before the reader.
 
 \section{Background and Motivation}
-\label{sec:org1483e58}
+\label{sec:org495c2b5}
 The term serverless have been vaguely thrown around the domain of cloud
 infrastructure in the past decade as the breakthrough resource(and hence money)
 saving tool that lets the developers focus on application logic rather than the
@@ -180,7 +180,7 @@ We will also analyze the popular data processing and streaming pipelines in the
 industries these days and why serverless computing fall short in being the right
 tool of development and deployment here.
 \subsection{Evolution of cloud resource management}
-\label{sec:orga24f844}
+\label{sec:org9553c56}
 In the past 3 decades, software deployments and infrastructure management has
 seen a lot of innovation and evolution. Before diving into the current
 industrial standards, it is important to understand the evolutions in this field
@@ -188,7 +188,7 @@ to get a better grasp on the technological innovations that bought this about.
 
 
 \subsubsection{Dedicated servers}
-\label{sec:org83b5512}
+\label{sec:org31b99eb}
 Even as recent as 15 years ago this was the industry standard for deployments. Dedicated servers
 are physical machines. The general practice was to have server racks on the premise
 of the company which are maintained by system administrators and all your
@@ -201,7 +201,7 @@ footprint and e-wastes.
 
 
 \subsubsection{Dedicated virtual machines(BaaS)}
-\label{sec:orgfe63d76}
+\label{sec:org537a2f2}
 Virtualization technology changed the face of software infrastructure by decoupling
 applications from the underlying hardware. Virtualized servers are not physical
 machines, they are a software construct. Virtual servers run on dedicated
@@ -260,7 +260,7 @@ even if the load/traffic to and fro the application is not constant. This meant 
 lot of resources were still being wasted.
 
 \paragraph{Linux Containers}
-\label{sec:orgedc5aca}
+\label{sec:org731fa7f}
 A game changer in the world of virtualization was containerization. Containers
 are yet another packaged computing environment that combine various IT
 components and isolate them from the rest of the system just like a virtual
@@ -297,7 +297,7 @@ deployment. One could also limit and fine tune the resources used by a running
 containers giving a lot more control over the application.
 
 \paragraph{Autoscaling}
-\label{sec:orgc5a4455}
+\label{sec:orgee57963}
 The ease in which one can limit the resources and tweak the runtime parameters externally contributed heavily
 to the service offering called autoscaling which basically meant resources for an
 application runtime were added or removed as per the usage. All the commercial
@@ -310,7 +310,7 @@ etc. to the community. These solutions aim at mitigating the shortcomings of
 Containers which we will discuss in Section 2.2.4
 
 \subsubsection{Serverless}
-\label{sec:org53457d1}
+\label{sec:org24add54}
 Like mentioned earlier, in the past two years the terms Serverless and Function-as-a-Service are quite
 often used interchangeably. In terms of the resource reservation, Serverless can
 be considered as a platform as a service solution that scales. Your application
@@ -332,7 +332,7 @@ We will dive more into the properties and nature of the solution
 Function-as-a-Service(FaaS) in the following session. 
 
 \subsection{FaaS}
-\label{sec:orgbd0b155}
+\label{sec:orgdac1dd7}
 So far, we have covered the infrastructure management style of FaaS or
 Serverless in general. Let us get a bit in detail into the specifics of the
 hosting platform that provides the FaaS functionality.
@@ -350,9 +350,9 @@ understand the flow of FaaS workloads, it is important to be aware of the
 following properties of the platform.
 
 \subsubsection{Properties of FaaS}
-\label{sec:org53b72e1}
+\label{sec:org28e20d2}
 \paragraph{Statelessness}
-\label{sec:org38236d4}
+\label{sec:orgd776635}
 Statelessness in deployments is a conscious decision that was taken during the
 conception of the Serverless infrastructure model to make the management of the
 platform straight forward and less cumbersome. Statelessness simply means that
@@ -378,7 +378,7 @@ In short, the notion of function is of prime importance in a
 Function-as-a-Service workload like the name suggests.
 
 \paragraph{Triggers}
-\label{sec:org98cdb73}
+\label{sec:orge500f50}
 The functions that are hosted on a FaaS solution need to get triggered on a timely
 basis or based on an event. Usually most cloud providers provide more than a few
 ways to trigger the functions which the developer can choose from. Some of the
@@ -404,13 +404,13 @@ source storage to be used as the sources for the trigger.
 programmer can choose how often the function should be triggered on what days of
 the week, month, year, etc. 
 \paragraph{Parallelism}
-\label{sec:orgb9cc0c3}
+\label{sec:org9b0b0df}
 \paragraph{Billing}
-\label{sec:org75a71ef}
+\label{sec:org5e32102}
 \subsubsection{How programming models are getting affected by this}
-\label{sec:org3672516}
+\label{sec:org6310918}
 \paragraph{Faas + Microservices}
-\label{sec:orgeb19c3d}
+\label{sec:org3d0c093}
 In Software Systems Design, a very heavily discussed topic is if to design the
 application in a monolithic fashion or a micro-services fashion. Monolith is the
 kind of design pattern where you have one big application doing multiple
@@ -435,7 +435,7 @@ web application setup. This method is very effective resource usage wise and
 much easier to deploy and manage compared to vanilla microservices which has to
 be built and deployed independently.
 \paragraph{Statelessness a.k.a Functional programming model}
-\label{sec:org7a81461}
+\label{sec:org821b9e1}
 Like mentioned earlier, the notion of function is very important for the
 serverless platforms. It is intrinsically linked with functional programming. It
 is very interesting to note that Amazon named their FaaS solution Lambda which
@@ -450,22 +450,22 @@ the past few years in Serverless platforms. Since these languages are perfectly
 suited for stateless program it is only natural that they can be efficiently
 used to code for this environment.
 \subsubsection{Popular commercial offerings}
-\label{sec:org45ab397}
+\label{sec:orgb48f153}
 \paragraph{AWS Lambda}
-\label{sec:org0d69539}
+\label{sec:orge06f937}
 \paragraph{Google cloud functions}
-\label{sec:orgb754ff3}
+\label{sec:org3d31240}
 \paragraph{Azure functions}
-\label{sec:org79323a2}
+\label{sec:org9dfdc93}
 \subsubsection{Where Serverless computing fall short}
-\label{sec:org6a1afd6}
+\label{sec:orgd2842da}
 Although serverless computing might sound like the silver bullet of the
 deployment solutions, it is a field that is still being rapidly grown and
 researched on. There are several staggering shortcomings for this technology
 that makes it unsuitable for certain applications. The current offering have the
 following noticeable limitations.
 \paragraph{Lack of state}
-\label{sec:org45cd2b4}
+\label{sec:orge6a06e2}
 As mentioned earlier, statelessness is a primary nature for serverless workloads
 making it easy to deploy and port agnostic of the environment and server.
 Hence serverless/auto-scaling paradigm generally push for a development style
@@ -490,7 +490,7 @@ this adds, it is a violation of the elastic nature of the Serverless
 paradigm.
 
 \subparagraph{I/O Latency}
-\label{sec:org7125f58}
+\label{sec:org04b03eb}
 Like was mentioned earlier, FaaS have had a lot of influences in the system
 architecture and programming paradigms like would with any new infrastructure
 management system. It is quite unfortunate though that, even with a paradigm
@@ -505,7 +505,7 @@ architecture is procedures that you run in databases. The code is moved to the
 data than the other way around in this.
 
 \paragraph{Coordination issues among functions}
-\label{sec:org31e3177}
+\label{sec:orgd8ce7e4}
 As we saw in the previous sections, FaaS workloads are usually containerized by
 the cloud provider to deploy it easily in their node pool or cluster. By nature,
 docker containers are indiscoverable units that need to be opened up explicitly
@@ -540,7 +540,7 @@ batch data alike.
 CITE[onestepforward]
 
 \paragraph{Vendor lock-in}
-\label{sec:org960e7c3}
+\label{sec:org13f0ee6}
 It is no secret that the most widely used FaaS/serverless offerings are the ones by
 proprietary cloud providers where they hand twist the developers into complying
 to their programming environment and runtime thereby forcing devs to use their
@@ -556,7 +556,7 @@ zero control over the infrastructure and the pipeline is not transparent at all
 for any kind of performance optimization or fine tuning.
 
 \paragraph{Fixed timeouts}
-\label{sec:orgb701ae4}
+\label{sec:orgdd12d0e}
 This is the one of the other bigger reasons that hinder the usage of FaaS in big
 data applications. In applications that involve heavy number crunching
 algorithms, there are chances that often the function needs to run for a longer
@@ -571,7 +571,7 @@ These are all extremely bounding as conditions especially for functions that are
 composed and a function should wait for the other functions to finish executing. 
 
 \paragraph{Cold Start}
-\label{sec:org6ab2fb5}
+\label{sec:org27e4afa}
 Cold start it the delay that the function incurs after the invocation or
 triggering of the function till the execution of the function. In the
 background, FaaS uses containers to encapsulate and execute the functions. When
@@ -611,7 +611,7 @@ innovative and introduce lighter alternatives to Linux containers in the FaaS
 platform these days.
 
 \paragraph{Security issues in a multi-tenant environment}
-\label{sec:org54aacba}
+\label{sec:org841aae8}
 Like was previously mentioned, the whole FaaS infrastructure offering is
 economical for the cloud provider because they get to share their node pool
 among all their standard customers making the resource cost for them very low.
@@ -627,7 +627,7 @@ cold start time. But recently the innovative new alternatives for Linux
 containers are also aimed at to fix these issues.
 
 \subparagraph{Function caches}
-\label{sec:org0489a3d}
+\label{sec:orgeb8e98e}
 Along with the above mentioned issue with multi-tenancy across customers, a
 similar issue can occur under the same customer who runs an application across
 multiple of their client. The problem is that each function has an inaccessible
@@ -638,7 +638,7 @@ by the other. If the developers are not cautious enough while coding and usage
 of variables, there is a high chance for data corruption and leakage on the platform.
 
 \paragraph{Developer friendliness}
-\label{sec:orgb9227af}
+\label{sec:orgb5bb9a2}
 \begin{itemize}
 \item Dependency management
 \item Debugging and testing
@@ -646,9 +646,9 @@ of variables, there is a high chance for data corruption and leakage on the plat
 \item Logging and monitoring
 \end{itemize}
 \subsection{Stream Processing/ETLs}
-\label{sec:orgbf9c70d}
+\label{sec:orgd11c05b}
 \subsection{Problem statement}
-\label{sec:orgf42a0ec}
+\label{sec:org423e27f}
 From the above set of evaluations, there is no doubt that Serverless is the way
 of the future infrastructure maintenance and deployment. Even with the current
 state of art FaaS offerings, 21\% of the entire workload is Data processing
@@ -690,7 +690,7 @@ stable enough for production workloads, and easily integratable with the common
 development tools like Github, CI/CD pipelines etc.
 
 \section{Related work}
-\label{sec:org6f352e2}
+\label{sec:orge8b42d5}
 Serverless has gained a lot of attention and traction from the scientific
 community in the past few years because of its massive implications in resource
 conservation and innovative programming when one doesn't have to worry about
@@ -723,7 +723,7 @@ potential as an idea, although currently the usability of the platform is
 terrible and it can be quite bloated as a entry point to a FaaS system
 especially since it is not a very elastic platform.
 \subparagraph{Serverless in the wild: characterizing and optimising the serverless workload at a large cloud provider}
-\label{sec:orgb342f36}
+\label{sec:org99d0a38}
 
 Published date: 6 Jun 2020
 
@@ -733,7 +733,7 @@ For better results we can switch to ARIMA model.
 Use cases on both azure \& openwhisk
 
 \subparagraph{FaaSdom: A Benchmark Suite For Serverless Computing}
-\label{sec:org3b2239f}
+\label{sec:orgc5e2213}
 
 Published date: 5 Jun 2020
 
@@ -741,7 +741,7 @@ It is a docker based platform that implements wrk2
 This would be a really great tool to benchmark cross platform. Code
 
 \subparagraph{Towards Fine-Grained Billing For Cloud Networking}
-\label{sec:org6e64b44}
+\label{sec:org2580180}
 
 Published: 24 Mar 2020
 
@@ -749,7 +749,7 @@ This is suggesting methods for the cloud provider to offer a fine grained billin
 This is an interesting read but beyond the scope of my research.
 
 \subparagraph{Firecracker: lightweight virtualization for serverless applications}
-\label{sec:org7d61581}
+\label{sec:orgd3fd535}
 
 Published date: 25 Feb 2020
 
@@ -757,7 +757,7 @@ This is the isolation solution used by AWS based on KVM
 Although from the security pov firecracker is great, from the performance pov it is comparable to containers.
 
 \subparagraph{INFINICACHE: Exploiting Ephemeral Serverless Functionsto Build a Cost-Effective Memory Cache}
-\label{sec:orgb3f37c9}
+\label{sec:org9cb199f}
 
 Published date: 20 Feb 2020
 
@@ -765,7 +765,7 @@ This is an in memory object cache. Super interesting. It uses erasure coding and
 They implement it with AWS lambda. Lambda runtime is connected to a priority based queue. Could be useful to think of something like this for streaming data.
 
 \subparagraph{Cloudburst: stateful functions-as-a-service}
-\label{sec:orgb967e4e}
+\label{sec:org06263fe}
 
 Published date: 14 Jan 2020
 
@@ -775,7 +775,7 @@ It uses a DAGs for chaining functions. This is not yet wire speed though.
 The isolation is very weak, and it has a long way to come to be applied in production. 
 
 \subparagraph{Serverless Computing: A Survey Of Opportunities, Challenges and Applications}
-\label{sec:orgd3f4015}
+\label{sec:org109f691}
 
 Published date: 23 Dec 2019
 
@@ -783,7 +783,7 @@ Doesn’t introduce anything new. Issues like, function invocation latency, stor
 They suggest the use of a distributed queue for function composition. I could use inifinicache this way.
 
 \subparagraph{Understanding Open Source Serverless Platforms:Design Considerations and Performance}
-\label{sec:org69732fe}
+\label{sec:orgbdb23e1}
 
 Published Date: 13 Dec 2019
 
@@ -792,14 +792,14 @@ The CPU usage is almost comparable in all the platform
 OpenFaas is said to have the most flexible architecture
 
 \subparagraph{Formalizing Event-Driven Behavior of ServerlessApplications}
-\label{sec:orgff1b8b9}
+\label{sec:orgb645709}
 
 Published on: 8 Dec 2019
 
 Provides a detailed operational semantics for FaaS. It includes, object stores, key values etc. Could be useful to conceptualize control flows.
 
 \subparagraph{Narrowing the Gap Between Serverless and its State withStorage Functions}
-\label{sec:orgef19859}
+\label{sec:orgdc6c96d}
 
 Published date: 20 Nov 2019
 
@@ -807,7 +807,7 @@ Shredder is super interesting because it implements the function shipping approa
 It uses v8 isolates to implement the sandboxes
 
 \subparagraph{Formal foundations of serverless computing}
-\label{sec:orga41bc72}
+\label{sec:orgc8f36c4}
 
 Published date: 20 Nov 2019
 
@@ -818,49 +818,49 @@ SPL, a serverless composition language
 Function composition is being well done by this. 
 
 \subparagraph{Caching Techniques to Improve Latency inServerless Architectures (}
-\label{sec:orgbd868df}
+\label{sec:org79cc2f6}
 
 Published date: 17-Nov-2019
 
 Vaguely mentions an in memory cache for aws lambda
 
 \subparagraph{In Search of a Fast and Efficient Serverless DAG Engine}
-\label{sec:org4c7f2bb}
+\label{sec:org6c2b2a8}
 
 Published date: 14 Oct 2019
 
 They introduce a system to do scheduling of jobs specified as DAGs. I think the memory footprint of this implementation is quite heavy. Trigger flow is an improvement.
 
 \subparagraph{SERVERMIX: TRADEOFFS AND CHALLENGES OF SERVERLESS DATA ANALYTICS}
-\label{sec:org1b3087b}
+\label{sec:orgca07131}
 
 Published date: 26 Jul 2019
 
 A big date serverless piece. A lot of it sounded like mission statements. 
 
 \subparagraph{Fog Function: Serverless Fog Computing for DataIntensive IoT Services}
-\label{sec:org7714cd0}
+\label{sec:org7ac53b7}
 
 Date: 18 Jul 2019
 
 Out of scope. For edge devices.
 
 \subparagraph{Cloud Programming Simplified: A Berkeley View onServerless Computing}
-\label{sec:org97f3bb9}
+\label{sec:orgad542f3}
 
 Date: 10 Feb 2019
 
 Mentions a lot of issues like need for ephemeral storage, coordination, security, hardware heterogeneity, etc. 
 
 \subparagraph{A framework and a performance assessment for serverless MapReduce on AWS Lambda}
-\label{sec:orgecc0696}
+\label{sec:orgad70565}
 
 Date: 02 Feb 2019
 
 This is a very practical paper. I used this to implement my first version of mapreduce on OpenFaaS. Code is on my github
 
 \subparagraph{Serverless Computing: One Step Forward, Two Steps Back}
-\label{sec:orga7f3aba}
+\label{sec:org6574443}
 
 Date: Jan 2019
 
@@ -869,7 +869,7 @@ Shows weak parallelism and hence distributed computing is terrible.
 Recommends a function shipping architecture.
 
 \subparagraph{Serverless architecture efficiency: an exploratory study}
-\label{sec:orgb793097}
+\label{sec:org07b0dba}
 
 Published date: 13 Jan 2019
 
@@ -878,7 +878,7 @@ Concludes that the lambda implementation is suboptimal after benchmarking.
 Costless: Optimizing Cost of Serverless Computing through Function Fusion and Placement (23 Nov 2018)
 
 \subparagraph{Pocket: Elastic Ephemeral Storage for Serverless Analytics}
-\label{sec:org303a236}
+\label{sec:org0872181}
 
 Date: Oct 2018
 
@@ -887,21 +887,21 @@ Implements dynamic block allocation based on kubernetes hueritics
 Project is not super active but I could deploy it and try it out
 
 \subparagraph{Anna: A KVS For Any Scale}
-\label{sec:org494aed5}
+\label{sec:org511f832}
 
 Published date: 8 Sep 2018
 
 Another brilliant key value store that scales as well. It is distributed in nature and has local caches for better data locality. It is the basis for cloudburst
 
 \subparagraph{SAND: Towards High-Performance Serverless Computing}
-\label{sec:orga774246}
+\label{sec:org6b67fab}
 
 Published Date: 11 July 2018
 
 This is a similar idea to cloudburst and Faasm. A different sandboxing, function composition internally using a hierarchical message bus
 
 \subparagraph{Serverless Computing: Current Trends and Open Problems}
-\label{sec:orgab120ec}
+\label{sec:org1142f78}
 
 Published Date: 10 Jun 2017
 
@@ -910,14 +910,14 @@ Talks about problems with deployment and the devops tools.
 It is yet again a bit outdated. 
 
 \subparagraph{Consistency analysis in Bloom: a CALM and collected approach}
-\label{sec:org636b4bd}
+\label{sec:orgdbf1d6f}
 
 Published Date: 9 Jan 2011
 
 This is a distributed programming model with interesting state sharing ideas. This was mentioned in a paper as a potential alternative to the programming model for serverless since the traditional methods or way of thinking might not work for FaaS.
 
 \section{Proposed Solution}
-\label{sec:orgc7cdcf1}
+\label{sec:org2a72280}
 
 In this section we dig in deeper into the specifications of our proposal to
 build a production ready FaaS infrastructure stack that is completely elastic
@@ -945,7 +945,7 @@ get into platform specific study by implementing these suggestions on a flexible
 open source FaaS solution for our proof of concept.
 
 \subsection{Function composition}
-\label{sec:org5cd39bc}
+\label{sec:orgecad24a}
 
 As we have already seen, in the current industrial requirements, big data
 processing is pretty inevitable as an application scenario. The nature of these
@@ -1008,7 +1008,7 @@ different approaches in which functions can be composed in a serverless
 workload.
 
 \subsubsection{Manual Compilation}
-\label{sec:org95a5601}
+\label{sec:orga84e068}
 
 This the most basic and inefficient way of compiling the functions. This
 basically involves merging all the functions together to form a huge function.
@@ -1043,7 +1043,7 @@ compute is complex, function might not even completely run because of the
 hardbound limit to the running time set on most FaaS platforms. 
 
 \subsubsection{Direct function chaining}
-\label{sec:org23fa331}
+\label{sec:orgb5ecd6d}
 
 \begin{figure}
 \caption{Direct function chaining}
@@ -1076,7 +1076,7 @@ def funcB():
 \end{lstlisting}
 
 \subsubsection{Composition via coordinator functions}
-\label{sec:org36301f2}
+\label{sec:orgd1ff377}
 
 In this method, a coordinator function will be used which manage the execution
 of all the functions by calling them directly. The individual functions will be
@@ -1099,7 +1099,7 @@ FaaS paradigm a bit. An example of this kind of coordination can be found here
 CITE \{\href{https://www.researchgate.net/publication/331572138\_A\_framework\_and\_a\_performance\_assessment\_for\_serverless\_MapReduce\_on\_AWS\_Lambda}{PAPER}\}
 
 \subsubsection{Event driven composition}
-\label{sec:org0185ed2}
+\label{sec:org3c6a501}
 
 \begin{figure}
 \caption{Event driven function composition}
@@ -1134,7 +1134,7 @@ iterations, etc. Along with this, since functions are so tightly dependent on
 the message queues, it will be slightly challenging to upgrade or version them. 
 
 \subsubsection{Workflows}
-\label{sec:org73e22a0}
+\label{sec:org7378058}
 
 Workflows are a very interesting architectures pattern where the system supports
 the creation of a sort of flowchart of the functional interaction. Workflows are
@@ -1200,7 +1200,7 @@ section 4.2.
 
 
 \subsection{Ephemeral Storage}
-\label{sec:org9d995f8}
+\label{sec:org4b7dac2}
 
 In the previous section, we saw that flexible function composition can be
 achieved via workflow pattern. Although to make this efficient state storage is
@@ -1250,7 +1250,7 @@ manage their own storage instances and manually scale resources CITE\{\href{http
 two different storage solutions for the adaption to our FaaS extension: Pocket \& Orlic
 
 \subsubsection{Pocket}
-\label{sec:orgf51a681}
+\label{sec:org4b5e160}
 Pocket CITE\{\href{https://www.usenix.org/system/files/osdi18-klimovic.pdf}{POCKET}\} is an ephemeral storage build for the Serverless workflows.
 It is a key value store suited for storing and exchanging data between hundreds
 of fine-grained, short-lived tasks. Pocket is an elastic distributed storage
@@ -1278,7 +1278,7 @@ operations.
 \end{figure}
 
 \subparagraph{Architecture}
-\label{sec:org1618950}
+\label{sec:orgc0859d6}
 Like Figure 10 represents, Pocket system has one centralized controller server,
 one or more meta data servers, and multiple data plane storage servers. The
 meta data plane according to us is the most interesting in the architecture,
@@ -1296,7 +1296,7 @@ access data blocks directly from storage servers.
 \end{figure}
 
 \subparagraph{Client API}
-\label{sec:org340348e}
+\label{sec:orgffb2707}
 Pocket provides an API to communicate with the system. There are system calls to
 each of the three planes. First of all it lets the client register and un-register of the
 jobs(control plane). The client gets to communicate with the meta data server
@@ -1317,10 +1317,10 @@ object. The nature of the ephemeral storage in discussion is assumed to be write
 and read once only. Figure 11, describes the system calls in detail.
 
 \subparagraph{Implementation}
-\label{sec:org05a6c5d}
+\label{sec:org96c3d1a}
 \begin{enumerate}
 \item Controller:
-\label{sec:orge58bc51}
+\label{sec:orgaccde96}
 Pocket is run on Kubernetes with each layer as separate docker containers. A
 resource monitoring daemon is run on each node in the cluster sending resource
 utilization info to the controller. The controller right sizes the cluster by
@@ -1332,7 +1332,7 @@ server resource usage under the target limit by precalculating the load a job
 would  put on the meta data server from its throughput and capacity allocation.
 Based on this estimate the controller select the meta data server.
 \item Meta data and Storage tier:
-\label{sec:org839fb2c}
+\label{sec:orgdd43f2a}
 These are implemented on top of Apache Crail distributed data store CITE\{\href{https://crail.apache.org/}{CRAIL}\}.
 Crail is designed for low latency, high throughput storage of arbitrarily sized
 data with low durability requirements. Crail provides a unified namespace across
@@ -1342,13 +1342,13 @@ storage tier and RPC library implementations. As of the storage tier, Pocket
 project implements it on DRAM, NVMe on top of ReFlex and then on generic block
 storage.
 \item Client library:
-\label{sec:org5663632}
+\label{sec:org22a15ff}
 The API is written in Python to provide better adaptability of the tool. The
 core library although is in C++
 \end{enumerate}
 
 \subparagraph{Analysis}
-\label{sec:org2c163cb}
+\label{sec:orgcaec89e}
 \begin{figure}[!h]
     \caption{Pocket Performance for get and put requests}
     \centering
@@ -1363,48 +1363,440 @@ So considering that DRAM will be used as the storage tier, it can be the
 right tool for the ephemeral storage in Serverless platforms. 
 
 \subsubsection{Olric}
-\label{sec:org6e6d966}
+\label{sec:org7b8f421}
 Olric CITE\{\href{https://github.com/buraksezer/olric}{Olric}\} is a distributed in-memory key/value data store. The idea is
 that we can create a shared pool of RAM across a cluster of computers to store
 the data in, in a scalable manner.
 
 \subsection{Multi-tenant security and isolation}
-\label{sec:org5035a52}
+\label{sec:orgc0cf1f9}
 Namespacing in kubernetes
+\href{https://www.researchgate.net/publication/321637564\_Cloud\_Multi-Tenancy\_Issues\_and\_Developments}{Cloud Multi-tenancy}
 
 \subsection{Monitoring and tracing}
-\label{sec:org31d2de3}
+\label{sec:orgb75b60b}
 It is quite curious to note from the survey of 2018 done by serverless CITE\{\href{https://www.serverless.com/blog/2018-serverless-community-survey-huge-growth-usage}{SURVEY}\} that the
 second most thing the devs are worried about the development process of a FaaS
 application is monitoring.
 
-\subsubsection{Jaeguer for tracing}
-\label{sec:orgee8956f}
+Tracing
+Logging
+Monitoring
 
 \section{Implementation}
-\label{sec:orgf1c7cd1}
+\label{sec:orgd67fb01}
+For implementing the aforementioned strategies and verifying its effectiveness
+in making the Servereless workflows efficient, it is important to trial it on a
+platform that calls for innovation. Extending platforms like AWS Lambda, which
+are closed in its source and vendor locked is practically impossible and
+stalling the growth of Serverless as a paradigm. Instead several Open Source
+FaaS infrastructure were analyzed for this thesis for the implementation of our
+ideas. Along with the platform, choosing the right orchestration and clustering tools, the
+workflow implementation tool, the right monitoring tools, etc. are also vital in
+the implementation. So before going in detail about the architectural specifics
+of the implementation, let us analyze the tools used in the process and the
+reasoning behind their choosing.
+
 \subsection{Tools}
-\label{sec:org7e53042}
+\label{sec:orgc3a6c14}
 \subsubsection{Container Orchestration}
-\label{sec:org5813281}
-\subparagraph{Docker}
-\label{sec:org7f1e93c}
-\subparagraph{Kubernetes}
-\label{sec:org83fb81e}
+\label{sec:org19a2dee}
+We are going to work with a containerized setup like was hinted at the beginning
+of the thesis description. Each function that is being written will be
+containerized and brought up and down, scaled up and down based on the
+configurations and usage requirement. We have to go with the right
+containerization platform and an clustering tool that would take care of
+managing, scheduling, scaling up and down, etc. of these containers across a
+cluster of nodes agnostic of the application specifics or the underlying systems
+specifics. We of course go with the industry standard here which are Docker and
+Kubernetes especially because all of the leading FaaS solutions these days work
+on both of these technologies. A gentle introduction to both tools before
+proceeding to FaaS specific solutions.
+\paragraph{Docker}
+\label{sec:org3ae4740}
+Docker CITE\{\href{https://www.docker.com/}{Docker}\} one of the leading Linux Containers solution that is being
+adopted very widely across all kinds of software infrastructure maintenance
+environments. According to the Docker Inc., over 3.5 million applications have
+been placed in containers using Docker technology and over 37 billion
+containerized apps have been downloads CITE\{\href{https://www.zdnet.com/article/what-is-docker-and-why-is-it-so-darn-popular/}{BLOG}\}. Advantages of using
+containers for application shipping was already seen in Section 2.1.2. Docker
+made the whole Linux Containerization landscape a lot more approachable as a
+packaging technology by the introduction of namespaces.
+
+Without delving too much into the technicalities of containerization, we would
+like to quickly explain the life of a containerized application with Docker.
+Some terminologies that would help with understanding the concept:
+\subparagraph{Docker image:}
+\label{sec:orge4b63b1}
+Like in any virtual machine environment, images can be thought of somewhat a
+snapshot of the current state of an execution environment(which is basically a
+stripped down operating system with applications installed on it, ready to run).
+What makes Docker images unique is its immutability. You cannot modify a docker
+container. You can create copies or delete and recreate but not change the
+state. This helps in guaranteeing that once your Docker image has reached a
+working stage, it will always continue working no matter what. You can try an
+add changing to the running instance of this image, but none of these changes
+are persistent from the point of view of the image. You can shut it down and
+start from the same image state as was created.
+
+Sharing these images is an extremely easy process. There are container
+registries which are hosting services for docker images like Github is for git
+tracked code. Popular publicly available container registry is DockerHub
+CITE\{\href{https://hub.docker.com/}{DockerHub}\}. Developers can push their docker image to docker with a simple
+`docker push` command from their command like and share or make it publicly
+available for other developers or software tools.
+
+To create a docker image, the most straightforward way is via a configuration
+file called Dockerfile. According to the reference from CITE\{\href{https://docs.docker.com/engine/reference/builder/}{Docker ref}\},
+
+
+\begin{quote}
+
+
+"Docker can build images automatically by reading the instructions from a
+Dockerfile. A Dockerfile is a text document that contains all the commands a
+user could call on the command line to assemble an image. Using docker build
+users can create an automated build that executes several command-line
+instructions in succession."
+\end{quote}
+
+For example, the following code block shows a Dockerfile written to dockerize a
+simple Python app, that runs a simple flask HTTP server.
+
+\begin{lstlisting}
+FROM python:3.6.1-alpine
+WORKDIR /project
+ADD . /project
+RUN pip install -r requirements.txt
+CMD ["python","app.py"]
+\end{lstlisting}
+
+\subparagraph{Docker Container:}
+\label{sec:org034a577}
+If Docker image is a digital photograph, a docker container is like a printout
+of the photograph CITE\{\href{https://stackify.com/docker-image-vs-container-everything-you-need-to-know/}{BLOG}\}. Containers can be thought of as a running instance
+of the image. Each container is run separately and unlike the images, you can
+change the running container. If you want to persist these changes though, you
+will have to commit the running container it its running state by committing it
+as a new image. Your host operating system isolated the running container from
+the others in the computer. Each container instance will have its process
+namespace, limits on the resource usage, allowed system calls, etc.
+Communication across containers can be setup explicitly. Most production
+applications, usually have multiple containers running together with
+communication internally so as to isolate each process environment, to avoid
+cascaded application damage, etc. A container is inherently not addressable
+directly from external network, although one can open it up by exposing
+corresponding service port to that of the host system, provided necessary
+security precautions are taken.
+
+\subparagraph{Orchestration tools:}
+\label{sec:org903a063}
+Docker by default ship a couple of orchestration tools that are specific to
+Docker. An significant one among this is a docker-compose. Docker-compose lets
+one tie up multiple docker containers, expose certain ports in each docker
+containers, pass environment variables, define the communication and storage
+usage rules, etc with the help of a configuration file by default to be name
+docker-compose.yml. This is a very simple tool to use that helps in most basic
+usages of the application deployment. One can connect multiple nodes together
+and deploy the containers across these nodes via docker-compose using a library
+called docker-swarm. Docker swarm takes care of very basic scaling up and down
+of containers etc.
+
+\paragraph{Kubernetes}
+\label{sec:orge84fb0f}
+Now that we have seen a popular containerization solution called Docker, it is
+time to see the most popular orchestration solution. Docker swarm was already
+mentioned but when it comes to modern applications, the requirement goes far
+beyond this. The application needs better scaling heuristics, version rollout
+policies, cluster management, better networking and application discoverability,
+better monitoring and alerting systems, etc. This takes up to a much more
+advanced container orchestration platform called Kubernetes. It is worth noting
+that Kubernetes is not just built for Docker but for multiple flavors of Linux
+Container technologies.
+
+Kubernetes is an Open Source platform for managing containerized workloads and
+services, that facilitates both declarative configuration and automation CITE\{\href{https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/}{DOCS}\}.  
+Contrary to the traditional deployment setups where applications ran on physical
+servers, we have moved to an era where we deploy packaged applications and are
+deployed across clusters of virtual nodes provided by cloud providers. We
+require smarter tools for this to manage complexities in different levels
+starting from application packaging to cluster management. Kubernetes can be
+considered as the most popular solution that deals with these complexities.
+
+Kubernetes provides the framework to run these applications along with the tools
+for the following purposes CITE\{\href{https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/}{DOCS}:
+\begin{itemize}
+\item Service discovery and load balancing
+\item Storage orchestration
+\item Automated rollouts and rollbacks
+\item Automatic bin packing to make sure optimal resource usage
+\item Secret and configuration management
+\item Monitoring the usage and load to the cluster and applications
+\end{itemize}
+
+A great thing about Kubernetes as project these days, is the community support.
+It has a very large and widely adopted community. Along with that most cloud
+providers now support out of the box kubernetes engines making the development
+of infrastructure agnostic applications very easy. This is the way to go to be
+away from a deployment cycle that is not completely vendor locked in.
+
+\begin{figure}[!h]
+    \caption{Kubernetes infrastructure}
+    \centering
+    \includegraphics[width=180mm]{./thesis_images/k8s.png}
+    \label{fig:k8s}
+\end{figure}
+
+Kubernetes is an immensely complex piece of software with numeral tools and
+add-ons. Figure 13 depicts the architecture of Kubernetes. The control plane is
+the core component of the setup. It consists of the API server to the platform,
+etcd to store the state of the cluster, scheduler to deploy the Pods(collections
+of containers that makes up an application) to the corresponding node in the
+cluster evaluating the usage requirements and availability, cloud controller
+manager that links the logic of the cluster to the API of the cloud provider,
+etc. At the risk of getting out of this scope of the thesis, we do not analyze
+more of the technicalities of kubernetes.
+
+In our implementation, we will use the heuristics of scaling provided by
+kubernetes in multiple cases. Alongside, the web UI kubernetes provides lets us
+visualize the resource usage by the platform and applications to a great
+extending helping with the monitoring of the setup.
+
+\subparagraph{Namespaces:}
+\label{sec:org6f35313}
+It is very useful to understand the concept of Namespaces in Kubernetes though.
+We can logically divide each cluster into multiple virtual clusters called
+namespaces. It is a way to divide the existing cluster into separate logical
+partitions. The implications of this provision is huge. We will be utilizing
+this feature of kubernetes to logically partition the function executors to
+support multi tenancy. 
+
+Namespaces provide a scope for names. Names of resources need to be unique
+within a namespace, but not across namespaces. Namespaces cannot be nested
+inside one another and each Kubernetes resource can only be in one namespace. CITE\{\href{https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/}{DOC}\}
+
+
 \subsubsection{OpenFaaS}
-\label{sec:org6dddb04}
+\label{sec:orge1236db}
+Now that we have seen an overview of the packaging and clustering management
+systems, it is time to look at the right platform to test out our state-ful FaaS
+idea on. Considering that one main aim of the thesis is to move away from vendor
+locked platforms, it all makes sense that we investigate the available open
+source FaaS solutions to extend on.
+
+A survey was done comparing multiple open source FaaS offerings as explained in
+the section 2.2.3. From CITE\{\href{https://arxiv.org/pdf/1911.07449.pdf}{PAPER}\}, it is quite clear that one of the most
+simplistic approach to architecture and flexibility belongs to OpenFaaS. The
+ease of setup and the community support also is a huge add on for the OpenFaaS
+to be chosen as out tool of preference.
+
+OpenFaaS was a one person project that was initially developed just to test out
+the power of vanilla docker orchestration tools to deploy event driven functions
+on demand and scale. The clean and scalable architecture soon put the project in
+spotlight. The best thing about OpenFaaS is that, the core modules of OpenFaaS
+are very light weight and all the other units can be added on to this core as
+necessary. The tool soon got to using Kubernetes as the default deployment
+platform due to the increased popularity and to make the best of Kubernetes
+heuristics for scaling.
+
+\begin{figure}[!h]
+    \caption{OpenFaaS workflow}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/openfaas_workflow.png}
+    \label{fig:Openfaas workflow}
+\end{figure}
+
+The following are the main components on an OpenFaaS setup to give the user a
+bit more intuition on how functions are scheduled, executed and scaled in the
+platform. Figure 14 goes along with the following description.
+
+\paragraph{OpenFaaS Gateway}
+\label{sec:org068df7a}
+The gateway is the entrypoint to the FaaS infrastructure. It provides an API
+which opens an external route into the functions. The gateway does a lot of the
+main functions in the infrastructure. The gateway is basically responsible for
+collecting the metric information and scaling the functions accordingly. It has
+a built in UI portal for ease of deployment and invocations of functions for the
+user. When kubernetes is used as the orchestration platform, the conceptual
+design of OpenFaaS can be visualized as Figure 15.
+
+\begin{figure}[!h]
+    \caption{OpenFaaS conceptual design with Kubernetes}
+    \centering
+    \includegraphics[width=180mm]{./thesis_images/openfaas_diag.png}
+    \label{fig:Openfaas with Kubernetes}
+\end{figure}
+
+As can be noted in the image, Prometheus and Alertmanager are connected to the
+OpenFaaS Gateway API.
+
+\begin{itemize}
+\item Prometheus is a monitoring system and time series database. Prometheus is now
+the de-facto monitoring solution for Cloud Native projects. It combines a
+simple interface with a powerful query language to monitor and observe
+microservices and functions, which are the two primitives of any FaaS.
+Prometheus basically does two functions. It gets metrics from machines in your
+cluster. These machines can be actual nodes or virtual machines or containers.
+One can define custom rules to check on these metrics and if any of the rules
+are triggered, Prometheus will fire off alerts via AlertManager. OpenFaaS
+Gateway exposes a lot of these collected metrics via Prometheus for
+visualization and monitoring. We will be using these metrics for our monitoring.
+\end{itemize}
+
+\paragraph{faas-provider}
+\label{sec:org97a075c}
+faas-provider is a very flexible interface that provides CRUD(create, read,
+update, delete) to functions and the invoke capability. The information about
+the function that need to be created/updated/invoked gets fed directly from the
+OpenFaaS gateway which is the endpoint to which external world communicates to.
+
+The design of faas-provider makes OpenFaaS a unique platform. One can their own
+faas-provider and hence change the backend of the OpenFaaS infrastructure very
+easily. There are design guidelines available to develop your own faas-provider
+backend CITE \{\href{https://github.com/openfaas/faas-provider/}{DOC}\}, which basically is defining how CRUD and invoke operations
+are handled by the backend. The most stable and popularly used faas-provider
+that is maintained  by the community is faas-netes, which is the Kubernetes
+backend for OpenFaaS.
+
+faas-provider takes care of scheduling the functions in the right node based on
+the availability and requirement. It also does the scaling up and down
+of the function instances based on the information from the gateway that it
+gathered via Prometheus. Figure 16 shows the conceptual view of just
+faas-provider stripping away the rest of the complexities.
+
+\begin{figure}[!h]
+    \caption{faas-provider}
+    \centering
+    \includegraphics[width=180mm]{./thesis_images/faas-provider.png}
+    \label{fig:faas-provider}
+\end{figure}
+
+\paragraph{OpenFaaS watchdog}
+\label{sec:org5c27da2}
+
+The OpenFaaS watchdog CITE \{\href{https://docs.openfaas.com/architecture/watchdog/}{DOC}\} is responsible for starting and monitoring functions in
+OpenFaaS. Any binary can become a function through the use of watchdog.
+
+The watchdog becomes an "init process" with an embedded HTTP server written in
+Golang, it can support concurrent requests, timeouts and healthchecks. The newer
+of-watchdog mentioned below is similar, but ideal for streaming use-cases or
+when an expensive resource needs to be maintained between requests such as a
+database connection, ML model or other data. 
+
+\paragraph{Auto-scaling}
+\label{sec:org4c71ac8}
+
+OpenFaaS ships with a single auto-scaling rule defined in the mounted configuration file for AlertManager. AlertManager reads usage (requests per second) metrics from Prometheus in order to know when to fire an alert to the API Gateway.
+
+The API Gateway handles AlertManager alerts through its /system/alert route.
+
+The auto-scaling provided by this method can be disabled by either deleting the AlertManager deployment or by scaling the deployment to zero replicas.
+
+One can specify the minimum number of replicas and the maximum replicas to be
+available. If minimum replicas is defined to be >0 then a warm copy of the
+function will always be idle-ing there by avoiding the cold start issue.
+Although this comes with an added cost of a docket container always up in the
+memory although the resource usage during the idle time is super low. We can
+also fine tune several other parameters like the factor by which the function
+should be scaled up or down when there is a burst or decline of the traffic,
+etc. This makes OpenFaaS extremely powerful and yet in the most simplistic way
+possible.
+
+When Kubernetes is used as the backend, instead of AlertManager the built-in
+Horizontal Pod Autoscaler CITE\{\href{https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/}{DOC}\}. This is a lot more matured as a scaler
+scheduler and we will be using that for the thesis implementation.
+
+\paragraph{NATS streaming}
+\label{sec:org11b8652}
+
+A curiously lightweight application that has been adapted into OpenFaaS is NATS.
+NATS provides simple and secure messaging functionality to the setup. It does
+event and data streaming in the cluster. OpenFaaS uses NATS Streaming which
+builds on top of the base NATS protocol to offer data streaming or a queue CITE
+\{\href{https://www.openfaas.com/blog/plonk-stack/}{doc}\}. NATS streaming provides Queue worker in which the function invocation
+requests can be queued up by the API Gateway, and processed in parallel when the
+capacity becomes available. Asyncronous invocations can be very easily done
+since it is built in without making any changes to the gateway. Each function
+will have a separate endpoint that can be used to invoke it asynchronously. 
+
+NATS streaming is a Pub Sub protocol implementation like Kafka but with very
+high throughput compared to the latter. Publish-subscribe  pattern  corresponds
+to a mechanism where in producers publish messages that are grouped into
+categories and consumers subscribe to categories which they are interested CITE \{\href{https://arxiv.org/pdf/1912.03715.pdf}{PAPER}\}. NATS
+is extremely lightweight as a 
+technology making it the right candidate for an elastic Serverless
+infrastructure, compared to a full blown message broker
+system like Kafka. Along side, considering the ephemeral nature of state in FaaS
+setup, an in-memory message delivery protocol like NAT could be extremely
+useful.
+
+\paragraph{Triggers}
+\label{sec:org3fd74c9}
+OpenFaaS functions can be triggered easily by any kind of event. A small piece
+of code will convert from the event-source and trigger the function using the
+OpenFaaS Gateway API. Some of the most used triggers are:
+\begin{itemize}
+\item HTTP: One can send POST requests to the function endpoint which follows the
+patter `\url{https://}<gateway URL>:<port>/function/<function name>`
+\item Cron
+\item NATS streaming/Async: You can execute a function or microservice
+asynchronously by replacing/function/ with \emph{async-function} when accessing the
+endpoint via the OpenFaaS gateway.
+\item CLI: we can trigger user faas-cli which is a command line application to
+communicate with faas gateway
+\item Apache Kafka
+\item AWS SQS
+\item Redis
+\item Minio/S3
+\item RabbitMQ
+\end{itemize}
+
+\paragraph{Runtime supports and templates}
+\label{sec:org764337f}
+
+OpenFaaS is one of the unique engines that supports any and all programming
+languages to write functions in because of its architecture. The way OpenFaaS
+works, it dockerize the application by adding an of-watchdog to the application
+container and deploy it to the kubernetes cluster. To make the process easier,
+OpenFaaS doesn't expect you to write the Dockerfile. Instead, it provides
+already packaged versions of language bundles called templates. The developer
+can just pull the right template from the template store and just edit the
+entrypoint script to add their application logic.
+
+Like was briefly hinted earlier, OpenFaaS provides a command line tool called
+faas-cli. This tool can be used to build, push and deploy the docker images from
+the code. With build, it build an image into the local Docker library. With
+push, it pushes that image to a remote container registry. With deploy, it
+deploys your function into a cluster.
+
+As an example, to build a simple python function, the developer will follow the
+proceeding commands:
+
+\begin{lstlisting}
+faas-cli template store pull python3
+faas-cli new funcname --lang python3
+
+faas-cli build -f funcname.yml
+faas-cli push funcname
+faas-cli deploy -f funcname.yml
+\end{lstlisting}
+
 \subsubsection{FaaS-flow}
-\label{sec:org7fe4745}
+\label{sec:org11a74b5}
 \subsubsection{Prometheus}
-\label{sec:org52c5ab8}
+\label{sec:org5bed277}
+\subsubsection{Jauguer}
+\label{sec:orgfd3a843}
+\subsubsection{Minio}
+\label{sec:orgd3a8601}
 \subsection{Architecture}
-\label{sec:orgd44d07f}
+\label{sec:org1da24d4}
 \section{Evaluation}
-\label{sec:org69c91da}
+\label{sec:orgd19732c}
 \section{Future work}
-\label{sec:orgdb18d93}
+\label{sec:orgb221302}
 \section{Conclusion}
-\label{sec:orga11195b}
+\label{sec:org1496eab}
 
 
 :UNNUMBERED: t
