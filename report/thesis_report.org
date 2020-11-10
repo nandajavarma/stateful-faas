@@ -42,38 +42,34 @@ of third party tools.
 
 This thesis analyses the Serverless paradigm in depth,
 pointing out the reasons for this reduced adaptability. To solve these issues, we propose a lightweight
-extension to an existing Open Source Serverless platform, OpenFaaS, by provide
+extension to an existing Open Source Serverless platform, OpenFaaS, that provides
 flexibility, scalability and adaptability, while making sure not to violate the notion
 of functions. Our implementation tries to reduce the operational gap between the
-industrial applications and theoretical ideas produced by researches in the
-academia in the past few years.
+industrial applications and theoretical ideas produced by researches in the past few years.
 This thesis also offers a deep study of the full potential and limitations of
 Serverless thereby making it clear to the reader why more innovations are
 necessary in this field.
 
 \end{abstract}
 
-#+TOC: headlines 4
+#+TOC: headlines 5
 
 
 * Introduction
 
 Serverless can easily be considered as the new generation of platform as a
-service. It can be thought of as an infrastructure where the programmer send
-their application as functions in a predefined format, in a supported
-programming language as documented by the provider. This function get hosted at
-a certain endpoint which can be triggered with certain events supported by the
-platform. In short, instead of having continuously running servers, functions operate as
-event handlers and when the functions execute, the equivalent CPU usage is paid
-for by the user. This has huge economical and architectural implications that is
-still waiting to be explored in its full power. While the developers worry about
+service. It is a deployment solution where instead of having continuously
+running servers, application instances come up and execute on predefined events.
+While the developers worry about
 the logic of handling the requests/events, the infrastructure provider takes
 care of receiving the request, responding to them, capacity planning, task
 scheduling, and operational monitoring\cite{gotoconf}.
+This has huge economical and architectural implications that is
+still waiting to be explored in its full potential. 
 
-In the current industrial applications, data intensiveness of the applications are increasing
+In the current industrial workloads, data intensiveness of the applications are increasing
 day by day paving way to adopt several resource heavy tools to do stream
-processing, distributed processing etc. More than often CPU and memory loads in
+processing, distributed processing, etc. More than often CPU and memory loads in
 these machines tent to vary a lot and rather than having a dedicated server to accommodate the whole range
 of requirements, it makes perfect sense to convert it into a Serverless workload
 thereby saving up on operational cost, resource waste, and ease of development.
@@ -83,32 +79,83 @@ very great with such workloads.
 This is mostly due to the sheer
 nature of the Serverless paradigm of being completely stateless, thereby forcing
 the developers to use external block storages for data store and communication.
-In this thesis, we try to extend Serverless to leverage its full potential by
-introducing an efficient form of state thereby providing flexibility, scalability and
-adaptibility at the same time not violating the notion of functions in these platforms.
-We will be extending an Open Source serverless platform called OpenFaaS
-considering its simplistic and expandable architecture.
+By the design of it, Serverless applications are deployed as isolated entities
+which are hard to address directly via the network. This makes the composition
+of functions a tad bit complicated. The most commercial Cloud Service Providers
+currently offer wrapper solutions to workaround the composition problem. A very
+notable commercial solution here is AWS stepfunction. AWS stepfunction provide
+an API to define function compositions, which eventually get executed in AWS
+Lambda, the pioneer in serverless platforms. Other than enforcing vendor lock in
+to AWS, stepfunction comes with numerous limitations like 20s timeout on the API
+gateway, 5 minutes limit to lambda execution, a limit of 2 executions per second
+etc. 
 
-Currently most of the commercial serverless offerings are closed source
-and vendor locked in to their respective platforms by cloud providers. But in the
-past couple of years the field has gotten a lot of traction in the academia and
-a lot of Open Source alternatives are being widely adopted. This being the case, a lot
-of these works hasn't been properly applied in the industry, some because of
-the absense of proper integrations with the industry standard tools, and some
-because of the operational gap between the theoretical ideas and the
-practicality or usability in the field. This thesis tries to reduce that
-gap by proposing a very secure and multi-tenant implementation of a
+When we look at the academic research in and around this area, in the past
+couple of years a handful of ideas has been thrown into introducing state in
+serverless. A very interesting proposal was Cloudburst CITE{[[https://arxiv.org/abs/2001.04592][PAPER]]} which
+introduces a consistent cache storage between functions to store and retrieve
+intermediate data in wire speed. Although the project succeeds in proposing a
+very elastic system architecture that co-locates data alongside functions across
+the cluster, but it is seen that the system doesn't scale really well along with
+the requirement making it a bad adaptation for streaming and big data workloads.
+Alongside it lacks provisioning to define branches or conditionals in the function
+composition making it less flexible from the point of view of the interaction.
+
+A similar idea was SAND CITE{[[https://www.usenix.org/system/files/conference/atc18/atc18-akkus.pdf][paper]]}, where a hierarchical message bus to allow
+function composition and inter process calls. Other than being a closed source
+project and pretty abandoned in the past couple of years, the resource
+allocation is not tracked or controlled by the system breaking the per usage
+billing notion of Serverless paradigm. The system also doesn't offer a
+production level isolation mechanism.
+
+In this thesis, we propose an approach to improve the application of state
+to the serverless platform by introducing the provision to provide a
+computational graph to the serverless platform which defines the control flow
+and data flow in the composition. The intermediate data transfer between the
+functions will be taken care with the help of maintaining a scalable in memory
+distributed cache and storing the intermediate data in them as ephemeral data.
+Our system also provides fine grained control over resource allocation and
+scaling rules for each individual function. Alongside, it provides extensive
+monitoring, function level tracing and visualization, and out of box setup and
+deployment. It is worth mentioning  that this  reduces the gap that currently
+exists with a lot of research ideas and the industry level applications, making
+it an easily adaptable solution. We propose a very secure and multi-tenant implementation of a
 state-ful Serverless setup which can be easily used for production quality
 applications. A focus on the possibility to monitor the application performance
 and usage provides a possibility to do fine grained billing of the resources and thereby
 contributing to the easy adaptability of our extension.
 
+Providing state via additional infrastructure instead of altering the function
+characteristic was a conscious choice. The serverless computing abstraction,
+despite its many advantages, exposes several low-level operational  details that
+make it hard for programmers to write and reason about their code CITE {[[https://arxiv.org/pdf/1902.05870.pdf][paper]]}. This is
+related to misusing/misunderstanding state in serverless environment. Since
+the same function is reused again and again to avoid latency, the cache or state
+persists across invocations leading to faulty results. If the state store is
+handled by an external party mapping to the invocation id, a lot of this faulty
+management can be handled.
+
+As for the implementation, we proceed by extending an existing, widely used
+Serverless platform called OpenFaaS so as to make it readily adaptable as a FaaS
+infrastructure for production quality applications. As for the function
+composition, we use an existing library faas-flow to support event driven
+workflow based function composition pattern. We make sure that the notion of a
+function or serverless platform will not be violated in this process since with
+the current state of art of infrastructure deployment, autoscaling and
+concurrency are made happen by leveraging the notions of statelessness and functional coding.
+
+There has been several academic researches on ephemeral autoscaling storages in
+the past couple of years. Pocket project is one that has received appreciation
+and we will be analyzing this platform in depth. Our thesis implementation
+adapts an existing ephemeral storage platform.
+
 Using our proposed Serverless setup, we try to efficiently run a
-Extract-Transfer-Load(ETL) workload on streaming data. ETL basically is a pipeline that involves receiving data
+Extract-Transfer-Load(ETL) workload on streaming data. ETL basically is a
+pipelined workflow that involves receiving data
 from source, cleaning and transforming it, and loading it to a sink. We will
 split the whole operation into multiple functions as per the Serverless notion
-and have them communicate data and state internally to complete the pipeline
-thereby reducing the latency and external bottlenecks.
+and have them communicate data and state internally via the ephemeral data store
+to complete the pipeline thereby reducing the latency and external bottlenecks.
 
 This document describes more on Serverless paradigm, the shortcomings of it, the
 ones we are trying to solve, our solution and evaluation. It is split into
@@ -369,8 +416,51 @@ source storage to be used as the sources for the trigger.
 - Cron: Another very common way to trigger function is based on a schedule. The
 programmer can choose how often the function should be triggered on what days of
 the week, month, year, etc. 
-**** Parallelism
 **** Billing
+One of the most attractive features of the FaaS service is the 'pay for what you
+use' policy. Billing model is an important constituent in the equation. Generally
+the commercial cloud providers charge you on the amount of memory that was
+reserved for the function, the execution time of the function in relation to the
+number of invocations that the function incurred. In most of the platforms, the
+developer can configure a maximum amount of memory that need to be dedicated to
+a function during its invocation. To save on the billing, if the user reserve
+less memory for the function, at the end of the day the execution time ends up
+being longer and there won't be much notable difference in the money spent CITE
+{[[https://techbeacon.com/enterprise-it/economics-serverless-computing-real-world-test][survey]]}. Figure CITE{[[https://www.simform.com/aws-lambda-pricing/][blog]]} shows more on how billing varies as a function of execution
+time. 
+\begin{figure}[!h]
+    \caption{Lambda cost by fucntion execution time for 100,000 executions}
+    \centering
+    \includegraphics[width=80mm]{./thesis_images/lambda_billing.png}
+    \label{fig:lambda_billing}
+\end{figure}
+
+When looking at the price per function invocation, currently at $0.0000002 for
+AWS Lambda and Azure Functions, it's very easy to get the impression that FaaS
+is incredibly cheap (20 cents for 1 million invocations). However, the price
+based on the number of invocations alone does not truly reflect the cost of
+providing this sort of service like mentioned earlier. With the current AWS
+Lambda price at $0.00001667 for every GB-second used (Azure Functions cost
+$0.000016 for every GB-second), you can see how the cost mounts quickly.
+
+Since the amount of allocated memory is configurable between 128 MB and 1.5 GB,
+the total cost of function execution will vary depending on the configuration,
+and the cost per 100ms of the execution time for the most powerful specification
+will be roughly 12 times more expensive than the basic 128 MB option. Even with
+this it is easy to see that FaaS is a pretty cheap option. 
+
+If we compare this to an IaaS solution we can realize the fact that FaaS is not
+the right tool for all kind of applications. In the past couple of years, cloud
+prices has fallen that keeping up a small cloud instances all the time would
+cost comparable amounts. For example, the micro instance of EC2 costs $4.25 in
+average to keep it on for the entire month. In fact, simple math shows that
+running a tiny EC2 instance would be cheaper than having a function running
+continuously for the entire month. The saving comes up in the case of heavy yet
+variable load applications. In this case, if we reserve the memory needed at the
+peak load time, it is going to stay up with that capacity even during zero load
+which is very expensive and a huge waste of resources. And this is where FaaS shines. 
+
+
 *** How programming models are getting affected by this
 **** Faas + Microservices
 In Software Systems Design, a very heavily discussed topic is if to design the
@@ -411,10 +501,143 @@ the past few years in Serverless platforms. Since these languages are perfectly
 suited for stateless program it is only natural that they can be efficiently
 used to code for this environment.
 *** Popular commercial offerings
-# TODO
+Now that we have seen what makes FaaS an attractive field for cloud providers,
+developers, and researchers alike, it is interesting to understand the popular
+FaaS services out there.
+
+AWS was the first big player in the field of Serverless introducing their
+platform AWS Lambda in 2014 CITE{[[https://sdtimes.com/amazon/amazon-introduces-lambda-containers/][POST]]}. Soon Google followed suite with their
+cloud functions and then Microsoft and IBM entered the game with Azure Functions
+and cloud functions respectively. In the past couple of years, Cloudflare
+CITE[], Edge CITE[], etc. has started providing similar services but the former
+offerings still continue to lead the industry.
+
+Although all the aforementioned commercial offerings contribute in strengthening
+the vendor locked in nature of the FaaS paradigm, it is worth understanding to
+see what kind of services a developer gets to have from each of these platforms. 
+
+The leading giants like AWS, Azure and Google tend to focus on configurability
+and ease of use. Their FaaS platforms are easily triggerable from their other
+cloud services, making it a very convenient yet monopolizing way of development.
+To understand the nature of the leading commercial service providers, in this
+section we go into looking at their characteristics.
+
 **** AWS Lambda
+AWS lambda became publicly available in 2015 and currently dominates the
+landscape of AWS lambda. AWS Lambda has a free-tier under which it covers first
+1M function requests and 400,000 GB-secs per month. AWS Lambda functions can be written in a handful of
+popular languages including Python, Javascript, Golang, C++, etc. The code is
+supposed to be bundled as a zip file and uploaded using API operations provided
+by AWS. One of the key issues that were noted often about AWS lambda at this
+point is the dependency management. The dependencies are expected to be bundled
+inside this zip file and there is a size limit to the zip. This is not a very
+great way to manage dependent libraries especially for data processing
+algorithms which deals with mathematical toolkits. Lambda provides guidelines
+for the way code and dependencies are to be organized in the zip file.
+
+The idea of statelessness takes an interesting approach in AWS Lambda. We
+already saw how statelessness is a key aspect in FaaS platforms. To ensure that
+the corrupted caches are lying around, AWS do not have any extra garbage
+collecting processing. Instead it relies on the user not using any variables
+while writing the function. This is a very functional way of programming indeed
+but can be rather crippling when dealing with a lot of data. The way they
+suggest the developers take care of this is by using an external block storage
+like s3 to store these variables. The idea of AWS stepfunction was introduced
+briefly in the introduction section. For enabling state in a stateless
+architecture and orchestrate functions, AWS created Step Functions. This module
+logs the state of each function so it can be used by subsequent functions or for
+root-cause analysis. 
+
+Access management is managed by the IAM policies that are inherently used by AWS
+to manage access to any cloud service. AWS Lambda provides you with the facility
+to create your own custom IAM policies and attach them with your Lambda
+functions. This allows permissions for AWS Lambda API actions, users, groups,
+roles and resources.
+
+Aws Lambda provides an API gateway and an HTTP endpoint to trigger the function
+in standard way. Other than this AWS support a huge list of AWS services that
+the developer can configure as the event source. Lambdas can also be invoked
+using the AWS SDK.
+
+Another aspect worth noting is concurrency support and the execution support.
+AWS Lambda currently supports 1000 parallel executions of function instances and
+each function has a maximum runtime of 15 minutes. It is worth noting that
+concurrency often depends on the dependent resources that are used in the lambda
+function which may not be scalable by nature. AWS Lambda generally increases the
+number of concurrent functions running as soon as there is a rise in traffic. If
+there is no predefined limit they keep increasing it by 500 per minute until the
+demand is met.
+
 **** Google cloud functions
+Google Cloud Providers entire the FaaS race very recently, in July 2018.
+Currently Google cloud functions do not support a lot of language runtimes. This
+includes NodeJS, Python3, Go and Java 11. The functions written can be uploaded
+to the service via the CLI, zip upload, inline editore, and cloud storages. So
+far Google cloud provides the most flexible workflow in dependency management.
+The developer just have to specify the dependent libraries in a package.json
+file and the cloud provider installs them for you avoiding the heavy package
+that needs to be uploaded like we saw in AWS lambda's case. This is really good
+because if the developer is building the package with libraries included in a
+Windows machine there will be huge incompatibilities for the package in the AWS
+lambda.
+
+For state or for sharing data between functions google cloud recommends similar
+approach as of AWS Lambda, that is to use a cloud storage. The events for the
+trigger can be triggered by HTTP requests, and a bunch of google storage
+services like cloud storage, cloud pub/sub, cloud firebase, strackdriver
+logging, etc. Access control is managed in a similar fashion to AWS, by using
+IAM roles.
+
+Google cloud functions really lags a bit behind when it comes to function
+orchestration. It does not offer any kind of orchestration mechanism that for
+the user to programatically chain functions via HTTP gateway.
+
+When coming to the execution time, GCF have maximum hard limit of 9 minutes on
+this. The concurrency of functions in GCF is measured at a per function level that at
+an account level as opposed to AWS Lambda. 
+
+Fine grained scalability is not at its best yet on Google Cloud Functions. The
+functions are known to be scaled pretty slow depending on their size. It is seen
+to have a maximum cold start of around 500ms CITE {[[https://www.simform.com/aws-lambda-vs-azure-functions-vs-google-functions/#section1][paper]]}, which is in fact
+quite significant.
+
+All in all Google Cloud Functions has to go a longer way to be a more flexible solution.
+
 **** Azure functions
+Joining the world of Faas in 2016, Azure shines in a lot of places with its
+Functions where Google Cloud Function falls short. To start with Azure functions
+have a rich runtime almost comparable to AWS Lambda. They support a lot of very
+popular languages. Contrary to AWS Lambda, Azure Functions provides you with
+multiple options for deploying your function, such as GitHub, DropBox, Visual
+Studio, Kudu Console, Zip deployment and One Drive.
+
+The dependency management in Azure is very similar to AWS in that, the system
+expects you to bundle all the dependencies together and upload it to the system.
+
+In Azure, there is a tricky way to handle state by keeping static variables as
+cache data. Although if someone needs persistent storage they will have to use
+block storages. 
+
+While Azure Functions lets you control your function policies through Resource
+Based Access Control. It is supported at Subscription and ResourceGroup. Though
+at the moment, you can give permission to read/write access both to your
+functions as read-only access disables some of the app’s features.
+
+As for the function triggers, Azure too supports a bunch of Microsoft services.
+But along with this, Azure lets you trigger the function using webhooks from
+Github, external HTTP, APIM, function proxy and bindings. For the orchestration,
+Azure functions provide Durable functions which basically is a bloated queueing
+service to pass event triggers between functions. It is a weaker form of AWS
+stepfunction.
+
+The execution time is usually capped at 10 minutes. The number of concurrent
+activity is apparently 10x the number of cores in the machine. Azure Functions’
+free tier covers 1M requests and 400,000 GB-secs on the monthly basis.
+Afterwards, you will pay $0.000016/GB-secs and $0.20 per 1M executions. Azure
+functions have an embarrassingly long cold start period which is in the range of
+3640ms on median. 
+
+
 *** Where Serverless computing fall short
 Although serverless computing might sound like the silver bullet of the
 deployment solutions, it is a field that is still being rapidly grown and
@@ -561,6 +784,28 @@ the cloud providers are although aware of this problem and are trying to be
 innovative and introduce lighter alternatives to Linux containers in the FaaS
 platform these days.
 
+**** Parallelism
+Current FaaS offerings are not known to have the right support for heavily
+parallel computations. In the most popular commercial platforms, an average of
+50% parallelism was noted CITE {[[https://arxiv.org/pdf/2010.15032.pdf][paper]]}. The reason for this is noted mostly to
+be the following:
+- Virtualization technology: If a FaaS system has to run multiple functions in
+  parallel when triggered, the most import thing that comes up is the ability of
+  the platform to boot up more instances of the function instantaneously. The
+  quickness of the creation of the instances depends on the virtualization
+  technology that is being used. This is basically the cold start latency that
+  is affecting the parallelization. For example, if Docker is used as the
+  virtualization technology the system is seen to have a bit more latency, but
+  if a virtual machine is used the latency goes up exponentially. This calls for
+  the need for more lightweight isolation solutions. AWS firecracker is a step
+  in this direction.
+- Reactive scheduling: In FaaS systems the kind of scheduling that happens is
+  extremely reactive. Reactive model s seen to be too slow to scale. Achieving
+  high levels of parallelism requires being able to provide resources rapidly.
+  So how the system deals with the incoming invocation is very important. It is
+  seen that the current event based triggers are less that optimal for such
+  applications. This calls for a proactive approach in dealing with invocations.
+  It could be a more push based approach as opposed to the former. 
 **** Security issues in a multi-tenant environment
 Like was previously mentioned, the whole FaaS infrastructure offering is
 economical for the cloud provider because they get to share their node pool
@@ -587,12 +832,52 @@ by the other. If the developers are not cautious enough while coding and usage
 of variables, there is a high chance for data corruption and leakage on the platform.
 
 **** Developer friendliness
-# TODO ellaborate
-- Dependency management
-- Debugging and testing
-- Deployment
-- Logging and monitoring
-** Stream Processing/ETLs
+In a recent survey CITE {[[https://www.serverless.com/blog/2018-serverless-community-survey-huge-growth-usage][survey]]}, developers were asked about the challenges they face when
+using Serverless platforms. This is a very significant data to look into since
+at the end of the day the gap of the research and the end user experience is
+something we are trying to mitigate with this project. The following were some
+key takeaways from the study.
+- Debugging and testing: Even though FaaS setup modularizes the code a lot, when
+  we consider most commercial offerings of FaaS, there is low to zero
+  possibility to actually follow the conventional testing and debugging
+  methodology. It is mostly because of the fact that the runtime of the FaaS
+  environment is not known to the developer at the time of the development.
+  Along with this, by the sheer nature of FaaS, it is often hard to mock exactly
+  the events like would in the production setup locally. So a full functional
+  testing of the platform is often pretty difficult to make happen.
+
+  More than often the developers have to depend on deployed setup of the FaaS
+  function and try debugging on production. This costs resources and on issues
+  involves re-deploying it and testing again. This has a huge impact on the
+  productivity and slows down the whole development workflow.
+- Logging and monitoring: Most of the current commercial platforms asks the
+  developer to user an external tool like AWS cloudwatch which costs more for
+  this service. Considering logging is the only way to debug the function, it
+  becomes a bit of an inconvenience if the developer is expected to pay for it.
+  As for the monitoring the same story applies. For each metric that is being
+  tracked extra is expected to be paid. If one is composing the functions, it
+  gets even more difficult to understand the cumulated runtime monitoring along
+  with the transfer details on the block storage, if any.
+- Standardizing development practices
+  The problem basically boils down to this one tag. The idea is that each of the
+  FaaS operator has a different kind of interface or way of dealing with the
+  events hence introducing a lack of standard dev practices. The problems are
+  more so prevalent when it comes to the building and deployment of the function
+  since the user management and the CLI access to do deployment are all
+  delegated to external tools.
+** Extract-Transform-Load(ETL) pipelines
+In the previous sections, we talked about how serverless is the most suited but
+inefficient(with the current state of art) tool for ETL pipelines and that it is a 
+standard practice when dealing with today's data driven workloads. In this
+section, we look in detail into the characteristics of ETL workloads and their applications.
+
+ETL is the type of data integration process that is used to process data from
+multiple sources to build a Data Warehouse or similar sinks. It integrates three
+distinct but interrelated steps namely Extract, Transform and Load.
+
+The main advantage of having ETL pipelines in the splitting of functionalities
+in the data processing programs that would have otherwise been a single huge
+monolith - hard to manage and extremely bloated. 
 # TODO
 ** Problem statement
 From the above set of evaluations, there is no doubt that Serverless is the way
@@ -634,216 +919,6 @@ more flexibility and traceability when it comes to the development process.
 Along with that, we should aim at building a system that is easily adaptable and
 stable enough for production workloads, and easily integratable with the common
 development tools like Github, CI/CD pipelines etc.
-
-* Related work
-Serverless has gained a lot of attention and traction from the scientific
-community in the past few years because of its massive implications in resource
-conservation and innovative programming when one doesn't have to worry about
-compute management anymore. The issues that were discussed in sessions above are
-being studied by various studies and the most significant ones are worth noting.
-
-In a very recent Literature review CITE{[[https://arxiv.org/pdf/2004.03276.pdf][PAPER]]}, 112 different academic papers
-and grey journals in
-and around the paradigm of FaaS were analyzed. The researchers found a
-staggering lack in the practicability of the work that were proposed by the
-scientific community. Along with the lack of reusability and reproducability, it
-was found that 88% of these proposals were worked in and around AWS lambda,
-which is not very universal as FaaS solution especially considering its vendor
-locked in and closed source attributes. The study also mentions how most of
-these works being done focus on unrealistic workloads that are not very common
-in the production setups in the industry. The paper also says how the current
-research lacks methods to chain and branch functions in a meaningful way.
-
-In CITE{[[https://arxiv.org/abs/2002.09344][PAPER]]}, the authors interestingly look at the issues that the state of art
-isolation mechanisms in FaaS infrastructure bring forward as was mentioned
-earlier. These include the lack of security and the heavy cold start time. It
-introduces faaslets, an alternate isolation policy to be used instead of
-containers. With this, faaslets can share data across instances there by
-reducing data transfer costs. In a contemporary study CITE{[[https://arxiv.org/pdf/2006.08654.pdf][PAPER]]}, an
-orchestration mechanism called TriggerFlow is introduced. It is a really
-interesting tool to manage the lifecycle of a cloud function. In this smart
-triggering system, function composition is allowed using Distributed Acyclic
-Graphs(DAG) to define control flow and data flow in the pipeline. This has huge
-potential as an idea, although currently the usability of the platform is
-terrible and it can be quite bloated as a entry point to a FaaS system
-especially since it is not a very elastic platform.
-
-# TODO cleanup
-***** Serverless in the wild: characterizing and optimising the serverless workload at a large cloud provider 
-
-Published date: 6 Jun 2020
-
-Here a way to reduce the cost of warm starts(practice of just keeping the resources idle to avoid cold start time)
-We depend on a learned histogram that charts the idle time of each application. 
-For better results we can switch to ARIMA model. 
-Use cases on both azure & openwhisk
-
-***** FaaSdom: A Benchmark Suite For Serverless Computing 
-
-Published date: 5 Jun 2020
-
-It is a docker based platform that implements wrk2
-This would be a really great tool to benchmark cross platform. Code
-
-***** Towards Fine-Grained Billing For Cloud Networking 
-
-Published: 24 Mar 2020
-
-This is suggesting methods for the cloud provider to offer a fine grained billing by better usage of vswitched, network colocation, etc.
-This is an interesting read but beyond the scope of my research.
-
-***** Firecracker: lightweight virtualization for serverless applications 
-
-Published date: 25 Feb 2020
-
-This is the isolation solution used by AWS based on KVM
-Although from the security pov firecracker is great, from the performance pov it is comparable to containers.
-
-***** INFINICACHE: Exploiting Ephemeral Serverless Functionsto Build a Cost-Effective Memory Cache 
-
-Published date: 20 Feb 2020
-
-This is an in memory object cache. Super interesting. It uses erasure coding and data backup to ensure high availability. 
-They implement it with AWS lambda. Lambda runtime is connected to a priority based queue. Could be useful to think of something like this for streaming data.
-
-***** Cloudburst: stateful functions-as-a-service 
-
-Published date: 14 Jan 2020
-
-bring data to caches next to function runtimes
-a highly-scalable key-value store for persistent state, local caches co-located with function execution environments, and cache-consistency protocols to preserve developer sanity while data is moved in and out of those caches.
-It uses a DAGs for chaining functions. This is not yet wire speed though. 
-The isolation is very weak, and it has a long way to come to be applied in production. 
-
-***** Serverless Computing: A Survey Of Opportunities, Challenges and Applications 
-
-Published date: 23 Dec 2019
-
-Doesn’t introduce anything new. Issues like, function invocation latency, storage, state, security, are all mentioned.
-They suggest the use of a distributed queue for function composition. I could use inifinicache this way.
-
-***** Understanding Open Source Serverless Platforms:Design Considerations and Performance 
-
-Published Date: 13 Dec 2019
-
-This compares openfaas kubeless knative
-The CPU usage is almost comparable in all the platform
-OpenFaas is said to have the most flexible architecture
-
-***** Formalizing Event-Driven Behavior of ServerlessApplications 
-
-Published on: 8 Dec 2019
-
-Provides a detailed operational semantics for FaaS. It includes, object stores, key values etc. Could be useful to conceptualize control flows.
-
-***** Narrowing the Gap Between Serverless and its State withStorage Functions 
-
-Published date: 20 Nov 2019
-
-Shredder is super interesting because it implements the function shipping approach.
-It uses v8 isolates to implement the sandboxes
-
-***** Formal foundations of serverless computing 
-
-Published date: 20 Nov 2019
-
-Problems with misusing states in serverless
-a persistent store with transaction support necessary to manage shared state
-Introduces an operational semantics lambda
-SPL, a serverless composition language
-Function composition is being well done by this. 
-
-***** Caching Techniques to Improve Latency inServerless Architectures (
-
-Published date: 17-Nov-2019
-
-Vaguely mentions an in memory cache for aws lambda
-
-***** In Search of a Fast and Efficient Serverless DAG Engine 
-
-Published date: 14 Oct 2019
-
-They introduce a system to do scheduling of jobs specified as DAGs. I think the memory footprint of this implementation is quite heavy. Trigger flow is an improvement.
-
-***** SERVERMIX: TRADEOFFS AND CHALLENGES OF SERVERLESS DATA ANALYTICS 
-
-Published date: 26 Jul 2019
-
-A big date serverless piece. A lot of it sounded like mission statements. 
-
-***** Fog Function: Serverless Fog Computing for DataIntensive IoT Services
-
-Date: 18 Jul 2019
-
-Out of scope. For edge devices.
-
-***** Cloud Programming Simplified: A Berkeley View onServerless Computing 
-
-Date: 10 Feb 2019
-
-Mentions a lot of issues like need for ephemeral storage, coordination, security, hardware heterogeneity, etc. 
-
-***** A framework and a performance assessment for serverless MapReduce on AWS Lambda 
-
-Date: 02 Feb 2019
-
-This is a very practical paper. I used this to implement my first version of mapreduce on OpenFaaS. Code is on my github
-
-***** Serverless Computing: One Step Forward, Two Steps Back 
-
-Date: Jan 2019
-
-A great read, I got the idea of function composition from this.
-Shows weak parallelism and hence distributed computing is terrible.
-Recommends a function shipping architecture.
-
-***** Serverless architecture efficiency: an exploratory study 
-
-Published date: 13 Jan 2019
-
-Doesn’t offer much. Weakly implements a serverless version of spark.
-Concludes that the lambda implementation is suboptimal after benchmarking.
-Costless: Optimizing Cost of Serverless Computing through Function Fusion and Placement (23 Nov 2018)
-
-***** Pocket: Elastic Ephemeral Storage for Serverless Analytics 
-
-Date: Oct 2018
-
-This is a key value based storage specifically designed for serverless application. 
-Implements dynamic block allocation based on kubernetes hueritics 
-Project is not super active but I could deploy it and try it out
-
-***** Anna: A KVS For Any Scale 
-
-Published date: 8 Sep 2018
-
-Another brilliant key value store that scales as well. It is distributed in nature and has local caches for better data locality. It is the basis for cloudburst
- 
-***** SAND: Towards High-Performance Serverless Computing 
-
-Published Date: 11 July 2018
-
-This is a similar idea to cloudburst and Faasm. A different sandboxing, function composition internally using a hierarchical message bus
-
-# ***** First ​​International​​ Workshop​​ on​​ Serverless Computing​​(WoSC) ​​2017 Report​​ from​​ workshop ​​and​​ panel ​​on ​​the​​ Status ​​of Serverless ​​Computing​​ and ​​Function-as-a-Service(FaaS) ​​in​​ Industry ​​and​​ Research
-
-# Published in 2017
-
-# It is a bit outdated but defined a lot about what is serverless and if it is good for longer running processes, is state okay, etc.
-
-***** Serverless Computing: Current Trends and Open Problems
-
-Published Date: 10 Jun 2017
-
-This is a more practical approach on serverless and its issues.
-Talks about problems with deployment and the devops tools. 
-It is yet again a bit outdated. 
-
-***** Consistency analysis in Bloom: a CALM and collected approach 
-
-Published Date: 9 Jan 2011
-
-This is a distributed programming model with interesting state sharing ideas. This was mentioned in a paper as a potential alternative to the programming model for serverless since the traditional methods or way of thinking might not work for FaaS.
 
 * Proposed Solution
 
@@ -1284,6 +1359,7 @@ that we can create a shared pool of RAM across a cluster of computers to store
 the data in, in a scalable manner.
 
 ** Multi-tenant security and isolation
+In the current state of 
 Namespacing in kubernetes
 [[https://www.researchgate.net/publication/321637564_Cloud_Multi-Tenancy_Issues_and_Developments][Cloud Multi-tenancy]]
 
@@ -1295,6 +1371,7 @@ application is monitoring.
 Tracing
 Logging
 Monitoring
+
 
 * Implementation
 For implementing the aforementioned strategies and verifying its effectiveness
@@ -1631,7 +1708,7 @@ OpenFaaS Gateway API. Some of the most used triggers are:
   patter `https://<gateway URL>:<port>/function/<function name>`
 - Cron
 - NATS streaming/Async: You can execute a function or microservice
-  asynchronously by replacing/function/ with /async-function/ when accessing the
+  asynchronously by replacing /function/ with /async-function/ when accessing the
   endpoint via the OpenFaaS gateway.
 - CLI: we can trigger user faas-cli which is a command line application to
   communicate with faas gateway
@@ -1673,11 +1750,114 @@ faas-cli deploy -f funcname.yml
 #+END_lstlisting
 
 *** FaaS-flow
+In section 3.1, we analyzed different possible ways to do function composition.
+We saw that workflow pattern is the most efficient and flexible design for a
+FaaS application to composite functions. What this means is, the best way to go
+about it is by keeping a Distributed Acyclic Graph in memory that is logically
+sort of a flowchart defining the conditionals, branches and the loops in a
+function composition.  
+***** StateStore
+***** DataStore
+
 *** Prometheus
-*** Jauguer
+*** Jaeger
 *** Minio
 ** Architecture
+\begin{figure}[!h]
+    \caption{Architecture}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/architecture.png}
+    \label{fig:arch}
+\end{figure}
+
+\begin{figure}[!h]
+    \caption{Faas flow}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/faas-flow.png}
+    \label{fig:faas-flow}
+\end{figure}
 * Evaluation
+* Related work
+Serverless has gained a lot of attention and traction from the scientific
+community in the past few years because of its massive implications in resource
+conservation and innovative programming when one doesn't have to worry about
+compute management anymore. The issues that were discussed in sessions above are
+being studied by various studies and the most significant ones are worth noting.
+
+Before getting into the studies that focus on the issues that was covered in
+this paper, it is interesting to have a look at  a very recent literature review
+CITE{[[https://arxiv.org/pdf/2004.03276.pdf][PAPER]]}. In the paper the authors analyze 112 different academic papers
+and grey journals in
+and around the paradigm of FaaS were analyzed. The researchers found a
+staggering lack in the practicability of the work that were proposed by the
+scientific community. Along with the lack of reusability and reproducability, it
+was found that 88% of these proposals were worked in and around AWS lambda,
+which is not very universal as FaaS solution especially considering its vendor
+locked in and closed source attributes. The study also mentions how most of
+these works being done focus on unrealistic workloads that are not very common
+in the production setups in the industry. The paper also says how the current
+research lacks methods to chain and branch functions in a meaningful way.
+
+In CITE{[[https://arxiv.org/abs/2002.09344][PAPER]]}, the authors interestingly look at the issues that the state of art
+isolation mechanisms in FaaS infrastructure bring forward as was mentioned
+earlier. These include the lack of security and the heavy cold start time. It
+introduces faaslets, an alternate isolation policy to be used instead of
+containers. With this, faaslets can share data across instances there by
+reducing data transfer costs. In a contemporary study CITE{[[https://arxiv.org/pdf/2006.08654.pdf][PAPER]]}, an
+orchestration mechanism called TriggerFlow is introduced. It is a really
+interesting tool to manage the lifecycle of a cloud function. In this smart
+triggering system, function composition is allowed using Distributed Acyclic
+Graphs(DAG) to define control flow and data flow in the pipeline. This has huge
+potential as an idea, although currently the usability of the platform is
+terrible and it can be quite bloated as a entry point to a FaaS system
+especially since it is not a very elastic platform. In an older research, and
+idea was proposed to schedule events based on tags which was quite similar. But
+in a comparison, it is stated that the solution has a heavier memory footprint
+than the former.
+
+
+Cloudburst CITE and SAND CITE are projects that were mentioned in the previous
+section. In the former, they suggest adding a key value cache along with
+a limited DAG based language to specify the composition was specified before.
+Although a very interesting idea, the issues with this systems were discussed
+previously. SAND is a very interesting idea as well where they use a different
+kind of isolation scheme to allow function composition as opposed to containers. 
+
+In yet another recent paper CITE {[[https://arxiv.org/pdf/1902.05870.pdf][paper]]}, a theoretical model for a composition
+language called serverless composition language(SPL) which lets the programmer
+define function compositions(even can be higher order functions). This paper has
+some very interesting formal foundations for serverless as a technology which
+was used as a reference.
+
+A very intriguing idea that has been proposed in the research community is to
+change the programming model of serverless paradigms completely and introduce a
+function shipping architecture for serverless. The idea is that it is suggested
+that the way FaaS functions are designed is actually a architectural
+anti-patterns that system designers make CITE {ONE STEP FORWARD}. Currently the
+pattern can be referred as data shipping. Meaning that data is shipped to the
+function as opposed to a function shipping architecture. An example for a
+function shipping architecture would be procedures in databases where data is
+not moved from its storage location. The reason why the data shipping pattern is
+bad is because of the fact that across different storage layers and network
+layers, there is a vast spectrum in the memory hierarchy which adds heavy
+latencies. Shredder CITE {[[https://www.cs.utah.edu/~dongx/paper/sandstorm-socc.pdf][shredder]]} was a work towards adopting a function
+coding pattern by adopting v8 isolation mechanism to boot up light weight
+instances of the function near to the storage layer of the system. The problem
+with this method is the fact that the current data loads are extremely
+heterogeneous and it is hard to support this system on all the storage
+platforms. But it is a very ambitious idea that has a lot of potential.
+
+Coming to the domain of ephemeral scalable storage, Pocket is a very significant
+project which was described in detail earlier. Anna KVS CITE {[[https://dsf.berkeley.edu/jmh/papers/anna_ieee18.pdf][ANNA]]}, is a
+similar idea which was adopted in the Cloudburst project. The tool was not
+adopted in this project mostly because of the low elasticity the tool offers.
+
+
+In InfiniCache CITE {[[https://www.usenix.org/conference/fast20/presentation/wang-ao][blog]]}, a memory object cache is used to store the ephemeral
+state in the system. It uses erasure coding and data backup to ensure high availability. 
+They try to get this system working on AWS lambda by connecting the runtime to a
+priority based queue. 
+
 * Future work
 * Conclusion
 

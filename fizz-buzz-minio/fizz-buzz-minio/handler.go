@@ -4,9 +4,8 @@ import (
 	"fmt"
 	consulStateStore "github.com/faasflow/faas-flow-consul-statestore"
 
+	minioDataStore "github.com/faasflow/faas-flow-minio-datastore"
 	faasflow "github.com/faasflow/lib/openfaas"
-	olricDataStore "github.com/nandajavarma/faas-flow-olric-datastore"
-
 	"log"
 	"os"
 	"strconv"
@@ -103,9 +102,9 @@ func OverrideStateStore() (faasflow.StateStore, error) {
 
 // ProvideDataStore provides the override of the default DataStore
 func OverrideDataStore() (faasflow.DataStore, error) {
-	pocket, err := olricDataStore.Init()
+	miniods, err := minioDataStore.InitFromEnv()
 	if err != nil {
 		return nil, err
 	}
-	return pocket, nil
+	return miniods, nil
 }

@@ -5,8 +5,8 @@ provider:
 functions:
   mapreduce-faas-flow:
     lang: faas-flow
-    handler: ./mapreduce-faas-flow
-    image: nandajavarma/greet:latest
+    handler: ./fizz-buzz-minio
+    image: nandajavarma/fizzbuzzminio:latest
     build_args:
       GO111MODULE: on
     labels:
