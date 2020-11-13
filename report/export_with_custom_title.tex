@@ -1,4 +1,4 @@
-% Created 2020-11-10 Tue 23:50
+% Created 2020-11-13 Fri 01:23
 % Intended LaTeX compiler: pdflatex
 \documentclass[12pt,titlepage]{article}
 \usepackage[utf8]{inputenc}
@@ -72,7 +72,7 @@ necessary in this field.
 
 
 \section{Introduction}
-\label{sec:orgf44e85c}
+\label{sec:org2c9e33d}
 
 Serverless can easily be considered as the new generation of platform as a
 service. It is a deployment solution where instead of having continuously
@@ -105,7 +105,14 @@ an API to define function compositions, which eventually get executed in AWS
 Lambda, the pioneer in serverless platforms. Other than enforcing vendor lock in
 to AWS, stepfunction comes with numerous limitations like 20s timeout on the API
 gateway, 5 minutes limit to lambda execution, a limit of 2 executions per second
-etc. 
+etc.
+
+A major requirement usually for heavy multi-staged processing pipelines is fault
+tolerance. If at all a stage fails, the system should be able to restart from
+where it failed with the correct intermediate data and complete the workflow. In
+orchestrations like stepfunction where data is passed over the gateway among
+each other, if a failure occur the processed data till the failure function is
+gone for good. This makes the system unreliable for certain heavy load applications.
 
 When we look at the academic research in and around this area, in the past
 couple of years a handful of ideas has been thrown into introducing state in
@@ -205,7 +212,7 @@ In Section 7, the future work that can be done in this direction is laid out
 before the reader.
 
 \section{Background and Motivation}
-\label{sec:org7ddd1de}
+\label{sec:orgee2d36e}
 The term serverless have been vaguely thrown around the domain of cloud
 infrastructure in the past decade as the breakthrough resource(and hence money)
 saving tool that lets the developers focus on application logic rather than the
@@ -227,7 +234,7 @@ We will also analyze the popular data processing and streaming pipelines in the
 industries these days and why serverless computing fall short in being the right
 tool of development and deployment here.
 \subsection{Evolution of cloud resource management}
-\label{sec:orga766d82}
+\label{sec:org7e9252b}
 In the past 3 decades, software deployments and infrastructure management has
 seen a lot of innovation and evolution. Before diving into the current
 industrial standards, it is important to understand the evolutions in this field
@@ -235,7 +242,7 @@ to get a better grasp on the technological innovations that bought this about.
 
 
 \subsubsection{Dedicated servers}
-\label{sec:org05198b3}
+\label{sec:org1bb81f7}
 Even as recent as 15 years ago this was the industry standard for deployments. Dedicated servers
 are physical machines. The general practice was to have server racks on the premise
 of the company which are maintained by system administrators and all your
@@ -248,7 +255,7 @@ footprint and e-wastes.
 
 
 \subsubsection{Dedicated virtual machines(BaaS)}
-\label{sec:org05c250a}
+\label{sec:org193c7e7}
 Virtualization technology changed the face of software infrastructure by decoupling
 applications from the underlying hardware. Virtualized servers are not physical
 machines, they are a software construct. Virtual servers run on dedicated
@@ -307,7 +314,7 @@ even if the load/traffic to and fro the application is not constant. This meant 
 lot of resources were still being wasted.
 
 \paragraph{Linux Containers}
-\label{sec:org95f498d}
+\label{sec:org9d3f646}
 A game changer in the world of virtualization was containerization. Containers
 are yet another packaged computing environment that combine various IT
 components and isolate them from the rest of the system just like a virtual
@@ -344,7 +351,7 @@ deployment. One could also limit and fine tune the resources used by a running
 containers giving a lot more control over the application.
 
 \paragraph{Autoscaling}
-\label{sec:orga244a77}
+\label{sec:org6b27923}
 The ease in which one can limit the resources and tweak the runtime parameters externally contributed heavily
 to the service offering called autoscaling which basically meant resources for an
 application runtime were added or removed as per the usage. All the commercial
@@ -357,7 +364,7 @@ etc. to the community. These solutions aim at mitigating the shortcomings of
 Containers which we will discuss in Section 2.2.4
 
 \subsubsection{Serverless}
-\label{sec:org02a828b}
+\label{sec:orgfd0b44f}
 Like mentioned earlier, in the past two years the terms Serverless and Function-as-a-Service are quite
 often used interchangeably. In terms of the resource reservation, Serverless can
 be considered as a platform as a service solution that scales. Your application
@@ -379,7 +386,7 @@ We will dive more into the properties and nature of the solution
 Function-as-a-Service(FaaS) in the following session. 
 
 \subsection{FaaS}
-\label{sec:org6cdf9bc}
+\label{sec:org7a4422a}
 So far, we have covered the infrastructure management style of FaaS or
 Serverless in general. Let us get a bit in detail into the specifics of the
 hosting platform that provides the FaaS functionality.
@@ -397,9 +404,9 @@ understand the flow of FaaS workloads, it is important to be aware of the
 following properties of the platform.
 
 \subsubsection{Properties of FaaS}
-\label{sec:org2278828}
+\label{sec:org55ffa6e}
 \paragraph{Statelessness}
-\label{sec:org55b6973}
+\label{sec:org57668f1}
 Statelessness in deployments is a conscious decision that was taken during the
 conception of the Serverless infrastructure model to make the management of the
 platform straight forward and less cumbersome. Statelessness simply means that
@@ -425,7 +432,7 @@ In short, the notion of function is of prime importance in a
 Function-as-a-Service workload like the name suggests.
 
 \paragraph{Triggers}
-\label{sec:org0142e4c}
+\label{sec:org35bea54}
 The functions that are hosted on a FaaS solution need to get triggered on a timely
 basis or based on an event. Usually most cloud providers provide more than a few
 ways to trigger the functions which the developer can choose from. Some of the
@@ -451,7 +458,7 @@ source storage to be used as the sources for the trigger.
 programmer can choose how often the function should be triggered on what days of
 the week, month, year, etc. 
 \paragraph{Billing}
-\label{sec:org7fbe3b2}
+\label{sec:org0f0896e}
 One of the most attractive features of the FaaS service is the 'pay for what you
 use' policy. Billing model is an important constituent in the equation. Generally
 the commercial cloud providers charge you on the amount of memory that was
@@ -497,9 +504,9 @@ which is very expensive and a huge waste of resources. And this is where FaaS sh
 
 
 \subsubsection{How programming models are getting affected by this}
-\label{sec:org6c246a1}
+\label{sec:org471e118}
 \paragraph{Faas + Microservices}
-\label{sec:org58c6aaf}
+\label{sec:org6588d9b}
 In Software Systems Design, a very heavily discussed topic is if to design the
 application in a monolithic fashion or a micro-services fashion. Monolith is the
 kind of design pattern where you have one big application doing multiple
@@ -524,7 +531,7 @@ web application setup. This method is very effective resource usage wise and
 much easier to deploy and manage compared to vanilla microservices which has to
 be built and deployed independently.
 \paragraph{Statelessness a.k.a Functional programming model}
-\label{sec:org489b993}
+\label{sec:orgbcd9a2a}
 Like mentioned earlier, the notion of function is very important for the
 serverless platforms. It is intrinsically linked with functional programming. It
 is very interesting to note that Amazon named their FaaS solution Lambda which
@@ -539,7 +546,7 @@ the past few years in Serverless platforms. Since these languages are perfectly
 suited for stateless program it is only natural that they can be efficiently
 used to code for this environment.
 \subsubsection{Popular commercial offerings}
-\label{sec:orgfa59742}
+\label{sec:org9674e6e}
 Now that we have seen what makes FaaS an attractive field for cloud providers,
 developers, and researchers alike, it is interesting to understand the popular
 FaaS services out there.
@@ -562,7 +569,7 @@ To understand the nature of the leading commercial service providers, in this
 section we go into looking at their characteristics.
 
 \paragraph{AWS Lambda}
-\label{sec:org949556b}
+\label{sec:orgb69050d}
 AWS lambda became publicly available in 2015 and currently dominates the
 landscape of AWS lambda. AWS Lambda has a free-tier under which it covers first
 1M function requests and 400,000 GB-secs per month. AWS Lambda functions can be written in a handful of
@@ -609,7 +616,7 @@ there is no predefined limit they keep increasing it by 500 per minute until the
 demand is met.
 
 \paragraph{Google cloud functions}
-\label{sec:orgfaeb3d1}
+\label{sec:org5cb53f6}
 Google Cloud Providers entire the FaaS race very recently, in July 2018.
 Currently Google cloud functions do not support a lot of language runtimes. This
 includes NodeJS, Python3, Go and Java 11. The functions written can be uploaded
@@ -645,7 +652,7 @@ quite significant.
 All in all Google Cloud Functions has to go a longer way to be a more flexible solution.
 
 \paragraph{Azure functions}
-\label{sec:org7fcb4b3}
+\label{sec:org3bab737}
 Joining the world of Faas in 2016, Azure shines in a lot of places with its
 Functions where Google Cloud Function falls short. To start with Azure functions
 have a rich runtime almost comparable to AWS Lambda. They support a lot of very
@@ -681,14 +688,14 @@ functions have an embarrassingly long cold start period which is in the range of
 
 
 \subsubsection{Where Serverless computing fall short}
-\label{sec:org7b3f088}
+\label{sec:org8779c6f}
 Although serverless computing might sound like the silver bullet of the
 deployment solutions, it is a field that is still being rapidly grown and
 researched on. There are several staggering shortcomings for this technology
 that makes it unsuitable for certain applications. The current offering have the
 following noticeable limitations.
 \paragraph{Lack of state}
-\label{sec:orgc05780a}
+\label{sec:org1f764c8}
 As mentioned earlier, statelessness is a primary nature for serverless workloads
 making it easy to deploy and port agnostic of the environment and server.
 Hence serverless/auto-scaling paradigm generally push for a development style
@@ -713,7 +720,7 @@ this adds, it is a violation of the elastic nature of the Serverless
 paradigm.
 
 \subparagraph{I/O Latency}
-\label{sec:org8144f36}
+\label{sec:org3937fe1}
 Like was mentioned earlier, FaaS have had a lot of influences in the system
 architecture and programming paradigms like would with any new infrastructure
 management system. It is quite unfortunate though that, even with a paradigm
@@ -728,7 +735,7 @@ architecture is procedures that you run in databases. The code is moved to the
 data than the other way around in this.
 
 \paragraph{Coordination issues among functions}
-\label{sec:orgee1aff4}
+\label{sec:org1900525}
 As we saw in the previous sections, FaaS workloads are usually containerized by
 the cloud provider to deploy it easily in their node pool or cluster. By nature,
 docker containers are indiscoverable units that need to be opened up explicitly
@@ -763,7 +770,7 @@ batch data alike.
 CITE[onestepforward]
 
 \paragraph{Vendor lock-in}
-\label{sec:org6c7bead}
+\label{sec:org4703ab8}
 It is no secret that the most widely used FaaS/serverless offerings are the ones by
 proprietary cloud providers where they hand twist the developers into complying
 to their programming environment and runtime thereby forcing devs to use their
@@ -779,7 +786,7 @@ zero control over the infrastructure and the pipeline is not transparent at all
 for any kind of performance optimization or fine tuning.
 
 \paragraph{Fixed timeouts}
-\label{sec:org58e1bda}
+\label{sec:orgd9f2aa0}
 This is the one of the other bigger reasons that hinder the usage of FaaS in big
 data applications. In applications that involve heavy number crunching
 algorithms, there are chances that often the function needs to run for a longer
@@ -794,7 +801,7 @@ These are all extremely bounding as conditions especially for functions that are
 composed and a function should wait for the other functions to finish executing. 
 
 \paragraph{Cold Start}
-\label{sec:org82bc9aa}
+\label{sec:org9e0e9da}
 Cold start it the delay that the function incurs after the invocation or
 triggering of the function till the execution of the function. In the
 background, FaaS uses containers to encapsulate and execute the functions. When
@@ -834,7 +841,7 @@ innovative and introduce lighter alternatives to Linux containers in the FaaS
 platform these days.
 
 \paragraph{Parallelism}
-\label{sec:orgaed5b68}
+\label{sec:org84d6a57}
 Current FaaS offerings are not known to have the right support for heavily
 parallel computations. In the most popular commercial platforms, an average of
 50\% parallelism was noted CITE \{\href{https://arxiv.org/pdf/2010.15032.pdf}{paper}\}. The reason for this is noted mostly to
@@ -859,7 +866,7 @@ applications. This calls for a proactive approach in dealing with invocations.
 It could be a more push based approach as opposed to the former.
 \end{itemize}
 \paragraph{Security issues in a multi-tenant environment}
-\label{sec:org310bcac}
+\label{sec:org19d93cd}
 Like was previously mentioned, the whole FaaS infrastructure offering is
 economical for the cloud provider because they get to share their node pool
 among all their standard customers making the resource cost for them very low.
@@ -875,7 +882,7 @@ cold start time. But recently the innovative new alternatives for Linux
 containers are also aimed at to fix these issues.
 
 \subparagraph{Function caches}
-\label{sec:orgb097c87}
+\label{sec:org566374f}
 Along with the above mentioned issue with multi-tenancy across customers, a
 similar issue can occur under the same customer who runs an application across
 multiple of their client. The problem is that each function has an inaccessible
@@ -886,7 +893,7 @@ by the other. If the developers are not cautious enough while coding and usage
 of variables, there is a high chance for data corruption and leakage on the platform.
 
 \paragraph{Developer friendliness}
-\label{sec:org7170858}
+\label{sec:org4cd3c40}
 In a recent survey CITE \{\href{https://www.serverless.com/blog/2018-serverless-community-survey-huge-growth-usage}{survey}\}, developers were asked about the challenges they face when
 using Serverless platforms. This is a very significant data to look into since
 at the end of the day the gap of the research and the end user experience is
@@ -923,7 +930,7 @@ since the user management and the CLI access to do deployment are all
 delegated to external tools.
 \end{itemize}
 \subsection{Extract-Transform-Load(ETL) pipelines}
-\label{sec:org1106e78}
+\label{sec:org9db5c30}
 In the previous sections, we talked about how serverless is the most suited but
 inefficient(with the current state of art) tool for ETL pipelines and that it is a 
 standard practice when dealing with today's data driven workloads. In this
@@ -936,8 +943,84 @@ distinct but interrelated steps namely Extract, Transform and Load.
 The main advantage of having ETL pipelines in the splitting of functionalities
 in the data processing programs that would have otherwise been a single huge
 monolith - hard to manage and extremely bloated. 
+
+\paragraph{Extract}
+\label{sec:orgc7473d1}
+In the present day production workloads, data can be arriving from numerous
+sources of very varied nature and behavior. Depending on their origin source,
+this data can have different formats or organizational structure. Some examples
+for this are relational databases, XML, JSON, flat text files, etc. To allow
+scalability in a software solution it is always necessary to have the tool
+working for multitude of data types. This is where having a dedicated extract
+process shine. Extract process accepts data from any of the data source and
+format it to a unified data type. In general, in extraction phase developers try
+to convert the data into a single format that is understandable by the
+transformation phase. Another import thing the extract step take care of is the
+validation of the data. The data that is coming from the source can be of the
+wrong format as expected, even missing some columns or corrupted somehow. In the
+extract step, these bad data are reported and the process is aborted.
+\paragraph{Transform}
+\label{sec:org78fb8e3}
+This step can be considered as the brain of the whole workflow. This is the
+stage where we convert the data that was received into meaningful information.
+Transform operation often happen in multiple stages where in each stage a
+certain transformation logic is applied to the data. These logic can be simple
+text formatting steps like splitting the data, cleaning the data, deduplication,
+replacing codewords with meaningful entities etc. or more complex arithmetic or
+logic operations like machine learning models. This step often ends up being the
+bottleneck in a lot of ETL pipelines since data processing can be a very
+resource heavy task and if the code is written with no optimization, the whole
+pipeline will end up eating up the all the resources.
+\paragraph{Load}
+\label{sec:org988ead1}
+Like the name suggests this is the step where the data coming after the
+extraction and transformation processed get loaded into the target data store.
+This is a rather interesting process because the nature of the target store and
+the communication API need to be analyzed efficiently to write the code. The
+code often contains certain validation parameters to see if the current data is
+suitable for insertion into the target. Common problems that occur might be
+format difference from the target, duplication of primary or foreign keys, other
+integrity violation issues, etc. Monitoring is critical in this step since there
+is a chance that the target endpoint can go unavailable and the developers have
+to make sure the data after the entire processing is not lost. More than often
+the data output overwrites the existing data in the source, in other cases the
+new data gets appended to the older ones or aggregated with the existing data.
+
+\subsubsection{How Serverless can make a difference in ETL}
+\label{sec:org8d2f5d0}
+Let us now look at some of the characteristics of the ETL processes that can be
+derived from the definition.
+\begin{itemize}
+\item In the pipeline, if a failure occur in any of the above stage, it should stop
+from proceeding to the next stage for that data without disrupting the
+pipeline that is dealing with any other batch of data.
+\item Each stage can have different loads depending on the operations and these
+stages should be able to independently scale without scaling the other stages.
+This helps in saving resources. Along with that it also saves from making any
+one step a bottleneck because of low resource availability by scaling the
+resources up as per necessity.
+\item Intermediate data transfer need to handled properly by the system. We need to
+have temporary data between each of the processes stored temporarily. This is
+to make sure that if one of the stages fails, the data the came out of the
+previous step is still available which can be processed again after the
+developer fixes the issue with the current stage. This means that at any stage
+you can restart the system and the pipeline can continue without issues.
+\item There should be proper monitoring support make sure that we can easily see
+when the errors are happening in the system. Along with that, the performance
+of the pipeline should be quantifiable. We should be able to tell which stage
+in the whole pipeline uses more resources, etc. and the overall performance of
+the ETL workload.
+\end{itemize}
+
+It is clear from the above description why Serverless might be a good fit for
+ETLs considering its elastic architecture and functional style of coding. Each
+stage in ETL can be separate functions than can be independently scaled and
+monitored. Although the aforementioned issues with the Serverless makes the
+function composition and data transfer quite inefficient making it an ill suited
+candidate for ETL applications.
+
 \subsection{Problem statement}
-\label{sec:orgb43b216}
+\label{sec:org8e9acd7}
 From the above set of evaluations, there is no doubt that Serverless is the way
 of the future infrastructure maintenance and deployment. Even with the current
 state of art FaaS offerings, 21\% of the entire workload is Data processing
@@ -979,7 +1062,7 @@ stable enough for production workloads, and easily integratable with the common
 development tools like Github, CI/CD pipelines etc.
 
 \section{Proposed Solution}
-\label{sec:org3fac3b0}
+\label{sec:orgef70829}
 
 In this section we dig in deeper into the specifications of our proposal to
 build a production ready FaaS infrastructure stack that is completely elastic
@@ -1007,7 +1090,7 @@ get into platform specific study by implementing these suggestions on a flexible
 open source FaaS solution for our proof of concept.
 
 \subsection{Function composition}
-\label{sec:orge360210}
+\label{sec:org83764a0}
 
 As we have already seen, in the current industrial requirements, big data
 processing is pretty inevitable as an application scenario. The nature of these
@@ -1070,7 +1153,7 @@ different approaches in which functions can be composed in a serverless
 workload.
 
 \subsubsection{Manual Compilation}
-\label{sec:org27a0eaf}
+\label{sec:orgde46b52}
 
 This the most basic and inefficient way of compiling the functions. This
 basically involves merging all the functions together to form a huge function.
@@ -1105,7 +1188,7 @@ compute is complex, function might not even completely run because of the
 hardbound limit to the running time set on most FaaS platforms. 
 
 \subsubsection{Direct function chaining}
-\label{sec:orge38c794}
+\label{sec:org58f6951}
 
 \begin{figure}
 \caption{Direct function chaining}
@@ -1138,7 +1221,7 @@ def funcB():
 \end{lstlisting}
 
 \subsubsection{Composition via coordinator functions}
-\label{sec:orgd9a1668}
+\label{sec:org98d4477}
 
 In this method, a coordinator function will be used which manage the execution
 of all the functions by calling them directly. The individual functions will be
@@ -1161,7 +1244,7 @@ FaaS paradigm a bit. An example of this kind of coordination can be found here
 CITE \{\href{https://www.researchgate.net/publication/331572138\_A\_framework\_and\_a\_performance\_assessment\_for\_serverless\_MapReduce\_on\_AWS\_Lambda}{PAPER}\}
 
 \subsubsection{Event driven composition}
-\label{sec:orga9ab173}
+\label{sec:org4950a47}
 
 \begin{figure}
 \caption{Event driven function composition}
@@ -1196,7 +1279,7 @@ iterations, etc. Along with this, since functions are so tightly dependent on
 the message queues, it will be slightly challenging to upgrade or version them. 
 
 \subsubsection{Workflows}
-\label{sec:orgb01297e}
+\label{sec:org3133974}
 
 Workflows are a very interesting architectures pattern where the system supports
 the creation of a sort of flowchart of the functional interaction. Workflows are
@@ -1262,7 +1345,7 @@ section 4.2.
 
 
 \subsection{Ephemeral Storage}
-\label{sec:org6876a54}
+\label{sec:org1e53e30}
 
 In the previous section, we saw that flexible function composition can be
 achieved via workflow pattern. Although to make this efficient state storage is
@@ -1312,7 +1395,7 @@ manage their own storage instances and manually scale resources CITE\{\href{http
 two different storage solutions for the adaption to our FaaS extension: Pocket \& Orlic
 
 \subsubsection{Pocket}
-\label{sec:orgc17aa3d}
+\label{sec:org3c81a04}
 Pocket CITE\{\href{https://www.usenix.org/system/files/osdi18-klimovic.pdf}{POCKET}\} is an ephemeral storage build for the Serverless workflows.
 It is a key value store suited for storing and exchanging data between hundreds
 of fine-grained, short-lived tasks. Pocket is an elastic distributed storage
@@ -1340,7 +1423,7 @@ operations.
 \end{figure}
 
 \subparagraph{Architecture}
-\label{sec:org36aaa14}
+\label{sec:org335a266}
 Like Figure 10 represents, Pocket system has one centralized controller server,
 one or more meta data servers, and multiple data plane storage servers. The
 meta data plane according to us is the most interesting in the architecture,
@@ -1358,7 +1441,7 @@ access data blocks directly from storage servers.
 \end{figure}
 
 \subparagraph{Client API}
-\label{sec:orgb55a76d}
+\label{sec:orgef430c7}
 Pocket provides an API to communicate with the system. There are system calls to
 each of the three planes. First of all it lets the client register and un-register of the
 jobs(control plane). The client gets to communicate with the meta data server
@@ -1379,10 +1462,10 @@ object. The nature of the ephemeral storage in discussion is assumed to be write
 and read once only. Figure 11, describes the system calls in detail.
 
 \subparagraph{Implementation}
-\label{sec:org592c187}
+\label{sec:org6cfffbe}
 \begin{enumerate}
 \item Controller:
-\label{sec:orgeb33c8f}
+\label{sec:orgeb79f17}
 Pocket is run on Kubernetes with each layer as separate docker containers. A
 resource monitoring daemon is run on each node in the cluster sending resource
 utilization info to the controller. The controller right sizes the cluster by
@@ -1394,7 +1477,7 @@ server resource usage under the target limit by precalculating the load a job
 would  put on the meta data server from its throughput and capacity allocation.
 Based on this estimate the controller select the meta data server.
 \item Meta data and Storage tier:
-\label{sec:orgc519aea}
+\label{sec:org349b42b}
 These are implemented on top of Apache Crail distributed data store CITE\{\href{https://crail.apache.org/}{CRAIL}\}.
 Crail is designed for low latency, high throughput storage of arbitrarily sized
 data with low durability requirements. Crail provides a unified namespace across
@@ -1404,13 +1487,13 @@ storage tier and RPC library implementations. As of the storage tier, Pocket
 project implements it on DRAM, NVMe on top of ReFlex and then on generic block
 storage.
 \item Client library:
-\label{sec:orgde5664e}
+\label{sec:org05660ac}
 The API is written in Python to provide better adaptability of the tool. The
 core library although is in C++
 \end{enumerate}
 
 \subparagraph{Analysis}
-\label{sec:org26ac93d}
+\label{sec:org244deb6}
 \begin{figure}[!h]
     \caption{Pocket Performance for get and put requests}
     \centering
@@ -1425,33 +1508,283 @@ So considering that DRAM will be used as the storage tier, it can be the
 right tool for the ephemeral storage in Serverless platforms. 
 
 \subsubsection{Olric}
-\label{sec:orgc2d69a8}
+\label{sec:org726b221}
 Olric CITE\{\href{https://github.com/buraksezer/olric}{Olric}\} is a distributed in-memory key/value data store. The idea is
 that we can create a shared pool of RAM across a cluster of computers to store
-the data in, in a scalable manner.
+the data in, in a scalable manner. The design motives for Olric is to share
+between servers fast-changing transient data. At the time of writing, Olric
+supports multiple serialization formats including JSON, MessagePack, etc. By
+utilizing the heuristics of Kubernetes, Olric provides horizontal scalability to
+the RAM pool available. Olric uses a consistent hashing algorithm CITE\{\href{https://github.com/buraksezer/consistent}{link}\} to distribute
+the load fairly among the cluster members. Olric best-effort consistency
+guarantees without being a complete CP (indeed PA/EC) solution. This thread safe
+in-memory cache comes with replica support and a command line interface.
+
+The data is stored inside distributed maps which can be thought of as a bucket.
+Inside each distributed map, there can be numerous key - value pairs. As for the
+operations, currently Olric support atomic operations and the lookup
+has a complexity of O(1). Olric uses SETNX algorithm to implement locking
+primitives inspired from Redis protocol CITE\{\href{https://redis.io/commands/setnx\#design-pattern-locking-with-codesetnxcode}{link}\}. Olric can be used either as a
+Go library or as a language independent service.
+
+The architecture of Olric is rather sophisticated. Olric distributes data among
+partitions that are distributed across the cluster using the consistent hash algorithm. Every partition is being
+owned by a cluster member and may have one or more backups for redundancy. When
+a distributed map entry is being written, the communication is to the partition
+owner. In a stable cluster, the query hits the most up-to-date version of that
+data entry. In order to find the partition which the key belongs to, Olric
+hashes the key and mod it with the number of partitions.
+
+There is an elected coordinator in each cluster. The coordinator election is
+done via a very simple heuristics. All the machines share their birthdate in the
+cluster. The oldest machine gets elected as the coordinator. When the
+coordinator leaves, the second oldest gets elected. It manages the partition table.
+This can involve registering new partitions if a new machine joins, removes
+outdated data, pushes new partition table to all the members and to the cluster.
+
+There is a rebalancer binary running in each node that takes care of relocating
+the partition from the backup to the new host when one of the hosts leaves.
+Along with this it merges fragmented partitions.
+
+The idea of fragmented partitions are rather curious. Each partition has an
+owner. There can be multiple owners in which case the partition is called a
+fragmented partition. The last added owner is called a primary owner. Write
+operation is only done by the primary owner. The previous owners are only used
+for read and delete. When you read a key, the primary owner tries to find the
+key on itself, first. Then, queries the previous owners and backups,
+respectively. The delete operation works the same way. The data(distributed map
+objects) in the fragmented partition is moved slowly to the primary owner by the
+rebalancer. Until the move is done, the data remains available on the previous
+owners. The distributed map methods use this list to query data on the cluster.
+
 
 \subsection{Multi-tenant security and isolation}
-\label{sec:orgbb849b4}
-In the current state of 
-Namespacing in kubernetes
-\href{https://www.researchgate.net/publication/321637564\_Cloud\_Multi-Tenancy\_Issues\_and\_Developments}{Cloud Multi-tenancy}
+\label{sec:org002a2e3}
+A multi-tenant cluster is shared by multiple user and/or workloads which are
+referred to as tenants CITE\{\href{https://cloud.google.com/kubernetes-engine/docs/concepts/multitenancy-overview}{link}\}. It is very crucial to make sure that data is
+completely segregated between the tenants and in no circumstances can data of
+one tenant be visible to the other. This is considered one of the biggest
+security risks CITE\{\href{https://www.researchgate.net/publication/321637564\_Cloud\_Multi-Tenancy\_Issues\_and\_Developments}{paper}\} of the cloud multi-tenancy. Along with this it is
+critical to make sure that the resource is distributed equally among the tenants
+and in no way a starvation occur in the cluster. It is very important to keep in
+mind the security implications of sharing certain kind of resources among
+tenants.
+
+In the case of FaaS, we already saw that how the same function instance can be
+reused for different tenants and the cache can be lying around corrupting the
+data or worse, exposing it. Along with this if there are functions that deal
+with very sensitive information of a client, it is often very unsafe to schedule
+other tenants' operations in the same node. 
+
+In this thesis, we leverage Kubernetes to guarantee isolation of data in a
+multitenant setup. We separate each tenant and their resources into their own
+namespace CITE \{\href{https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/}{link}\}. Along with this we leverage policies CITE \{\href{https://kubernetes.io/docs/concepts/policy/limit-range/}{link}\} by Kubernetes to enforce
+resource limits to each client and manage access. By default, compute resources
+on a Kubernetes cluster are unbound. With Policies we can set quotas or restrict
+completely any or all kind of resources available to a pod. A LimitRange is a
+policy to constrain resource allocations (to Pods or Containers) in a namespace.
+A resource quota, defined by a ResourceQuota object, provides constraints that
+limit aggregate resource consumption per namespace. Then we have Pod Security
+Policies CITE\{\href{https://kubernetes.io/docs/concepts/policy/pod-security-policy/}{link}\}. This is used to make sure that each pod that runs comply by
+certain security policies and permissions. This is what will be used in our
+system to ensure that extremely sensitive pods will be scheduled separately
+from the rest of the pods. Figure shows how a multitenant
+system looks like controlled by Kubernetes policies.
+
+\begin{figure}[!h]
+    \caption{Multi-tenant infrastructure}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/multitenancy.png}
+    \label{fig:multitenancy}
+\end{figure}
 
 \subsection{Monitoring and tracing}
-\label{sec:org59c4c40}
+\label{sec:org0285f8c}
 It is quite curious to note from the survey of 2018 done by serverless CITE\{\href{https://www.serverless.com/blog/2018-serverless-community-survey-huge-growth-usage}{SURVEY}\} that the
 second most thing the devs are worried about the development process of a FaaS
-application is monitoring.
+application is monitoring and logging. Monitoring, logging and tracing are all
+ways to ensure correctness in your system. Monitoring serverless application is
+very complex. In a traditional application, we usually focus on monitoring the
+execution of code, while in serverless, we also need to monitor the integrations
+between the different services and make sure that we can follow a request end to
+end in our distributed system.
 
-Tracing
-Logging
-Monitoring
+The demonstrate the issue a bit better, we consider a real AWS Lambda workload
+and look at the logs CITE\{\href{https://www.serverless.com/blog/serverless-monitoring-the-good-the-bad-and-the-ugly}{link}\}. We deploy a function with a clear bug as a zip file with the
+CLI of AWS. We get a HTTP endpoint for the function. This endpoint can be tried
+hitting with an API client like postman to get a 200 OK result as seen in
+Figure 13. 
+\begin{figure}[!h]
+    \caption{Trying to hit the AWS Lambda function endpoint via REST API client}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/postman.png}
+    \label{fig:postman}
+\end{figure}
+\begin{figure}[!h]
+    \caption{AWS Cloudwatch log of the same function}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/cloudwatch.png}
+    \label{fig:cloudwatch}
+\end{figure}
+
+AWS Lambda provides the logs via AWS Cloudwatch. We now look at the logs
+produced by AWS Cloudwatch upon invocation. This can be found in Figure 14. As
+you can see the logs are very fine grained, but the problem is that the logs
+make no sense or helm the developer in the debugging process. Error messages for
+failing functions are not verbose enough, so they often go unnoticed. We also are
+having a hard time finding functions that timed out. This basically clears up
+why we need more innovations in the monitoring of Serverless functions.
+
+Let us understand first what monitoring, logging and tracing entails as functionalities. 
+\subsubsection{Logging}
+\label{sec:org6dae159}
+Logging is used to track errors that were encountered in an app and other
+debugging information of the running app. Even if the application is distributed
+or otherwise, a good logging system will accumulate the logs and provide it in a
+centralized way for the ease of the developer. Log files can show any discrete
+event within an application or system, such as a failure, and error, or a state
+transformation. When something inevitably goes wrong, such transformations in
+state help indicate which change actually caused an error.
+
+Since log files can grow exponentially, it is very important to analyze before
+setting the logging framework in place what are the things that need logging. We
+only need to know the crucial information but be mindful not to omit the ones
+that might contribute to the debugging of the system. Even with this logging
+system often tend to eat up all the storage in the systems. There are several
+strategies that can be adopted to evict this problem. One way to deal with this
+is to set a retention period to logs and clear up the log entries that are older
+than this date. In most cases this would work really well since there is seldom
+need for looking into significantly older logs. Another way to deal with bloated
+logs is to rotate the log files. This is the practice where you write to a
+different log file in a time window. This time window can be a day or a week or
+a month and so on. The older log files are compressed and backed up someplace if
+need arises to use them. The most recent logs will be available in the current
+log files. This is a heavily adopted log handling mechanism.
+
+A very good logging system will have a clean and standardized structure that
+lets the developer read through it and debug easily. keep in mind that logging
+should be precise and on point. It is also important to keep in mind whom is the
+log for CITE \{\href{https://www.bmc.com/blogs/monitoring-logging-tracing/}{link}\}. 
+
+\subsubsection{Tracing}
+\label{sec:org6010627}
+Traces are intentionally a noisier set of data that logs. When logs document
+discrete events happening in the application, traces document a much wider
+continuous control flow in the application. The idea is to track the data flow
+and the control flow in the application completely. There is a lot more
+information available in the traces as opposed to the logs.
+
+The goal of tracing is not debugging but optimization. Traces often track the
+whole lifecycle of one single request. This makes it easier for the developers
+to understand the bottlenecks and other performance issues in the application.
+It can often be used along with the logs when a problem occur. Traces can tell
+you what has lead to that problem and how the previous functions have
+contributed to the issue.
+
+Traces need not be very reactive as opposed to the logs. Considering the amount
+of data involved, it is easy to see that how resource intensive can tracing be.
+It is often very hard to manage and it involves writing a lot more code to make
+sure the framework catches everything we need to. But in microservice or FaaS
+architectures, traces can be crucial since there are a lot of connected separate
+parts involved in the pipeline and traces let you have a complete overview of
+your workflow in action.
+
+\subsubsection{Monitoring}
+\label{sec:orge1f494e}
+Monitoring is a wider term that can be applied for both tracing and logging. But
+in this context we talk about more complex monitoring systems. Monitoring here
+helps the developer understand how their overall system works. It involves
+instrumenting an application and then collecting, aggregating and analyzing the
+metrics involved in the system. The main purpose of the monitoring system can be
+considered as alerting the developers issues going on in the platform before the
+users find out. These issues can be more system specific like out of memory, out
+of storage, or other system failures.
+
+There are various metrics from the system or the application that you can feed
+to your monitoring platform. Recently systems developers have started feeding
+application logs as well to monitoring platform so that they can get alerts as
+soon as an error appears in the application log.
+
+\subsubsection{Adaptation in FaaS}
+\label{sec:orgbab1c7f}
+
+\paragraph{Logs}
+\label{sec:orga6e061b}
+While working with an OpenSource FaaS platforms where the isolation is managed
+by Docker, we can use the inbuilt logging system by Docker which are standard
+systemd logs CITE\{\href{https://en.wikipedia.org/wiki/Systemd}{wiki}\}. We will not get into details of that here.
+
+With the kind of distributed system that we have in our hands, in this thesis we
+propose adapting distributed tracing to trace and monitor the
+function instances.
+
+\paragraph{Tracing}
+\label{sec:org86c8946}
+Distributed tracing is a method used to profile and monitor applications,
+especially those built using a microservices architecture. Distributed tracing
+helps pinpoint where failures occur and what causes poor performance CITE
+\{\href{https://medium.com/velotio-perspectives/a-comprehensive-tutorial-to-implementing-opentracing-with-jaeger-a01752e1a8ce}{link}\}. Opentracing CITE\{\href{https://opentracing.io/docs/}{DOC}\} is a standard specification for the definition of tracing
+information. Systems that are written following this specification can be ported
+from one tracing framework to another without having to change the
+implementation. There are some fundamental attributes of Opentracing API that
+are worth understanding. Refer Figure.
+\begin{itemize}
+\item Span
+It represents the most atomic unit of logic in a pipeline. This unit will have
+a name, a start time, and the duration
+\item Trace
+A trace is basically a collection of spans. It represents the workflow of the
+entire pipeline. Each distributed component in the pipeline contribute their
+own spans to form the trace from the aggregation.
+\end{itemize}
+
+\begin{figure}[!h]
+    \caption{Spans and traces}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/traces.png}
+    \label{fig:traces}
+\end{figure}
+
+As the definition goes from the documentation, OpenTracing is a way for services
+to “describe and propagate distributed traces without knowledge of the
+underlying OpenTracing implementation.”. The idea of tracing was well covered
+before. What Opentracing adds to it is the capability to make tracing
+infrastructure independent and standard across platforms. With the span and
+trace form of specification, OpenTracing makes it easier to:
+\begin{itemize}
+\item Spans of services
+\item Time taken by each service
+\item Latency between the services
+\item Hierarchy of services
+\item Errors or exceptions during execution of each service.
+\end{itemize}
+\paragraph{Monitoring}
+\label{sec:orgae78366}
+Monitoring of distributed systems can be heavily challenging but yet highly
+necessary. The best industry recommended way is to do Time series monitoring
+suggested by Google via the proprietary tool Borgman CITE \{\href{https://landing.google.com/sre/sre-book/chapters/practical-alerting/}{page}\}. It
+is basically an in-memory database that scrape different kind of metric from
+the system and applications. Then it does a rule based extraction from the data
+and provides a queryable time-series database. Borgmon relies on a common data
+exposition format; this enables mass data collection with low overheads and
+avoids the costs of subprocess execution and network connection setup. The data
+is used both for rendering charts and creating alerts, which are accomplished
+using simple arithmetic. Because collection is no longer in a short-lived
+process, the history of the collected data can be used for that alert
+computation as well.
+
+In our FaaS application, such a system basically can scrape the system
+information from the Kubernetes cluster since each function is a pod. Then we
+can specify appropriate rules for the kind of data aggregation we want to see,
+visualize it and setup alerts. We will be using an Open Source alternative
+which we discuss in the next section.
 
 
 \section{Implementation}
-\label{sec:orgb587d26}
+\label{sec:org9850f8f}
 For implementing the aforementioned strategies and verifying its effectiveness
-in making the Servereless workflows efficient, it is important to trial it on a
-platform that calls for innovation. Extending platforms like AWS Lambda, which
+in making the Serverless workflows efficient, it is important to trial it on a
+
 are closed in its source and vendor locked is practically impossible and
 stalling the growth of Serverless as a paradigm. Instead several Open Source
 FaaS infrastructure were analyzed for this thesis for the implementation of our
@@ -1462,9 +1795,9 @@ of the implementation, let us analyze the tools used in the process and the
 reasoning behind their choosing.
 
 \subsection{Tools}
-\label{sec:org7525c73}
+\label{sec:org8c03889}
 \subsubsection{Container Orchestration}
-\label{sec:orgb2a5885}
+\label{sec:orgab56e9e}
 We are going to work with a containerized setup like was hinted at the beginning
 of the thesis description. Each function that is being written will be
 containerized and brought up and down, scaled up and down based on the
@@ -1477,7 +1810,7 @@ Kubernetes especially because all of the leading FaaS solutions these days work
 on both of these technologies. A gentle introduction to both tools before
 proceeding to FaaS specific solutions.
 \paragraph{Docker}
-\label{sec:orgcb887c3}
+\label{sec:orge76d653}
 Docker CITE\{\href{https://www.docker.com/}{Docker}\} one of the leading Linux Containers solution that is being
 adopted very widely across all kinds of software infrastructure maintenance
 environments. According to the Docker Inc., over 3.5 million applications have
@@ -1511,8 +1844,6 @@ available for other developers or software tools.
 
 To create a docker image, the most straightforward way is via a configuration
 file called Dockerfile. According to the reference from CITE\{\href{https://docs.docker.com/engine/reference/builder/}{Docker ref}\},
-\end{itemize}
-
 
 \begin{quote}
 
@@ -1534,7 +1865,6 @@ RUN pip install -r requirements.txt
 CMD ["python","app.py"]
 \end{lstlisting}
 
-\begin{itemize}
 \item \textbf{Docker Container}: If Docker image is a digital photograph, a docker container is like a printout
 of the photograph CITE\{\href{https://stackify.com/docker-image-vs-container-everything-you-need-to-know/}{BLOG}\}. Containers can be thought of as a running instance
 of the image. Each container is run separately and unlike the images, you can
@@ -1564,7 +1894,7 @@ of containers etc.
 \end{itemize}
 
 \paragraph{Kubernetes}
-\label{sec:org55304cc}
+\label{sec:org80b4036}
 Now that we have seen a popular containerization solution called Docker, it is
 time to see the most popular orchestration solution. Docker swarm was already
 mentioned but when it comes to modern applications, the requirement goes far
@@ -1638,7 +1968,7 @@ inside one another and each Kubernetes resource can only be in one namespace. CI
 
 
 \subsubsection{OpenFaaS}
-\label{sec:org556c012}
+\label{sec:org6803820}
 Now that we have seen an overview of the packaging and clustering management
 systems, it is time to look at the right platform to test out our state-ful FaaS
 idea on. Considering that one main aim of the thesis is to move away from vendor
@@ -1672,7 +2002,7 @@ bit more intuition on how functions are scheduled, executed and scaled in the
 platform. Figure 14 goes along with the following description.
 
 \paragraph{OpenFaaS Gateway}
-\label{sec:org761db87}
+\label{sec:org716b591}
 The gateway is the entrypoint to the FaaS infrastructure. It provides an API
 which opens an external route into the functions. The gateway does a lot of the
 main functions in the infrastructure. The gateway is basically responsible for
@@ -1705,7 +2035,7 @@ visualization and monitoring. We will be using these metrics for our monitoring.
 \end{itemize}
 
 \paragraph{faas-provider}
-\label{sec:org19f2fbe}
+\label{sec:orgb14430f}
 faas-provider is a very flexible interface that provides CRUD(create, read,
 update, delete) to functions and the invoke capability. The information about
 the function that need to be created/updated/invoked gets fed directly from the
@@ -1733,7 +2063,7 @@ faas-provider stripping away the rest of the complexities.
 \end{figure}
 
 \paragraph{OpenFaaS watchdog}
-\label{sec:org4f1d2a2}
+\label{sec:orge4c5c6f}
 
 The OpenFaaS watchdog CITE \{\href{https://docs.openfaas.com/architecture/watchdog/}{DOC}\} is responsible for starting and monitoring functions in
 OpenFaaS. Any binary can become a function through the use of watchdog.
@@ -1745,7 +2075,7 @@ when an expensive resource needs to be maintained between requests such as a
 database connection, ML model or other data. 
 
 \paragraph{Auto-scaling}
-\label{sec:orgdf26acf}
+\label{sec:orga6ed184}
 
 OpenFaaS ships with a single auto-scaling rule defined in the mounted configuration file for AlertManager. AlertManager reads usage (requests per second) metrics from Prometheus in order to know when to fire an alert to the API Gateway.
 
@@ -1768,7 +2098,7 @@ Horizontal Pod Autoscaler CITE\{\href{https://kubernetes.io/docs/tasks/run-appli
 scheduler and we will be using that for the thesis implementation.
 
 \paragraph{NATS streaming}
-\label{sec:orgae8e0f7}
+\label{sec:org29c421d}
 
 A curiously lightweight application that has been adapted into OpenFaaS is NATS.
 NATS provides simple and secure messaging functionality to the setup. It does
@@ -1792,7 +2122,7 @@ setup, an in-memory message delivery protocol like NAT could be extremely
 useful.
 
 \paragraph{Triggers}
-\label{sec:orgd8afeae}
+\label{sec:orgec2a431}
 OpenFaaS functions can be triggered easily by any kind of event. A small piece
 of code will convert from the event-source and trigger the function using the
 OpenFaaS Gateway API. Some of the most used triggers are:
@@ -1813,7 +2143,7 @@ communicate with faas gateway
 \end{itemize}
 
 \paragraph{Runtime supports and templates}
-\label{sec:org9ac19a7}
+\label{sec:org13264be}
 
 OpenFaaS is one of the unique engines that supports any and all programming
 languages to write functions in because of its architecture. The way OpenFaaS
@@ -1843,7 +2173,7 @@ faas-cli deploy -f funcname.yml
 \end{lstlisting}
 
 \subsubsection{FaaS-flow}
-\label{sec:org1fd55ff}
+\label{sec:org3bd9dee}
 In section 3.1, we analyzed different possible ways to do function composition.
 We saw that workflow pattern is the most efficient and flexible design for a
 FaaS application to composite functions. What this means is, the best way to go
@@ -1851,18 +2181,107 @@ about it is by keeping a Distributed Acyclic Graph in memory that is logically
 sort of a flowchart defining the conditionals, branches and the loops in a
 function composition.  
 \subparagraph{StateStore}
-\label{sec:org9d27ef1}
+\label{sec:orgac6fa65}
 \subparagraph{DataStore}
-\label{sec:org3896e5c}
+\label{sec:org66dbef4}
 
 \subsubsection{Prometheus}
-\label{sec:org87954e1}
+\label{sec:orgcfa81a3}
+In the previous section, we discussed briefly about the time-series monitoring
+approach adapted by Google. Prometheus is an Open Source monitoring and alerting
+toolkit that works exactly the way Google Borgman works. The working of
+Prometheus is rather curious. We can statically configure Prometheus to detect
+certain metric sources. For example, the CPU usage of the nodes in the
+Kuberenetes cluster. Prometheus pulls these metric as a time-series over HTTP.
+Prometheus need not be setup in the same cluster as the applications. Prometheus
+doesn't even expect to be run as a distributed system. At this stage, Prometheus
+parses the data and keep a a multi-dimensional data model with time series data
+identified by metric name and key/value pairs. There are streams of timestamped
+values belonging to the same metric and the same set of labeled dimensions
+CITE\{\href{https://prometheus.io/docs/concepts/data\_model/}{link}\}. Prometheus also comes with a query language called PromQL that can
+query over streaming, multi-dimensional time series data.
+
+Prometheus is a tool that is written in Go programming language. The main
+component of Prometheus is a server that scrapes the time series data.
+Prometheus packs several client libraries that need to be used in application
+code if data has to be pushed to Prometheus. For ephemeral jobs that are
+shortlived, as is the case with most FaaS functions, Prometheus provides a push
+gateway. The Prometheus Pushgateway exists to allow ephemeral and batch jobs to expose
+their metrics to Prometheus. Since these kinds of jobs may not exist long enough
+to be scraped, they can instead push their metrics to a Pushgateway. The
+Pushgateway then exposes these metrics to Prometheus CITE\{\href{https://github.com/prometheus/pushgateway}{link}\}. There are
+several other exporters for various services. Along with various other support
+tools, Prometheus also has an inbuilt alert manager to handle alerts. Figure
+shows the overall system architecture of Prometheus.
+
+\begin{figure}[!h]
+    \caption{Prometheus Architecture}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/prometheus.png}
+    \label{fig:prometheus}
+\end{figure}
+
+There are numerous tools that can be used to connect to Prometheus like Grafana
+that lets us visualize the data with more meaning in a dashboard. Prometheus can
+be used with any kind of numeric data. May it be machine-centric monitoring or
+monitoring of highly dynamic service-oriented architectures. We can track the
+usage of the system resources via Prometheus in a very fine grained manner.
+Memory, CPU, and execution time of the application, all can be accounted for as
+a function of time. The person maintaining our system can do fine grained
+billing using these usage metric.
+
+OpenFaaS Gateway component exposes several metrics to help you monitor the
+health and behavior of the functions. We will leveraging that to have clean
+usage tracking for our system. For example, to get the total number of
+successful function invocations from the gateway, we can run the PromQL query
+\emph{sum( gateway\textsubscript{function}\textsubscript{invocation}\textsubscript{total} \{  code=$\backslash$"200$\backslash$"\}}
+
+
+
 \subsubsection{Jaeger}
-\label{sec:org1e88540}
-\subsubsection{Minio}
-\label{sec:org630a7de}
+\label{sec:orgbd1a0db}
+We discussed how OpenTracing API helps identify the bottlenecks and allows easy
+debugging in a distributed setup. One of the most popular implementations of
+OpenTracing API is Jaegar CITE \{\href{https://www.jaegertracing.io/}{link}\}. Jaeger identifies that the difficulty in
+dealing with debugging in microservices or FaaS setups are an order of magnitude
+away from simple monoliths. The majority of operational problems happen in such platforms
+either as an issue of networking or that of observability. 
+
+We already mentioned Spans and Traces as a part of OpenTracking API in the
+previous section. One think special about Jaeger is that, it handle trace as a
+directed acyclic graph of spans. This basically visualizes the data/execution
+path through the system.
+
+\begin{figure}[!h]
+    \caption{Jaeger Architecture}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/jaeger.png}
+    \label{fig:jaeger}
+\end{figure}
+
+Figure shows the architecture of Jaeger. Jaegar has code facing client libraries
+that are compliant with OpenTracing API. It can be integrated very easily with
+any tool that is integrated with OpenTracing. This includes frameworks like
+Flask, gRPC, and many more. Basically an instrumented service creates spans when
+receiving new requests and attaches context information (trace id, span id, and
+baggage) to outgoing requests CITE\{\href{https://www.jaegertracing.io/docs/1.14/architecture/}{link}\}. Sampled spans are propagated out of
+the process asynchronously to Jaeger Agents. This process has very little
+overhead. The Jaeger agent is a network daemon that listens for spans sent over
+UDP, which it batches and sends to the collector. It is designed to be deployed
+to all hosts as an infrastructure component. Collective receive these traces and
+process it to validate, index, transform and store them. Like Prometheus, Jaeger
+also supports a Query language via a Query component and visualizes the output
+in a UI. Figure shows what the UI looks like for a web app on an HTTP request to
+the endpoint. 
+\begin{figure}[!h]
+    \caption{Jaeger UI}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/jaeger_traces.png}
+    \label{fig:jaeger_traces}
+\end{figure}
+
 \subsection{Architecture}
-\label{sec:orgefc215f}
+\label{sec:orgdba302d}
 \begin{figure}[!h]
     \caption{Architecture}
     \centering
@@ -1877,9 +2296,9 @@ function composition.
     \label{fig:faas-flow}
 \end{figure}
 \section{Evaluation}
-\label{sec:org4045af2}
+\label{sec:org71b6b8f}
 \section{Related work}
-\label{sec:org59622f5}
+\label{sec:org9acd2c8}
 Serverless has gained a lot of attention and traction from the scientific
 community in the past few years because of its massive implications in resource
 conservation and innovative programming when one doesn't have to worry about
@@ -1961,9 +2380,9 @@ They try to get this system working on AWS lambda by connecting the runtime to a
 priority based queue. 
 
 \section{Future work}
-\label{sec:orgf5ba5a8}
+\label{sec:orgca9115b}
 \section{Conclusion}
-\label{sec:org333cb8b}
+\label{sec:org356318f}
 
 
 :UNNUMBERED: t

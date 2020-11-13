@@ -19,7 +19,6 @@
 #+EXPORT_FILE_NAME: export_with_custom_title
 #+STARTUP: showall
 
-
 \begin{abstract}
 Serverless Computing is an up and coming platform as a service offering 
 where the cloud provider manages and allocates
@@ -88,7 +87,14 @@ an API to define function compositions, which eventually get executed in AWS
 Lambda, the pioneer in serverless platforms. Other than enforcing vendor lock in
 to AWS, stepfunction comes with numerous limitations like 20s timeout on the API
 gateway, 5 minutes limit to lambda execution, a limit of 2 executions per second
-etc. 
+etc.
+
+A major requirement usually for heavy multi-staged processing pipelines is fault
+tolerance. If at all a stage fails, the system should be able to restart from
+where it failed with the correct intermediate data and complete the workflow. In
+orchestrations like stepfunction where data is passed over the gateway among
+each other, if a failure occur the processed data till the failure function is
+gone for good. This makes the system unreliable for certain heavy load applications.
 
 When we look at the academic research in and around this area, in the past
 couple of years a handful of ideas has been thrown into introducing state in
@@ -878,7 +884,76 @@ distinct but interrelated steps namely Extract, Transform and Load.
 The main advantage of having ETL pipelines in the splitting of functionalities
 in the data processing programs that would have otherwise been a single huge
 monolith - hard to manage and extremely bloated. 
-# TODO
+
+**** Extract
+In the present day production workloads, data can be arriving from numerous
+sources of very varied nature and behavior. Depending on their origin source,
+this data can have different formats or organizational structure. Some examples
+for this are relational databases, XML, JSON, flat text files, etc. To allow
+scalability in a software solution it is always necessary to have the tool
+working for multitude of data types. This is where having a dedicated extract
+process shine. Extract process accepts data from any of the data source and
+format it to a unified data type. In general, in extraction phase developers try
+to convert the data into a single format that is understandable by the
+transformation phase. Another import thing the extract step take care of is the
+validation of the data. The data that is coming from the source can be of the
+wrong format as expected, even missing some columns or corrupted somehow. In the
+extract step, these bad data are reported and the process is aborted.
+**** Transform
+This step can be considered as the brain of the whole workflow. This is the
+stage where we convert the data that was received into meaningful information.
+Transform operation often happen in multiple stages where in each stage a
+certain transformation logic is applied to the data. These logic can be simple
+text formatting steps like splitting the data, cleaning the data, deduplication,
+replacing codewords with meaningful entities etc. or more complex arithmetic or
+logic operations like machine learning models. This step often ends up being the
+bottleneck in a lot of ETL pipelines since data processing can be a very
+resource heavy task and if the code is written with no optimization, the whole
+pipeline will end up eating up the all the resources.
+**** Load
+Like the name suggests this is the step where the data coming after the
+extraction and transformation processed get loaded into the target data store.
+This is a rather interesting process because the nature of the target store and
+the communication API need to be analyzed efficiently to write the code. The
+code often contains certain validation parameters to see if the current data is
+suitable for insertion into the target. Common problems that occur might be
+format difference from the target, duplication of primary or foreign keys, other
+integrity violation issues, etc. Monitoring is critical in this step since there
+is a chance that the target endpoint can go unavailable and the developers have
+to make sure the data after the entire processing is not lost. More than often
+the data output overwrites the existing data in the source, in other cases the
+new data gets appended to the older ones or aggregated with the existing data.
+
+*** How Serverless can make a difference in ETL
+Let us now look at some of the characteristics of the ETL processes that can be
+derived from the definition.
+- In the pipeline, if a failure occur in any of the above stage, it should stop
+  from proceeding to the next stage for that data without disrupting the
+  pipeline that is dealing with any other batch of data.
+- Each stage can have different loads depending on the operations and these
+  stages should be able to independently scale without scaling the other stages.
+  This helps in saving resources. Along with that it also saves from making any
+  one step a bottleneck because of low resource availability by scaling the
+  resources up as per necessity.
+- Intermediate data transfer need to handled properly by the system. We need to
+  have temporary data between each of the processes stored temporarily. This is
+  to make sure that if one of the stages fails, the data the came out of the
+  previous step is still available which can be processed again after the
+  developer fixes the issue with the current stage. This means that at any stage
+  you can restart the system and the pipeline can continue without issues.
+- There should be proper monitoring support make sure that we can easily see
+  when the errors are happening in the system. Along with that, the performance
+  of the pipeline should be quantifiable. We should be able to tell which stage
+  in the whole pipeline uses more resources, etc. and the overall performance of
+  the ETL workload.
+
+It is clear from the above description why Serverless might be a good fit for
+ETLs considering its elastic architecture and functional style of coding. Each
+stage in ETL can be separate functions than can be independently scaled and
+monitored. Although the aforementioned issues with the Serverless makes the
+function composition and data transfer quite inefficient making it an ill suited
+candidate for ETL applications.
+
 ** Problem statement
 From the above set of evaluations, there is no doubt that Serverless is the way
 of the future infrastructure maintenance and deployment. Even with the current
@@ -1356,27 +1431,266 @@ right tool for the ephemeral storage in Serverless platforms.
 *** Olric
 Olric CITE{[[https://github.com/buraksezer/olric][Olric]]} is a distributed in-memory key/value data store. The idea is
 that we can create a shared pool of RAM across a cluster of computers to store
-the data in, in a scalable manner.
+the data in, in a scalable manner. The design motives for Olric is to share
+between servers fast-changing transient data. At the time of writing, Olric
+supports multiple serialization formats including JSON, MessagePack, etc. By
+utilizing the heuristics of Kubernetes, Olric provides horizontal scalability to
+the RAM pool available. Olric uses a consistent hashing algorithm CITE{[[https://github.com/buraksezer/consistent][link]]} to distribute
+the load fairly among the cluster members. Olric best-effort consistency
+guarantees without being a complete CP (indeed PA/EC) solution. This thread safe
+in-memory cache comes with replica support and a command line interface.
+
+The data is stored inside distributed maps which can be thought of as a bucket.
+Inside each distributed map, there can be numerous key - value pairs. As for the
+operations, currently Olric support atomic operations and the lookup
+has a complexity of O(1). Olric uses SETNX algorithm to implement locking
+primitives inspired from Redis protocol CITE{[[https://redis.io/commands/setnx#design-pattern-locking-with-codesetnxcode][link]]}. Olric can be used either as a
+Go library or as a language independent service.
+
+The architecture of Olric is rather sophisticated. Olric distributes data among
+partitions that are distributed across the cluster using the consistent hash algorithm. Every partition is being
+owned by a cluster member and may have one or more backups for redundancy. When
+a distributed map entry is being written, the communication is to the partition
+owner. In a stable cluster, the query hits the most up-to-date version of that
+data entry. In order to find the partition which the key belongs to, Olric
+hashes the key and mod it with the number of partitions.
+
+There is an elected coordinator in each cluster. The coordinator election is
+done via a very simple heuristics. All the machines share their birthdate in the
+cluster. The oldest machine gets elected as the coordinator. When the
+coordinator leaves, the second oldest gets elected. It manages the partition table.
+This can involve registering new partitions if a new machine joins, removes
+outdated data, pushes new partition table to all the members and to the cluster.
+
+There is a rebalancer binary running in each node that takes care of relocating
+the partition from the backup to the new host when one of the hosts leaves.
+Along with this it merges fragmented partitions.
+
+The idea of fragmented partitions are rather curious. Each partition has an
+owner. There can be multiple owners in which case the partition is called a
+fragmented partition. The last added owner is called a primary owner. Write
+operation is only done by the primary owner. The previous owners are only used
+for read and delete. When you read a key, the primary owner tries to find the
+key on itself, first. Then, queries the previous owners and backups,
+respectively. The delete operation works the same way. The data(distributed map
+objects) in the fragmented partition is moved slowly to the primary owner by the
+rebalancer. Until the move is done, the data remains available on the previous
+owners. The distributed map methods use this list to query data on the cluster.
+
 
 ** Multi-tenant security and isolation
-In the current state of 
-Namespacing in kubernetes
-[[https://www.researchgate.net/publication/321637564_Cloud_Multi-Tenancy_Issues_and_Developments][Cloud Multi-tenancy]]
+A multi-tenant cluster is shared by multiple user and/or workloads which are
+referred to as tenants CITE{[[https://cloud.google.com/kubernetes-engine/docs/concepts/multitenancy-overview][link]]}. It is very crucial to make sure that data is
+completely segregated between the tenants and in no circumstances can data of
+one tenant be visible to the other. This is considered one of the biggest
+security risks CITE{[[https://www.researchgate.net/publication/321637564_Cloud_Multi-Tenancy_Issues_and_Developments][paper]]} of the cloud multi-tenancy. Along with this it is
+critical to make sure that the resource is distributed equally among the tenants
+and in no way a starvation occur in the cluster. It is very important to keep in
+mind the security implications of sharing certain kind of resources among
+tenants.
+
+In the case of FaaS, we already saw that how the same function instance can be
+reused for different tenants and the cache can be lying around corrupting the
+data or worse, exposing it. Along with this if there are functions that deal
+with very sensitive information of a client, it is often very unsafe to schedule
+other tenants' operations in the same node. 
+
+In this thesis, we leverage Kubernetes to guarantee isolation of data in a
+multitenant setup. We separate each tenant and their resources into their own
+namespace CITE {[[https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/][link]]}. Along with this we leverage policies CITE {[[https://kubernetes.io/docs/concepts/policy/limit-range/][link]]} by Kubernetes to enforce
+resource limits to each client and manage access. By default, compute resources
+on a Kubernetes cluster are unbound. With Policies we can set quotas or restrict
+completely any or all kind of resources available to a pod. A LimitRange is a
+policy to constrain resource allocations (to Pods or Containers) in a namespace.
+A resource quota, defined by a ResourceQuota object, provides constraints that
+limit aggregate resource consumption per namespace. Then we have Pod Security
+Policies CITE{[[https://kubernetes.io/docs/concepts/policy/pod-security-policy/][link]]}. This is used to make sure that each pod that runs comply by
+certain security policies and permissions. This is what will be used in our
+system to ensure that extremely sensitive pods will be scheduled separately
+from the rest of the pods. Figure shows how a multitenant
+system looks like controlled by Kubernetes policies.
+
+\begin{figure}[!h]
+    \caption{Multi-tenant infrastructure}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/multitenancy.png}
+    \label{fig:multitenancy}
+\end{figure}
 
 ** Monitoring and tracing
 It is quite curious to note from the survey of 2018 done by serverless CITE{[[https://www.serverless.com/blog/2018-serverless-community-survey-huge-growth-usage][SURVEY]]} that the
 second most thing the devs are worried about the development process of a FaaS
-application is monitoring.
+application is monitoring and logging. Monitoring, logging and tracing are all
+ways to ensure correctness in your system. Monitoring serverless application is
+very complex. In a traditional application, we usually focus on monitoring the
+execution of code, while in serverless, we also need to monitor the integrations
+between the different services and make sure that we can follow a request end to
+end in our distributed system.
 
-Tracing
-Logging
-Monitoring
+The demonstrate the issue a bit better, we consider a real AWS Lambda workload
+and look at the logs CITE{[[https://www.serverless.com/blog/serverless-monitoring-the-good-the-bad-and-the-ugly][link]]}. We deploy a function with a clear bug as a zip file with the
+CLI of AWS. We get a HTTP endpoint for the function. This endpoint can be tried
+hitting with an API client like postman to get a 200 OK result as seen in
+Figure 13. 
+\begin{figure}[!h]
+    \caption{Trying to hit the AWS Lambda function endpoint via REST API client}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/postman.png}
+    \label{fig:postman}
+\end{figure}
+\begin{figure}[!h]
+    \caption{AWS Cloudwatch log of the same function}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/cloudwatch.png}
+    \label{fig:cloudwatch}
+\end{figure}
+
+AWS Lambda provides the logs via AWS Cloudwatch. We now look at the logs
+produced by AWS Cloudwatch upon invocation. This can be found in Figure 14. As
+you can see the logs are very fine grained, but the problem is that the logs
+make no sense or helm the developer in the debugging process. Error messages for
+failing functions are not verbose enough, so they often go unnoticed. We also are
+having a hard time finding functions that timed out. This basically clears up
+why we need more innovations in the monitoring of Serverless functions.
+
+Let us understand first what monitoring, logging and tracing entails as functionalities. 
+*** Logging
+Logging is used to track errors that were encountered in an app and other
+debugging information of the running app. Even if the application is distributed
+or otherwise, a good logging system will accumulate the logs and provide it in a
+centralized way for the ease of the developer. Log files can show any discrete
+event within an application or system, such as a failure, and error, or a state
+transformation. When something inevitably goes wrong, such transformations in
+state help indicate which change actually caused an error.
+
+Since log files can grow exponentially, it is very important to analyze before
+setting the logging framework in place what are the things that need logging. We
+only need to know the crucial information but be mindful not to omit the ones
+that might contribute to the debugging of the system. Even with this logging
+system often tend to eat up all the storage in the systems. There are several
+strategies that can be adopted to evict this problem. One way to deal with this
+is to set a retention period to logs and clear up the log entries that are older
+than this date. In most cases this would work really well since there is seldom
+need for looking into significantly older logs. Another way to deal with bloated
+logs is to rotate the log files. This is the practice where you write to a
+different log file in a time window. This time window can be a day or a week or
+a month and so on. The older log files are compressed and backed up someplace if
+need arises to use them. The most recent logs will be available in the current
+log files. This is a heavily adopted log handling mechanism.
+
+A very good logging system will have a clean and standardized structure that
+lets the developer read through it and debug easily. keep in mind that logging
+should be precise and on point. It is also important to keep in mind whom is the
+log for CITE {[[https://www.bmc.com/blogs/monitoring-logging-tracing/][link]]}. 
+
+*** Tracing
+Traces are intentionally a noisier set of data that logs. When logs document
+discrete events happening in the application, traces document a much wider
+continuous control flow in the application. The idea is to track the data flow
+and the control flow in the application completely. There is a lot more
+information available in the traces as opposed to the logs.
+
+The goal of tracing is not debugging but optimization. Traces often track the
+whole lifecycle of one single request. This makes it easier for the developers
+to understand the bottlenecks and other performance issues in the application.
+It can often be used along with the logs when a problem occur. Traces can tell
+you what has lead to that problem and how the previous functions have
+contributed to the issue.
+
+Traces need not be very reactive as opposed to the logs. Considering the amount
+of data involved, it is easy to see that how resource intensive can tracing be.
+It is often very hard to manage and it involves writing a lot more code to make
+sure the framework catches everything we need to. But in microservice or FaaS
+architectures, traces can be crucial since there are a lot of connected separate
+parts involved in the pipeline and traces let you have a complete overview of
+your workflow in action.
+
+*** Monitoring 
+Monitoring is a wider term that can be applied for both tracing and logging. But
+in this context we talk about more complex monitoring systems. Monitoring here
+helps the developer understand how their overall system works. It involves
+instrumenting an application and then collecting, aggregating and analyzing the
+metrics involved in the system. The main purpose of the monitoring system can be
+considered as alerting the developers issues going on in the platform before the
+users find out. These issues can be more system specific like out of memory, out
+of storage, or other system failures.
+
+There are various metrics from the system or the application that you can feed
+to your monitoring platform. Recently systems developers have started feeding
+application logs as well to monitoring platform so that they can get alerts as
+soon as an error appears in the application log.
+
+*** Adaptation in FaaS
+
+**** Logs
+While working with an OpenSource FaaS platforms where the isolation is managed
+by Docker, we can use the inbuilt logging system by Docker which are standard
+systemd logs CITE{[[https://en.wikipedia.org/wiki/Systemd][wiki]]}. We will not get into details of that here.
+
+With the kind of distributed system that we have in our hands, in this thesis we
+propose adapting distributed tracing to trace and monitor the
+function instances.
+
+**** Tracing
+Distributed tracing is a method used to profile and monitor applications,
+especially those built using a microservices architecture. Distributed tracing
+helps pinpoint where failures occur and what causes poor performance CITE
+{[[https://medium.com/velotio-perspectives/a-comprehensive-tutorial-to-implementing-opentracing-with-jaeger-a01752e1a8ce][link]]}. Opentracing CITE{[[https://opentracing.io/docs/][DOC]]} is a standard specification for the definition of tracing
+information. Systems that are written following this specification can be ported
+from one tracing framework to another without having to change the
+implementation. There are some fundamental attributes of Opentracing API that
+are worth understanding. Refer Figure.
+- Span
+  It represents the most atomic unit of logic in a pipeline. This unit will have
+  a name, a start time, and the duration
+- Trace
+  A trace is basically a collection of spans. It represents the workflow of the
+  entire pipeline. Each distributed component in the pipeline contribute their
+  own spans to form the trace from the aggregation.
+  
+\begin{figure}[!h]
+    \caption{Spans and traces}
+    \centering
+    \includegraphics[width=100mm]{./thesis_images/traces.png}
+    \label{fig:traces}
+\end{figure}
+
+As the definition goes from the documentation, OpenTracing is a way for services
+to “describe and propagate distributed traces without knowledge of the
+underlying OpenTracing implementation.”. The idea of tracing was well covered
+before. What Opentracing adds to it is the capability to make tracing
+infrastructure independent and standard across platforms. With the span and
+trace form of specification, OpenTracing makes it easier to:
+- Spans of services
+- Time taken by each service
+- Latency between the services
+- Hierarchy of services
+- Errors or exceptions during execution of each service.
+**** Monitoring
+Monitoring of distributed systems can be heavily challenging but yet highly
+necessary. The best industry recommended way is to do Time series monitoring
+suggested by Google via the proprietary tool Borgman CITE {[[https://landing.google.com/sre/sre-book/chapters/practical-alerting/][page]]}. It
+is basically an in-memory database that scrape different kind of metric from
+the system and applications. Then it does a rule based extraction from the data
+and provides a queryable time-series database. Borgmon relies on a common data
+exposition format; this enables mass data collection with low overheads and
+avoids the costs of subprocess execution and network connection setup. The data
+is used both for rendering charts and creating alerts, which are accomplished
+using simple arithmetic. Because collection is no longer in a short-lived
+process, the history of the collected data can be used for that alert
+computation as well.
+
+In our FaaS application, such a system basically can scrape the system
+information from the Kubernetes cluster since each function is a pod. Then we
+can specify appropriate rules for the kind of data aggregation we want to see,
+visualize it and setup alerts. We will be using an Open Source alternative
+which we discuss in the next section.
 
 
 * Implementation
 For implementing the aforementioned strategies and verifying its effectiveness
-in making the Servereless workflows efficient, it is important to trial it on a
-platform that calls for innovation. Extending platforms like AWS Lambda, which
+in making the Serverless workflows efficient, it is important to trial it on a
+
 are closed in its source and vendor locked is practically impossible and
 stalling the growth of Serverless as a paradigm. Instead several Open Source
 FaaS infrastructure were analyzed for this thesis for the implementation of our
@@ -1432,7 +1746,6 @@ Some terminologies that would help with understanding the concept:
   
   To create a docker image, the most straightforward way is via a configuration
   file called Dockerfile. According to the reference from CITE{[[https://docs.docker.com/engine/reference/builder/][Docker ref]]},
-  
   
   #+BEGIN_quote
   
@@ -1760,8 +2073,98 @@ function composition.
 ***** DataStore
 
 *** Prometheus
+In the previous section, we discussed briefly about the time-series monitoring
+approach adapted by Google. Prometheus is an Open Source monitoring and alerting
+toolkit that works exactly the way Google Borgman works. The working of
+Prometheus is rather curious. We can statically configure Prometheus to detect
+certain metric sources. For example, the CPU usage of the nodes in the
+Kuberenetes cluster. Prometheus pulls these metric as a time-series over HTTP.
+Prometheus need not be setup in the same cluster as the applications. Prometheus
+doesn't even expect to be run as a distributed system. At this stage, Prometheus
+parses the data and keep a a multi-dimensional data model with time series data
+identified by metric name and key/value pairs. There are streams of timestamped
+values belonging to the same metric and the same set of labeled dimensions
+CITE{[[https://prometheus.io/docs/concepts/data_model/][link]]}. Prometheus also comes with a query language called PromQL that can
+query over streaming, multi-dimensional time series data.
+
+Prometheus is a tool that is written in Go programming language. The main
+component of Prometheus is a server that scrapes the time series data.
+Prometheus packs several client libraries that need to be used in application
+code if data has to be pushed to Prometheus. For ephemeral jobs that are
+shortlived, as is the case with most FaaS functions, Prometheus provides a push
+gateway. The Prometheus Pushgateway exists to allow ephemeral and batch jobs to expose
+their metrics to Prometheus. Since these kinds of jobs may not exist long enough
+to be scraped, they can instead push their metrics to a Pushgateway. The
+Pushgateway then exposes these metrics to Prometheus CITE{[[https://github.com/prometheus/pushgateway][link]]}. There are
+several other exporters for various services. Along with various other support
+tools, Prometheus also has an inbuilt alert manager to handle alerts. Figure
+shows the overall system architecture of Prometheus.
+
+\begin{figure}[!h]
+    \caption{Prometheus Architecture}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/prometheus.png}
+    \label{fig:prometheus}
+\end{figure}
+
+There are numerous tools that can be used to connect to Prometheus like Grafana
+that lets us visualize the data with more meaning in a dashboard. Prometheus can
+be used with any kind of numeric data. May it be machine-centric monitoring or
+monitoring of highly dynamic service-oriented architectures. We can track the
+usage of the system resources via Prometheus in a very fine grained manner.
+Memory, CPU, and execution time of the application, all can be accounted for as
+a function of time. The person maintaining our system can do fine grained
+billing using these usage metric.
+
+OpenFaaS Gateway component exposes several metrics to help you monitor the
+health and behavior of the functions. We will leveraging that to have clean
+usage tracking for our system. For example, to get the total number of
+successful function invocations from the gateway, we can run the PromQL query
+/sum( gateway_function_invocation_total {  code=\"200\"}/
+
+
+
 *** Jaeger
-*** Minio
+We discussed how OpenTracing API helps identify the bottlenecks and allows easy
+debugging in a distributed setup. One of the most popular implementations of
+OpenTracing API is Jaegar CITE {[[https://www.jaegertracing.io/][link]]}. Jaeger identifies that the difficulty in
+dealing with debugging in microservices or FaaS setups are an order of magnitude
+away from simple monoliths. The majority of operational problems happen in such platforms
+either as an issue of networking or that of observability. 
+
+We already mentioned Spans and Traces as a part of OpenTracking API in the
+previous section. One think special about Jaeger is that, it handle trace as a
+directed acyclic graph of spans. This basically visualizes the data/execution
+path through the system.
+
+\begin{figure}[!h]
+    \caption{Jaeger Architecture}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/jaeger.png}
+    \label{fig:jaeger}
+\end{figure}
+
+Figure shows the architecture of Jaeger. Jaegar has code facing client libraries
+that are compliant with OpenTracing API. It can be integrated very easily with
+any tool that is integrated with OpenTracing. This includes frameworks like
+Flask, gRPC, and many more. Basically an instrumented service creates spans when
+receiving new requests and attaches context information (trace id, span id, and
+baggage) to outgoing requests CITE{[[https://www.jaegertracing.io/docs/1.14/architecture/][link]]}. Sampled spans are propagated out of
+the process asynchronously to Jaeger Agents. This process has very little
+overhead. The Jaeger agent is a network daemon that listens for spans sent over
+UDP, which it batches and sends to the collector. It is designed to be deployed
+to all hosts as an infrastructure component. Collective receive these traces and
+process it to validate, index, transform and store them. Like Prometheus, Jaeger
+also supports a Query language via a Query component and visualizes the output
+in a UI. Figure shows what the UI looks like for a web app on an HTTP request to
+the endpoint. 
+\begin{figure}[!h]
+    \caption{Jaeger UI}
+    \centering
+    \includegraphics[width=130mm]{./thesis_images/jaeger_traces.png}
+    \label{fig:jaeger_traces}
+\end{figure}
+
 ** Architecture
 \begin{figure}[!h]
     \caption{Architecture}
