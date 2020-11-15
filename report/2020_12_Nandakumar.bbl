@@ -1,0 +1,1607 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nty/global//global/global}
+  \entry{bayliss09:_rollin_out_revol}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=AG}{%
+         family={Adzic},
+         familyi={A\bibinitperiod},
+         given={Gojko},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=CR}{%
+         family={Chatley},
+         familyi={C\bibinitperiod},
+         given={Robert},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Association for Computing Machinery}%
+    }
+    \keyw{Serverless, Economics, Cloud Computing}
+    \strng{namehash}{AGCR1}
+    \strng{fullhash}{AGCR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{abstract}{%
+    Amazon Web Services unveiled their "Lambda" platform in late 2014. Since
+  then, each of the major cloud computing infrastructure providers has released
+  services supporting a similar style of deployment and operation, where rather
+  than deploying and running monolithic services, or dedicated virtual
+  machines, users are able to deploy individual functions, and pay only for the
+  time that their code is actually executing. These technologies are gathered
+  together under the marketing term "serverless" and the providers suggest that
+  they have the potential to significantly change how client/server
+  applications are designed, developed and operated. This paper presents two
+  case industrial studies of early adopters, showing how migrating an
+  application to the Lambda deployment architecture reduced hosting costs - by
+  between 66% and 95% - and discusses how further adoption of this trend might
+  influence common software architecture design practices.%
+    }
+    \field{booktitle}{Proceedings of the 2017 11th Joint Meeting on Foundations
+  of Software Engineering}
+    \verb{doi}
+    \verb 10.1145/3106237.3117767
+    \endverb
+    \field{isbn}{9781450351058}
+    \field{pages}{884–889}
+    \field{series}{ESEC/FSE 2017}
+    \field{title}{Serverless Computing: Economic and Architectural Impact}
+    \verb{url}
+    \verb https://doi.org/10.1145/3106237.3117767
+    \endverb
+    \list{location}{1}{%
+      {Paderborn, Germany}%
+    }
+    \field{year}{2017}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{lambdapricing}{online}{}
+    \name{author}{1}{}{%
+      {{hash=AR}{%
+         family={Akiwatkar},
+         familyi={A\bibinitperiod},
+         given={Rohit},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AR1}
+    \strng{fullhash}{AR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{AWS Lambda Pricing: How Much it Costs to Run a Serverless
+  Application?}
+    \verb{url}
+    \verb https://www.simform.com/aws-lambda-pricing/
+    \endverb
+    \field{month}{04}
+    \field{year}{2019}
+  \endentry
+
+  \entry{compare_faas}{online}{}
+    \name{author}{1}{}{%
+      {{hash=AR}{%
+         family={Akiwatkar},
+         familyi={A\bibinitperiod},
+         given={Rohit},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AR1}
+    \strng{fullhash}{AR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{AWS Lambda vs Azure Functions vs Google Cloud Functions:
+  Comparing Serverless Providers}
+    \verb{url}
+    \verb https://www.simform.com/aws-lambda-vs-azure-functions-vs-google-funct
+    \verb ions/
+    \endverb
+    \field{month}{11}
+    \field{year}{2020}
+  \endentry
+
+  \entry{sand}{inproceedings}{}
+    \name{author}{8}{}{%
+      {{hash=AIE}{%
+         family={Akkus},
+         familyi={A\bibinitperiod},
+         given={Istemi\bibnamedelima Ekin},
+         giveni={I\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=CR}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Ruichuan},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=RI}{%
+         family={Rimac},
+         familyi={R\bibinitperiod},
+         given={Ivica},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=SM}{%
+         family={Stein},
+         familyi={S\bibinitperiod},
+         given={Manuel},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=SK}{%
+         family={Satzke},
+         familyi={S\bibinitperiod},
+         given={Klaus},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=BA}{%
+         family={Beck},
+         familyi={B\bibinitperiod},
+         given={Andre},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=AP}{%
+         family={Aditya},
+         familyi={A\bibinitperiod},
+         given={Paarijaat},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=HV}{%
+         family={Hilt},
+         familyi={H\bibinitperiod},
+         given={Volker},
+         giveni={V\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {{USENIX} Association}%
+    }
+    \strng{namehash}{AIE+1}
+    \strng{fullhash}{AIECRRISMSKBAAPHV1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{booktitle}{2018 {USENIX} Annual Technical Conference ({USENIX} {ATC}
+  18)}
+    \field{isbn}{978-1-939133-01-4}
+    \field{pages}{923\bibrangedash 935}
+    \field{title}{{SAND}: Towards High-Performance Serverless Computing}
+    \verb{url}
+    \verb https://www.usenix.org/conference/atc18/presentation/akkus
+    \endverb
+    \list{location}{1}{%
+      {Boston, MA}%
+    }
+    \field{month}{07}
+    \field{year}{2018}
+  \endentry
+
+  \entry{crail}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{Apache Crail}
+    \verb{url}
+    \verb https://crail.apache.org/
+    \endverb
+  \endentry
+
+  \entry{stepfunction}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{AWS Step Functions}
+    \verb{url}
+    \verb https://aws.amazon.com/step-functions
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{dockerever}{online}{}
+    \name{author}{1}{}{%
+      {{hash=BE}{%
+         family={BOERSMA},
+         familyi={B\bibinitperiod},
+         given={ERIC},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BE1}
+    \strng{fullhash}{BE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{title}{Docker Image vs Container: Everything You Need to Know}
+    \verb{url}
+    \verb https://stackify.com/docker-image-vs-container-everything-you-need-to
+    \verb -know/
+    \endverb
+    \field{month}{05}
+    \field{year}{2019}
+  \endentry
+
+  \entry{cloudflare}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Cloudflare}
+    \verb{url}
+    \verb https://www.cloudflare.com/
+    \endverb
+  \endentry
+
+  \entry{multi}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Cluster multi-tenancy , url =
+  {https://cloud.google.com/kubernetes-engine/docs/concepts/multitenancy-overview},}
+  \endentry
+
+  \entry{consistent}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Consistent Hashing Algorithm}
+    \verb{url}
+    \verb https://github.com/buraksezer/consistent
+    \endverb
+  \endentry
+
+  \entry{dockerhub}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{Docker Hub}
+    \verb{url}
+    \verb https://hub.docker.com/
+    \endverb
+  \endentry
+
+  \entry{dockerref}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{Dockerfile reference}
+    \verb{url}
+    \verb https://docs.docker.com/engine/reference/builder/
+    \endverb
+  \endentry
+
+  \entry{edge}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{E}
+    \field{sortinithash}{E}
+    \field{title}{Edge computing}
+    \verb{url}
+    \verb https://en.wikipedia.org/wiki/Edge_computing
+    \endverb
+  \endentry
+
+  \entry{faasflow}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{title}{Faas Flow}
+    \verb{url}
+    \verb https://github.com/s8sg/faas-flow
+    \endverb
+  \endentry
+
+  \entry{faasprovider}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{title}{Faas provider}
+    \verb{url}
+    \verb https://github.com/openfaas/faas-provider/
+    \endverb
+  \endentry
+
+  \entry{economics}{online}{}
+    \name{author}{1}{}{%
+      {{hash=GR}{%
+         family={Gancarz},
+         familyi={G\bibinitperiod},
+         given={Rafal},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GR1}
+    \strng{fullhash}{GR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{title}{The economics of serverless computing: A real-world test}
+    \verb{url}
+    \verb https://techbeacon.com/enterprise-it/economics-serverless-computing-r
+    \verb eal-world-test
+    \endverb
+    \field{month}{06}
+    \field{year}{2019}
+  \endentry
+
+  \entry{marla}{article}{}
+    \name{author}{3}{}{%
+      {{hash=GAV}{%
+         family={Giménez-Alventosa},
+         familyi={G\bibinithyphendelim A\bibinitperiod},
+         given={V.},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=MG}{%
+         family={Moltó},
+         familyi={M\bibinitperiod},
+         given={Germán},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=CM}{%
+         family={Caballer},
+         familyi={C\bibinitperiod},
+         given={Miguel},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GAVMGCM1}
+    \strng{fullhash}{GAVMGCM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \verb{doi}
+    \verb 10.1016/j.future.2019.02.057
+    \endverb
+    \field{title}{A framework and a performance assessment for serverless
+  MapReduce on AWS Lambda}
+    \field{volume}{97}
+    \field{journaltitle}{Future Generation Computer Systems}
+    \field{month}{03}
+    \field{year}{2019}
+  \endentry
+
+  \entry{lambdaintro}{online}{}
+    \name{author}{1}{}{%
+      {{hash=HA}{%
+         family={Handy},
+         familyi={H\bibinitperiod},
+         given={Alex},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HA1}
+    \strng{fullhash}{HA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Amazon introduces Lambda, Containers at AWS re:Invent}
+    \verb{url}
+    \verb https://sdtimes.com/amazon/amazon-introduces-lambda-containers/
+    \endverb
+    \field{month}{11}
+    \field{year}{2014}
+  \endentry
+
+  \entry{onestep}{misc}{}
+    \name{author}{7}{}{%
+      {{hash=HJM}{%
+         family={Hellerstein},
+         familyi={H\bibinitperiod},
+         given={Joseph\bibnamedelima M.},
+         giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=FJ}{%
+         family={Faleiro},
+         familyi={F\bibinitperiod},
+         given={Jose},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=GJE}{%
+         family={Gonzalez},
+         familyi={G\bibinitperiod},
+         given={Joseph\bibnamedelima E.},
+         giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=SSJ}{%
+         family={Schleier-Smith},
+         familyi={S\bibinithyphendelim S\bibinitperiod},
+         given={Johann},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SV}{%
+         family={Sreekanti},
+         familyi={S\bibinitperiod},
+         given={Vikram},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Tumanov},
+         familyi={T\bibinitperiod},
+         given={Alexey},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=WC}{%
+         family={Wu},
+         familyi={W\bibinitperiod},
+         given={Chenggang},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HJM+1}
+    \strng{fullhash}{HJMFJGJESSJSVTAWC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \verb{eprint}
+    \verb 1812.03651
+    \endverb
+    \field{title}{Serverless Computing: One Step Forward, Two Steps Back}
+    \field{eprinttype}{arXiv}
+    \field{eprintclass}{cs.DC}
+    \field{year}{2018}
+  \endentry
+
+  \entry{podscale}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Horizontal Pod Autoscaler}
+    \verb{url}
+    \verb https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autos
+    \verb cale/
+    \endverb
+  \endentry
+
+  \entry{plonk}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{Introducing the PLONK Stack for Cloud Native Developers}
+    \verb{url}
+    \verb https://www.openfaas.com/blog/plonk-stack/
+    \endverb
+  \endentry
+
+  \entry{jaegerarch}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{J}
+    \field{sortinithash}{J}
+    \field{title}{Jaeger Architecture}
+    \verb{url}
+    \verb https://www.jaegertracing.io/docs/1.14/architecture/
+    \endverb
+  \endentry
+
+  \entry{jaeger}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{J}
+    \field{sortinithash}{J}
+    \field{title}{Jaeger Tracing}
+    \verb{url}
+    \verb https://www.jaegertracing.io/
+    \endverb
+  \endentry
+
+  \entry{formal}{article}{}
+    \name{author}{4}{}{%
+      {{hash=JA}{%
+         family={Jangda},
+         familyi={J\bibinitperiod},
+         given={Abhinav},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=PD}{%
+         family={Pinckney},
+         familyi={P\bibinitperiod},
+         given={Donald},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=BY}{%
+         family={Brun},
+         familyi={B\bibinitperiod},
+         given={Yuriy},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=GA}{%
+         family={Guha},
+         familyi={G\bibinitperiod},
+         given={Arjun},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Association for Computing Machinery}%
+    }
+    \keyw{formal language semantics, distributed computing, serverless
+  computing}
+    \strng{namehash}{JA+1}
+    \strng{fullhash}{JAPDBYGA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{J}
+    \field{sortinithash}{J}
+    \field{abstract}{%
+    Serverless computing (also known as functions as a service) is a new cloud
+  computing abstraction that makes it easier to write robust, large-scale web
+  services. In serverless computing, programmers write what are called
+  serverless functions, which are programs that respond to external events.
+  When demand for the serverless function spikes, the platform automatically
+  allocates additional hardware and manages load-balancing; when demand falls,
+  the platform silently deallocates idle resources; and when the platform
+  detects a failure, it transparently retries affected requests. In 2014,
+  Amazon Web Services introduced the first serverless platform, AWS Lambda, and
+  similar abstractions are now available on all major cloud computing
+  platforms. Unfortunately, the serverless computing abstraction exposes
+  several low-level operational details that make it hard for programmers to
+  write and reason about their code. This paper sheds light on this problem by
+  presenting λλ, an operational semantics of the essence of serverless
+  computing. Despite being a small (half a page) core calculus, λλ models all
+  the low-level details that serverless functions can observe. To show that
+  λλ is useful, we present three applications. First, to ease reasoning about
+  code, we present a simplified naive semantics of serverless execution and
+  precisely characterize when the naive semantics and λλ coincide. Second, we
+  augment λλ with a key-value store to allow reasoning about stateful
+  serverless functions. Third, since a handful of serverless platforms support
+  serverless function composition, we show how to extend λλ with a
+  composition language and show that our implementation can outperform prior
+  work.%
+    }
+    \verb{doi}
+    \verb 10.1145/3360575
+    \endverb
+    \field{number}{OOPSLA}
+    \field{title}{Formal Foundations of Serverless Computing}
+    \verb{url}
+    \verb https://doi.org/10.1145/3360575
+    \endverb
+    \field{volume}{3}
+    \list{location}{1}{%
+      {New York, NY, USA}%
+    }
+    \field{journaltitle}{Proc. ACM Program. Lang.}
+    \field{month}{10}
+    \field{year}{2019}
+  \endentry
+
+  \entry{montraclog}{online}{}
+    \name{author}{1}{}{%
+      {{hash=KC}{%
+         family={Kidd},
+         familyi={K\bibinitperiod},
+         given={Chrissy},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KC1}
+    \strng{fullhash}{KC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{Tracing vs Logging vs Monitoring: What’s the Difference?}
+    \verb{url}
+    \verb https://www.bmc.com/blogs/monitoring-logging-tracing/
+    \endverb
+    \field{month}{03}
+    \field{year}{2019}
+  \endentry
+
+  \entry{pocket}{inproceedings}{}
+    \name{author}{6}{}{%
+      {{hash=KA}{%
+         family={Klimovic},
+         familyi={K\bibinitperiod},
+         given={Ana},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=WY}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Yawen},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=SP}{%
+         family={Stuedi},
+         familyi={S\bibinitperiod},
+         given={Patrick},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Trivedi},
+         familyi={T\bibinitperiod},
+         given={Animesh},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=PJ}{%
+         family={Pfefferle},
+         familyi={P\bibinitperiod},
+         given={Jonas},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=KC}{%
+         family={Kozyrakis},
+         familyi={K\bibinitperiod},
+         given={Christos},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {{USENIX} Association}%
+    }
+    \strng{namehash}{KA+1}
+    \strng{fullhash}{KAWYSPTAPJKC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{booktitle}{13th {USENIX} Symposium on Operating Systems Design and
+  Implementation ({OSDI} 18)}
+    \field{isbn}{978-1-939133-08-3}
+    \field{pages}{427\bibrangedash 444}
+    \field{title}{Pocket: Elastic Ephemeral Storage for Serverless Analytics}
+    \verb{url}
+    \verb https://www.usenix.org/conference/osdi18/presentation/klimovic
+    \endverb
+    \list{location}{1}{%
+      {Carlsbad, CA}%
+    }
+    \field{month}{10}
+    \field{year}{2018}
+  \endentry
+
+  \entry{coldstart}{online}{}
+    \name{author}{1}{}{%
+      {{hash=K}{%
+         family={Krish},
+         familyi={K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{K1}
+    \strng{fullhash}{K1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{On the Serverless cold start problem}
+    \verb{url}
+    \verb https://medium.com/faun/on-the-serverless-cold-start-problem-2fc0797d
+    \verb a5cc
+    \endverb
+    \field{month}{06}
+    \field{year}{2019}
+  \endentry
+
+  \entry{namespace}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{Kubernetes namespaces, url =
+  {https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/},}
+  \endentry
+
+  \entry{podsec}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{Kubernetes Pod Security Policy, url =
+  {https://kubernetes.io/docs/concepts/policy/pod-security-policy/},}
+  \endentry
+
+  \entry{policies}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{Kubernetes Policies, url =
+  {https://kubernetes.io/docs/concepts/policy/limit-range/},}
+  \endentry
+
+  \entry{faassurvey}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=LJ}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Junfeng},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=KSG}{%
+         family={Kulkarni},
+         familyi={K\bibinitperiod},
+         given={Sameer\bibnamedelima G.},
+         giveni={S\bibinitperiod\bibinitdelim G\bibinitperiod},
+      }}%
+      {{hash=RKK}{%
+         family={Ramakrishnan},
+         familyi={R\bibinitperiod},
+         given={K.\bibnamedelima K.},
+         giveni={K\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+      {{hash=LD}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Dan},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Association for Computing Machinery}%
+    }
+    \keyw{performance, serverless, function-as-a-service}
+    \strng{namehash}{LJ+1}
+    \strng{fullhash}{LJKSGRKKLD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{abstract}{%
+    Serverless computing is increasingly popular because of the promise of
+  lower cost and the convenience it provides to users who do not need to focus
+  on server management. This has resulted in the availability of a number of
+  proprietary and open-source serverless solutions. We seek to understand how
+  the performance of serverless computing depends on a number of design issues
+  using several popular open-source serverless platforms. We identify the
+  idiosyncrasies affecting performance (throughput and latency) for different
+  open-source serverless platforms. Further, we observe that just having either
+  resource-based (CPU and memory) or workload-based (request per second (RPS)
+  or concurrent requests) auto-scaling is inadequate to address the needs of
+  the serverless platforms.%
+    }
+    \field{booktitle}{Proceedings of the 5th International Workshop on
+  Serverless Computing}
+    \verb{doi}
+    \verb 10.1145/3366623.3368139
+    \endverb
+    \field{isbn}{9781450370387}
+    \field{pages}{37–42}
+    \field{series}{WOSC '19}
+    \field{title}{Understanding Open Source Serverless Platforms: Design
+  Considerations and Performance}
+    \verb{url}
+    \verb https://doi.org/10.1145/3366623.3368139
+    \endverb
+    \list{location}{1}{%
+      {Davis, CA, USA}%
+    }
+    \field{year}{2019}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{triggerflow}{article}{}
+    \name{author}{5}{}{%
+      {{hash=LPG}{%
+         family={López},
+         familyi={L\bibinitperiod},
+         given={Pedro\bibnamedelima García},
+         giveni={P\bibinitperiod\bibinitdelim G\bibinitperiod},
+      }}%
+      {{hash=AA}{%
+         family={Arjona},
+         familyi={A\bibinitperiod},
+         given={Aitor},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Sampé},
+         familyi={S\bibinitperiod},
+         given={Josep},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SA}{%
+         family={Slominski},
+         familyi={S\bibinitperiod},
+         given={Aleksander},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=VL}{%
+         family={Villard},
+         familyi={V\bibinitperiod},
+         given={Lionel},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \strng{namehash}{LPG+1}
+    \strng{fullhash}{LPGAASJSAVL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \verb{doi}
+    \verb 10.1145/3401025.3401731
+    \endverb
+    \field{isbn}{9781450380287}
+    \field{title}{Triggerflow}
+    \verb{url}
+    \verb http://dx.doi.org/10.1145/3401025.3401731
+    \endverb
+    \field{journaltitle}{Proceedings of the 14th ACM International Conference
+  on Distributed and Event-based Systems}
+    \field{year}{2020}
+    \warn{\item Invalid format of field 'month'}
+  \endentry
+
+  \entry{mapreduce}{online}{}
+    \name{author}{1}{}{%
+      {{hash=MS}{%
+         family={Mallya},
+         familyi={M\bibinitperiod},
+         given={Sunil},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MS1}
+    \strng{fullhash}{MS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Ad Hoc Big Data Processing Made Simple with Serverless
+  MapReduce}
+    \verb{url}
+    \verb https://aws.amazon.com/blogs/compute/ad-hoc-big-data-processing-made-
+    \verb simple-with-serverless-mapreduce/
+    \endverb
+    \field{month}{11}
+    \field{year}{2016}
+  \endentry
+
+  \entry{cloudmulti}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=OAI}{%
+         family={Odun-Ayo},
+         familyi={O\bibinithyphendelim A\bibinitperiod},
+         given={Isaac},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=MS}{%
+         family={Misra},
+         familyi={M\bibinitperiod},
+         given={Sanjay},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=AAO}{%
+         family={Abayomi-Alli},
+         familyi={A\bibinithyphendelim A\bibinitperiod},
+         given={Olusola},
+         giveni={O\bibinitperiod},
+      }}%
+      {{hash=AO}{%
+         family={Ajayi},
+         familyi={A\bibinitperiod},
+         given={Olasupo},
+         giveni={O\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{OAI+1}
+    \strng{fullhash}{OAIMSAAOAO1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \verb{doi}
+    \verb 10.1145/3147234.3148095
+    \endverb
+    \field{pages}{209\bibrangedash 214}
+    \field{title}{Cloud Multi-Tenancy: Issues and Developments}
+    \field{month}{12}
+    \field{year}{2017}
+  \endentry
+
+  \entry{olric}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{title}{Olric}
+    \verb{url}
+    \verb https://github.com/buraksezer/olric
+    \endverb
+  \endentry
+
+  \entry{watchdog}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{title}{OpenFaaS watchdog}
+    \verb{url}
+    \verb https://docs.openfaas.com/architecture/watchdog/
+    \endverb
+  \endentry
+
+  \entry{survey}{online}{}
+    \name{author}{1}{}{%
+      {{hash=PA}{%
+         family={Passwater},
+         familyi={P\bibinitperiod},
+         given={Andrea},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PA1}
+    \strng{fullhash}{PA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{2018 Serverless Community Survey: huge growth in serverless
+  usage}
+    \verb{url}
+    \verb https://www.serverless.com/blog/2018-serverless-community-survey-huge
+    \verb -growth-usage
+    \endverb
+    \field{year}{2018}
+  \endentry
+
+  \entry{containers}{online}{}
+    \name{author}{1}{}{%
+      {{hash=PA}{%
+         family={Pollock},
+         familyi={P\bibinitperiod},
+         given={Antonia},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \keyw{Containerization, Containers, Framework, Hybrid, Hypervisor, Ubuntu,
+  Virtual Machines, Virtualization, VM}
+    \strng{namehash}{PA2}
+    \strng{fullhash}{PA2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Virtualization vs. Containerization}
+    \verb{url}
+    \verb https://www.liquidweb.com/kb/virtualization-vs-containerization/
+    \endverb
+  \endentry
+
+  \entry{datamodel}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Prometheus Data Model}
+    \verb{url}
+    \verb https://prometheus.io/docs/concepts/data_model/
+    \endverb
+  \endentry
+
+  \entry{pushgateway}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Prometheus Push Gateway}
+    \verb{url}
+    \verb https://github.com/prometheus/pushgateway
+    \endverb
+  \endentry
+
+  \entry{clint}{online}{}
+    \name{author}{1}{}{%
+      {{hash=RA}{%
+         family={Rahic},
+         familyi={R\bibinitperiod},
+         given={Adnan},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RA1}
+    \strng{fullhash}{RA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{Serverless monitoring - the good, the bad and the ugly}
+    \verb{url}
+    \verb https://www.serverless.com/blog/serverless-monitoring-the-good-the-ba
+    \verb d-and-the-ugly
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{setnx}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{Redis SETNX, url = {https://redis.io/commands/setnx},}
+  \endentry
+
+  \entry{multivocal}{article}{}
+    \name{author}{2}{}{%
+      {{hash=SJ}{%
+         family={Scheuner},
+         familyi={S\bibinitperiod},
+         given={Joel},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=LP}{%
+         family={Leitner},
+         familyi={L\bibinitperiod},
+         given={Philipp},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier BV}%
+    }
+    \strng{namehash}{SJLP1}
+    \strng{fullhash}{SJLP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1016/j.jss.2020.110708
+    \endverb
+    \field{issn}{0164-1212}
+    \field{pages}{110708}
+    \field{title}{Function-as-a-Service performance evaluation: A multivocal
+  literature review}
+    \verb{url}
+    \verb http://dx.doi.org/10.1016/j.jss.2020.110708
+    \endverb
+    \field{volume}{170}
+    \field{journaltitle}{Journal of Systems and Software}
+    \field{year}{2020}
+    \warn{\item Invalid format of field 'month'}
+  \endentry
+
+  \entry{filesystem}{article}{}
+    \name{author}{4}{}{%
+      {{hash=SSJ}{%
+         family={Schleier-Smith},
+         familyi={S\bibinithyphendelim S\bibinitperiod},
+         given={Johann},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=HL}{%
+         family={Holz},
+         familyi={H\bibinitperiod},
+         given={Leonhard},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=PN}{%
+         family={Pemberton},
+         familyi={P\bibinitperiod},
+         given={Nathan},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=HJM}{%
+         family={Hellerstein},
+         familyi={H\bibinitperiod},
+         given={J.\bibnamedelima M.},
+         giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SSJ+1}
+    \strng{fullhash}{SSJHLPNHJM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{A FaaS File System for Serverless Computing}
+    \field{volume}{abs/2009.09845}
+    \field{journaltitle}{ArXiv}
+    \field{year}{2020}
+  \endentry
+
+  \entry{coldstartwar}{online}{}
+    \name{author}{1}{}{%
+      {{hash=SM}{%
+         family={Shilkov},
+         familyi={S\bibinitperiod},
+         given={Mikhail},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SM1}
+    \strng{fullhash}{SM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Serverless: Cold Start War}
+    \verb{url}
+    \verb https://mikhail.io/2018/08/serverless-cold-start-war/
+    \endverb
+    \field{month}{08}
+    \field{year}{2018}
+  \endentry
+
+  \entry{faasm}{misc}{}
+    \name{author}{2}{}{%
+      {{hash=SS}{%
+         family={Shillaker},
+         familyi={S\bibinitperiod},
+         given={Simon},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=PP}{%
+         family={Pietzuch},
+         familyi={P\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SSPP1}
+    \strng{fullhash}{SSPP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{eprint}
+    \verb 2002.09344
+    \endverb
+    \field{title}{Faasm: Lightweight Isolation for Efficient Stateful
+  Serverless Computing}
+    \field{eprinttype}{arXiv}
+    \field{eprintclass}{cs.DC}
+    \field{year}{2020}
+  \endentry
+
+  \entry{cloudburst}{article}{}
+    \name{author}{7}{}{%
+      {{hash=SV}{%
+         family={Sreekanti},
+         familyi={S\bibinitperiod},
+         given={Vikram},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=WC}{%
+         family={Wu},
+         familyi={W\bibinitperiod},
+         given={Chenggang},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=LXC}{%
+         family={Lin},
+         familyi={L\bibinitperiod},
+         given={Xiayue\bibnamedelima Charles},
+         giveni={X\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+      {{hash=SSJ}{%
+         family={Schleier-Smith},
+         familyi={S\bibinithyphendelim S\bibinitperiod},
+         given={Johann},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=GJE}{%
+         family={Gonzalez},
+         familyi={G\bibinitperiod},
+         given={Joseph\bibnamedelima E.},
+         giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=HJM}{%
+         family={Hellerstein},
+         familyi={H\bibinitperiod},
+         given={Joseph\bibnamedelima M.},
+         giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Tumanov},
+         familyi={T\bibinitperiod},
+         given={Alexey},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {VLDB Endowment}%
+    }
+    \strng{namehash}{SV+1}
+    \strng{fullhash}{SVWCLXCSSJGJEHJMTA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.14778/3407790.3407836
+    \endverb
+    \field{issn}{2150-8097}
+    \field{number}{12}
+    \field{pages}{2438–2452}
+    \field{title}{Cloudburst}
+    \verb{url}
+    \verb http://dx.doi.org/10.14778/3407790.3407836
+    \endverb
+    \field{volume}{13}
+    \field{journaltitle}{Proceedings of the VLDB Endowment}
+    \field{year}{2020}
+    \warn{\item Invalid format of field 'month'}
+  \endentry
+
+  \entry{systemd}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Systemd - Wikipedia Article}
+    \verb{url}
+    \verb https://en.wikipedia.org/wiki/Systemd
+    \endverb
+  \endentry
+
+  \entry{study}{misc}{}
+    \name{author}{2}{}{%
+      {{hash=TS}{%
+         family={T},
+         familyi={T},
+         given={Sharvari},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=KSN}{%
+         family={K},
+         familyi={K},
+         given={Sowmya\bibnamedelima Nag},
+         giveni={S\bibinitperiod\bibinitdelim N\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TSKSN1}
+    \strng{fullhash}{TSKSN1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \verb{eprint}
+    \verb 1912.03715
+    \endverb
+    \field{title}{A study on Modern Messaging Systems- Kafka, RabbitMQ and NATS
+  Streaming}
+    \field{eprinttype}{arXiv}
+    \field{eprintclass}{cs.DC}
+    \field{year}{2019}
+  \endentry
+
+  \entry{opentracing}{online}{}
+    \name{author}{1}{}{%
+      {{hash=TV}{%
+         family={Technologies},
+         familyi={T\bibinitperiod},
+         given={Valetio},
+         giveni={V\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TV1}
+    \strng{fullhash}{TV1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{A Comprehensive Tutorial to Implementing OpenTracing With
+  Jaeger}
+    \verb{url}
+    \verb https://medium.com/velotio-perspectives/a-comprehensive-tutorial-to-i
+    \verb mplementing-opentracing-with-jaeger-a01752e1a8ce
+    \endverb
+    \field{month}{02}
+    \field{year}{2019}
+  \endentry
+
+  \entry{aws}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{The economics of serverless computing: A real-world test}
+    \verb{url}
+    \verb https://techbeacon.com/enterprise-it/economics-serverless-computing-r
+    \verb eal-world-test
+    \endverb
+  \endentry
+
+  \entry{v8}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{v8 isolates}
+    \verb{url}
+    \verb https://v8docs.nodesource.com/node-0.8/index.html
+    \endverb
+  \endentry
+
+  \entry{dockerpop}{online}{}
+    \name{author}{1}{}{%
+      {{hash=VNSJ}{%
+         family={Vaughan-Nichols},
+         familyi={V\bibinithyphendelim N\bibinitperiod},
+         given={Steven\bibnamedelima J.},
+         giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{VNSJ1}
+    \strng{fullhash}{VNSJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{What is Docker and why is it so darn popular?}
+    \verb{url}
+    \verb https://www.zdnet.com/article/what-is-docker-and-why-is-it-so-darn-po
+    \verb pular/
+    \endverb
+    \field{year}{2018}
+  \endentry
+
+  \entry{opentracdoc}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Vendor-neutral APIs and instrumentation for distributed
+  tracing}
+    \verb{url}
+    \verb https://opentracing.io/docs/
+    \endverb
+  \endentry
+
+  \entry{infinicache}{inproceedings}{}
+    \name{author}{9}{}{%
+      {{hash=WA}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Ao},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=ZJ}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Jingyuan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=MX}{%
+         family={Ma},
+         familyi={M\bibinitperiod},
+         given={Xiaolong},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=AA}{%
+         family={Anwar},
+         familyi={A\bibinitperiod},
+         given={Ali},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=RL}{%
+         family={Rupprecht},
+         familyi={R\bibinitperiod},
+         given={Lukas},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=SD}{%
+         family={Skourtis},
+         familyi={S\bibinitperiod},
+         given={Dimitrios},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=TV}{%
+         family={Tarasov},
+         familyi={T\bibinitperiod},
+         given={Vasily},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=YF}{%
+         family={Yan},
+         familyi={Y\bibinitperiod},
+         given={Feng},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=CY}{%
+         family={Cheng},
+         familyi={C\bibinitperiod},
+         given={Yue},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {{USENIX} Association}%
+    }
+    \strng{namehash}{WA+1}
+    \strng{fullhash}{WAZJMXAARLSDTVYFCY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{booktitle}{18th {USENIX} Conference on File and Storage Technologies
+  ({FAST} 20)}
+    \field{isbn}{978-1-939133-12-0}
+    \field{pages}{267\bibrangedash 281}
+    \field{title}{InfiniCache: Exploiting Ephemeral Serverless Functions to
+  Build a Cost-Effective Memory Cache}
+    \verb{url}
+    \verb https://www.usenix.org/conference/fast20/presentation/wang-ao
+    \endverb
+    \list{location}{1}{%
+      {Santa Clara, CA}%
+    }
+    \field{month}{02}
+    \field{year}{2020}
+  \endentry
+
+  \entry{alerting}{online}{}
+    \name{author}{1}{}{%
+      {{hash=WJ}{%
+         family={Wilkinson},
+         familyi={W\bibinitperiod},
+         given={Jamie},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WJ1}
+    \strng{fullhash}{WJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{Practical Alerting from Time-Series Data}
+    \verb{url}
+    \verb https://landing.google.com/sre/sre-book/chapters/practical-alerting/
+    \endverb
+  \endentry
+
+  \entry{autodesk}{online}{}
+    \name{author}{1}{}{%
+      {{hash=WA}{%
+         family={Williams},
+         familyi={W\bibinitperiod},
+         given={Alan},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WA1}
+    \strng{fullhash}{WA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{Autodesk Goes Serverless in the AWS Cloud, Reduces
+  Account-Creation Time by 99\%}
+    \verb{url}
+    \verb https://aws.amazon.com/solutions/case-studies/autodesk-serverless/
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{anna}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=WC}{%
+         family={{Wu}},
+         familyi={W\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=FJ}{%
+         family={{Faleiro}},
+         familyi={F\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=LY}{%
+         family={{Lin}},
+         familyi={L\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={{Hellerstein}},
+         familyi={H\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WC+1}
+    \strng{fullhash}{WCFJLYHJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{booktitle}{2018 IEEE 34th International Conference on Data
+  Engineering (ICDE)}
+    \verb{doi}
+    \verb 10.1109/ICDE.2018.00044
+    \endverb
+    \field{pages}{401\bibrangedash 412}
+    \field{title}{Anna: A KVS for Any Scale}
+    \field{year}{2018}
+  \endentry
+
+  \entry{shredder}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=ZT}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Tian},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=XD}{%
+         family={Xie},
+         familyi={X\bibinitperiod},
+         given={Dong},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=LF}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Feifei},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=SR}{%
+         family={Stutsman},
+         familyi={S\bibinitperiod},
+         given={Ryan},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Association for Computing Machinery}%
+    }
+    \strng{namehash}{ZT+1}
+    \strng{fullhash}{ZTXDLFSR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{abstract}{%
+    Serverless computing has gained attention due to its fine-grained
+  provisioning, large-scale multi-tenancy, and on-demand scaling. However, it
+  also forces applications to externalize state in remote storage, adding
+  substantial overheads. To fix this "data shipping problem" we built Shredder,
+  a low-latency multi-tenant cloud store that allows small units of computation
+  to be performed directly within storage nodes. Storage tenants provide
+  Shredder with JavaScript functions (or WebAssembly programs), which can
+  interact directly with data without moving them over the network.The key
+  challenge in Shredder is safely isolating thousands of tenant storage
+  functions while minimizing data interaction costs. Shredder uses a unique
+  approach where its data store and networking paths are implemented in native
+  code to ensure performance, while isolated tenant functions interact with
+  data using a V8-specific intermediate representation that avoids expensive
+  cross-protection-domain calls and data copying. As a result, Shredder can
+  execute 4 million remotely-invoked tenant functions per second spread over
+  thousands of tenants with median and 99th-percentile response latencies of
+  less than 50 μs and 500 μs, respectively. Our evaluation shows that
+  Shredder achieves a 14% to 78% speedup against conventional remote storage
+  when fetching items with just one to three data dependencies between them. We
+  also demonstrate Shredder's effectiveness in accelerating data-intensive
+  applications, including a k-hop query on social graphs that shows orders of
+  magnitude gain.%
+    }
+    \field{booktitle}{Proceedings of the ACM Symposium on Cloud Computing}
+    \verb{doi}
+    \verb 10.1145/3357223.3362723
+    \endverb
+    \field{isbn}{9781450369732}
+    \field{pages}{1–12}
+    \field{series}{SoCC '19}
+    \field{title}{Narrowing the Gap Between Serverless and Its State with
+  Storage Functions}
+    \verb{url}
+    \verb https://doi.org/10.1145/3357223.3362723
+    \endverb
+    \list{location}{1}{%
+      {Santa Cruz, CA, USA}%
+    }
+    \field{year}{2019}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+\enddatalist
+\endinput
