@@ -873,6 +873,16 @@
     \field{year}{2016}
   \endentry
 
+  \entry{msgpack}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{MessagePack}
+    \verb{url}
+    \verb https://msgpack.org/
+    \endverb
+  \endentry
+
   \entry{cloudmulti}{inproceedings}{}
     \name{author}{4}{}{%
       {{hash=OAI}{%
@@ -922,6 +932,26 @@
     \field{title}{Olric}
     \verb{url}
     \verb https://github.com/buraksezer/olric
+    \endverb
+  \endentry
+
+  \entry{olricdatastore}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{title}{Olric Data Store Library}
+    \verb{url}
+    \verb https://github.com/nandajavarma/faas-flow-olric-datastore
+    \endverb
+  \endentry
+
+  \entry{autoscaling}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{title}{OpenFaaS configurations}
+    \verb{url}
+    \verb https://docs.openfaas.com/architecture/autoscaling/
     \endverb
   \endentry
 
@@ -989,6 +1019,16 @@
     \field{title}{Prometheus Data Model}
     \verb{url}
     \verb https://prometheus.io/docs/concepts/data_model/
+    \endverb
+  \endentry
+
+  \entry{nodeexp}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Prometheus Node Exporter}
+    \verb{url}
+    \verb https://github.com/prometheus/node_exporter
     \endverb
   \endentry
 

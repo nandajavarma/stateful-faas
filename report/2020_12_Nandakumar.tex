@@ -1,4 +1,4 @@
-% Created 2020-11-14 Sat 17:55
+% Created 2020-11-17 Tue 00:17
 % Intended LaTeX compiler: pdflatex
 \documentclass[12pt,titlepage]{article}
 \usepackage[utf8]{inputenc}
@@ -72,7 +72,7 @@
 \end{titlepage}
 
 \begin{abstract}
-Serverless Computing is an up and coming platform as a service offering 
+Serverless Computing is an up and coming Platform as a Service(PaaS) offering 
 where the cloud provider manages and allocates
 resources needed to keep the application running. This lets the developer focus on the application development
 and not on server maintenance. Alongside off loading the provisioning and
@@ -82,23 +82,23 @@ configurations. The users only pay for the resources that were used by the
 application thereby saving huge operational cost on their infrastructure
 hosting.
 
-Although Serverless might sounds like the holy grail of application hosting, the 
+Although Serverless might sound like the holy grail of application hosting, the 
 current state of art technology fall short in several places to meet the industrial
 requirements. Data intensive applications, streaming applications, and
 distributed computing are some of the fields that could be benefited heavily by
 implementation on Serverless platforms in terms of ease of development,
 efficiency and cost. But all the existing platforms offer very
-poor performance in these fields and works mostly via workarounds and n number
-of third party tools.
+poor performance in these fields and works mostly via workarounds and numerous
+third party tools.
 
 This thesis analyses the Serverless paradigm in depth,
 pointing out the reasons for this reduced adaptability. To solve these issues, we propose a lightweight
-extension to an existing Open Source Serverless platform, OpenFaaS, that provides
+extension to OpenFaaS, an Open Source Serverless platform, that provides
 flexibility, scalability and adaptability, while making sure not to violate the notion
 of functions. Our implementation tries to reduce the operational gap between the
-industrial applications and theoretical ideas produced by researches in the past few years.
+industrial applications and theoretical ideas put forward by researches in the past few years.
 This thesis also offers a deep study of the full potential and limitations of
-Serverless thereby making it clear to the reader why more innovations are
+Serverless thereby making it clear to the reader why more innovation is
 necessary in this field.
 
   \par
@@ -108,34 +108,16 @@ necessary in this field.
 \begin{center}
   \textbf{Sommario}\par
 \end{center}
-Serverless Computing è una piattaforma emergente come offerta di servizi
-dove il fornitore di servizi cloud gestisce e alloca
-risorse necessarie per mantenere in esecuzione l'applicazione. Ciò consente allo sviluppatore di concentrarsi sullo sviluppo dell'applicazione
-e non sulla manutenzione del server. Oltre a caricare il provisioning e
-la manutenzione del server, l'elaborazione serverless riduce anche lo spreco di risorse
-aumentando e diminuendo l'allocazione a seconda del carico e del
-configurazioni. Gli utenti pagano solo per le risorse che sono state utilizzate da
-applicazione risparmiando così enormi costi operativi sulla loro infrastruttura
-ospitando.
+Le piattaforme di Serverless Computing sono soluzioni emergenti Platform as a Server (PaaS) dove il fornitore di servizi cloud gestisce e alloca le risorse necessarie per mantenere in esecuzione l'applicazione. Ciò consente allo sviluppatore di concentrarsi sullo sviluppo del software
+e non sulla manutenzione del server. Oltre a diminuire il carico di lavoro per il provisioning e
+la manutenzione del server, questa tecnologia riduce anche lo spreco di risorse
+aumentando o diminuendo l'allocazione a seconda del traffico e delle
+configurazioni. In questo modo l'utente paga solo per le risorse che sono state utilizzate dall'applicazione risparmiando così enormi costi operativi sulla loro infrastruttura
+ospitante.
 
-Sebbene Serverless possa sembrare il Santo Graal dell'hosting di applicazioni, il
-l'attuale tecnologia all'avanguardia non è all'altezza in molti punti di soddisfare l'industriale
-requisiti. Applicazioni a uso intensivo di dati, applicazioni di streaming e
-L'elaborazione distribuita sono alcuni dei campi da cui potrebbero trarre grandi vantaggi
-implementazione su piattaforme Serverless in termini di facilità di sviluppo,
-efficienza e costo. Ma tutte le piattaforme esistenti offrono molto
-scarse prestazioni in questi campi e funziona principalmente tramite soluzioni alternative en numero
-di strumenti di terze parti.
+Sebbene il Serverless Computing possa sembrare il santo Graal dell’hosting di applicazioni, attualmente le tecnologie all’avanguardia non sono all’altezza in molti casi di soddisfare i requisiti industriali. Applicazioni con uso intensivo di dati, applicazioni di streaming e di elaborazione distribuita sono alcuni dei campi che potrebbero trarre grandi vantaggi da un’implementazione su piattaforme Serverless in termini di facilità di sviluppo, efficienza e costo. Tuttavia tutte le piattaforme esistenti offrono soluzioni alternative combinando strumenti di terze parti, con scarse prestazioni.
 
-Questa tesi analizza in profondità il paradigma Serverless,
-sottolineando le ragioni di questa ridotta adattabilità. Per risolvere questi problemi, proponiamo un leggero
-estensione a una piattaforma serverless open source esistente, OpenFaaS, che fornisce
-flessibilità, scalabilità e adattabilità, assicurandosi nel contempo di non violare la nozione
-di funzioni. La nostra implementazione cerca di ridurre il divario operativo tra i file
-applicazioni industriali e idee teoriche prodotte dalle ricerche negli ultimi anni.
-Questa tesi offre anche uno studio approfondito del pieno potenziale e dei limiti di
-Serverless, rendendo così chiaro al lettore perché ci sono più innovazioni
-necessario in questo campo.
+La presente tesi analizza in profondità il paradigma Serverless, sottolineando le ragioni della sua ridotta adattabilità. Per risolvere questi problemi, proponiamo una leggera estensione di OpenFaaS, una piattaforma Serverless open source che fornisce flessibilità, scalabilità e adattabilità assicurandosi nel contempo di non violare la nozione di funzioni. La nostra implementazione cerca di ridurre il divario operativo tra le applicazioni industriali e le idee teoriche prodotte dalle ricerche negli ultimi anni. Questa tesi offre anche uno studio approfondito del pieno potenziale e dei limiti del Serverless Computing, rendendo così chiaro al lettore la necessità di innovazione in questo campo.
 
 \end{abstract}
 
@@ -147,10 +129,10 @@ necessario in questo campo.
 \listoffigures
 
 \section{Introduction}
-\label{sec:orgaead383}
+\label{sec:org6adce5f}
 
-Serverless can easily be considered as the new generation of platform as a  
-service. It is a deployment solution where instead of having continuously
+Serverless can easily be considered as the new generation of Platform as a  
+Service(PaaS). It is a deployment solution where instead of having continuously
 running servers, application instances come up and execute on predefined events.
 While the developers worry about
 the logic of handling the requests/events, the infrastructure provider takes
@@ -166,7 +148,7 @@ these machines tent to vary a lot and rather than having a dedicated server to a
 of requirements, it makes perfect sense to convert it into a Serverless workload
 thereby saving up on operational cost, resource waste, and ease of development.
 Having said that, the current commercial offerings of Serverless do not work
-very great with such workloads.
+very well with such workloads.
 
 This is mostly due to the sheer
 nature of the Serverless paradigm of being completely stateless, thereby forcing
@@ -182,7 +164,7 @@ to AWS, stepfunction comes with numerous limitations like 20s timeout on the API
 gateway, 5 minutes limit to lambda execution, a limit of 2 executions per second
 etc.
 
-A major requirement usually for heavy multi-staged processing pipelines is fault
+Another major requirement usually for heavy multi-staged processing pipelines is fault
 tolerance. If at all a stage fails, the system should be able to restart from
 where it failed with the correct intermediate data and complete the workflow. In
 orchestrations like stepfunction where data is passed over the gateway among
@@ -195,38 +177,42 @@ serverless. A very interesting proposal was Cloudburst \hyperref[ref:2]{2} which
 introduces a consistent cache storage between functions to store and retrieve
 intermediate data in wire speed. Although the project succeeds in proposing a
 very elastic system architecture that co-locates data alongside functions across
-the cluster, but it is seen that the system doesn't scale really well along with
+the cluster, it is seen that the system doesn't scale really well along with
 the requirement making it a bad adaptation for streaming and big data workloads.
-Alongside it lacks provisioning to define branches or conditionals in the function
-composition making it less flexible from the point of view of the interaction.
+Alongside, it lacks provisioning to define branches or conditionals in the function
+composition making it less flexible from the point of view of the orchestration.
 
-A similar idea was SAND \hyperref[ref:3]{3}, where a hierarchical message bus to allow
+A similar idea was SAND \hyperref[ref:3]{3}, where a hierarchical message bus is used to allow
 function composition and inter process calls. Other than being a closed source
 project and pretty abandoned in the past couple of years, the resource
 allocation is not tracked or controlled by the system breaking the per usage
 billing notion of Serverless paradigm. The system also doesn't offer a
-production level isolation mechanism.
+proper isolation mechanism.
 
 In this thesis, we propose an approach to improve the application of state
-to the serverless platform by introducing the provision to provide a
-computational graph to the serverless platform which defines the control flow
-and data flow in the composition. The intermediate data transfer between the
+to the Serverless platform by introducing the provision to provide a
+computational graph to the Serverless platform which defines the control flow
+and data flow in the orchestration. The intermediate data transfer between the
 functions will be taken care with the help of maintaining a scalable in memory
 distributed cache and storing the intermediate data in them as ephemeral data.
 Our system also provides fine grained control over resource allocation and
 scaling rules for each individual function. Alongside, it provides extensive
 monitoring, function level tracing and visualization, and out of box setup and
-deployment. It is worth mentioning  that this  reduces the gap that currently
+deployment. Because of the usage of the intermediate ephemeral storage and fine
+grained monitoring the system provides automatic fail overs. Meaning, if at any
+step the operation fails, the pipeline will be able to 
+restart from the point of failure without redoing the whole process till then.
+
+It is worth mentioning that our implementation focuses on reducing the gap that currently
 exists with a lot of research ideas and the industry level applications, making
 it an easily adaptable solution. We propose a very secure and multi-tenant implementation of a
 state-ful Serverless setup which can be easily used for production quality
-applications. A focus on the possibility to monitor the application performance
-and usage provides a possibility to do fine grained billing of the resources and thereby
-contributing to the easy adaptability of our extension.
+applications. The possibility to efficiently do application performance and
+usage monitoring makes fine grained billing an out of the box functionality.
 
 Providing state via additional infrastructure instead of altering the function
 characteristic was a conscious choice. The serverless computing abstraction,
-despite its many advantages, exposes several low-level operational  details that
+despite its many advantages, exposes several low-level operational details that
 make it hard for programmers to write and reason about their code \hyperref[ref:4]{4}. This is
 related to misusing/misunderstanding state in serverless environment. Since
 the same function is reused again and again to avoid latency, the cache or state
@@ -241,8 +227,8 @@ composition, we use an existing library faas-flow to support event driven
 workflow based function composition pattern. We make sure that the notion of a
 function or serverless platform will not be violated in this process since with
 the current state of art of infrastructure deployment, autoscaling and
-concurrency are made happen by leveraging the notions of statelessness and
-functional coding. The proof of concept of out solution was successfully
+concurrency happen by leveraging the notions of statelessness and
+functional coding. The proof of concept of our solution was successfully
 implemented \hyperref[ref:59]{59} and has been Open Sourced.
 
 There has been several academic researches on ephemeral autoscaling storages in
@@ -250,7 +236,7 @@ the past couple of years. Pocket project is one that has received appreciation
 and we will be analyzing this platform in depth. Our thesis implementation
 adapts an existing ephemeral storage platform.
 
-Using our proposed Serverless setup, we try to efficiently run a
+Using our proposed Serverless setup, we try to efficiently run an
 Extract-Transfer-Load(ETL) workload on streaming data. ETL basically is a
 pipelined workflow that involves receiving data
 from source, cleaning and transforming it, and loading it to a sink. We will
@@ -266,30 +252,29 @@ In Section 2, we go a bit in depth to understand the history of cloud
 infrastructure and the technological innovations that led to Serverless
 paradigm. We also look in detail at the characteristics and nature of
 Serverless. We look at some commercial Serverless offerings and understand how
-in the programming world Serverless has influenced even in the way of developing.
-We will also see what limitations it holds at its current state of evolution and
-on solving which issue are we particularly interested in, in the scope of this
-thesis.
+in the programming world Serverless has affected even the way of coding.
+We will also see what limitations it holds at its current state of art and
+the problem statement of the thesis.
 
-In Section 4, we look at the current state of research in the field of
-Serverless technologies and some related works.
+In Section 3, We elaborate on the proposed solution for our Serverless setup going
+into detail about how certain crippling limitations can be overcome.
 
-In Section 3, We present the proposed solution for our Serverless setup going
-into detail about how certain unacceptable limitations can be overcome.
+In Section 4, we present the implementation of the system including the architecture and
+the tools used.
 
-In Section 4, the implementation of the system including the architecture and
-the tools used is presented.
+In Section 5, we go on with the evaluation of our system.
 
-In Section 5, we go on with the evaluation of our system as opposed to standard
-Serverless workloads.
+In Section 6, we look at the current state of research in the field of
+Serverless technologies and the related works.
 
-We move on to Section 6 to understand the limitations of our proposed system.
+In Section 7, we lay down the future works that the system has got planned
+moving forward.
 
-In Section 7, the future work that can be done in this direction is laid out
-before the reader.
+We conclude by pointing out what went well and what didn't with our solution in
+Section 8.
 
 \section{Background and Motivation}
-\label{sec:orgc0825d5}
+\label{sec:org29d03a4}
 The term serverless have been vaguely thrown around the domain of cloud
 infrastructure in the past decade as the breakthrough resource(and hence money)
 saving tool that lets the developers focus on application logic rather than the
@@ -311,7 +296,7 @@ We will also analyze the popular data processing and streaming pipelines in the
 industries these days and why serverless computing fall short in being the right
 tool of development and deployment here.
 \subsection{Evolution of cloud resource management}
-\label{sec:org7b38224}
+\label{sec:org75d9e5b}
 In the past 3 decades, software deployments and infrastructure management has
 seen a lot of innovation and evolution. Before diving into the current
 industrial standards, it is important to understand the evolutions in this field
@@ -319,7 +304,7 @@ to get a better grasp on the technological innovations that bought this about.
 
 
 \subsubsection{Dedicated servers}
-\label{sec:orgc8fd910}
+\label{sec:org8c118de}
 Even as recent as 15 years ago this was the industry standard for deployments. Dedicated servers
 are physical machines. The general practice was to have server racks on the premise
 of the company which are maintained by system administrators and all your
@@ -332,7 +317,7 @@ footprint and e-wastes.
 
 
 \subsubsection{Dedicated virtual machines(BaaS)}
-\label{sec:org3c044e7}
+\label{sec:org7375423}
 Virtualization technology changed the face of software infrastructure by decoupling
 applications from the underlying hardware. Virtualized servers are not physical
 machines, they are a software construct. Virtual servers run on dedicated
@@ -391,7 +376,7 @@ even if the load/traffic to and fro the application is not constant. This meant 
 lot of resources were still being wasted.
 
 \paragraph{Linux Containers}
-\label{sec:orgb1efa73}
+\label{sec:org689917a}
 A game changer in the world of virtualization was containerization. Containers
 are yet another packaged computing environment that combine various IT
 components and isolate them from the rest of the system just like a virtual
@@ -428,7 +413,7 @@ deployment. One could also limit and fine tune the resources used by a running
 containers giving a lot more control over the application.
 
 \paragraph{Autoscaling}
-\label{sec:org70478a3}
+\label{sec:org5a4617e}
 The ease in which one can limit the resources and tweak the runtime parameters externally contributed heavily
 to the service offering called autoscaling which basically meant resources for an
 application runtime were added or removed as per the usage. All the commercial
@@ -441,7 +426,7 @@ etc. to the community. These solutions aim at mitigating the shortcomings of
 Containers which we will discuss in Section 2.2.4
 
 \subsubsection{Serverless}
-\label{sec:org2a84bcf}
+\label{sec:orgd472368}
 Like mentioned earlier, in the past two years the terms Serverless and Function-as-a-Service are quite
 often used interchangeably. In terms of the resource reservation, Serverless can
 be considered as a platform as a service solution that scales. Your application
@@ -463,7 +448,7 @@ We will dive more into the properties and nature of the solution
 Function-as-a-Service(FaaS) in the following session. 
 
 \subsection{FaaS}
-\label{sec:orgad81c36}
+\label{sec:org7993f0f}
 So far, we have covered the infrastructure management style of FaaS or
 Serverless in general. Let us get a bit in detail into the specifics of the
 hosting platform that provides the FaaS functionality.
@@ -481,9 +466,9 @@ understand the flow of FaaS workloads, it is important to be aware of the
 following properties of the platform.
 
 \subsubsection{Properties of FaaS}
-\label{sec:orgec9be7d}
+\label{sec:org386fb9e}
 \paragraph{Statelessness}
-\label{sec:org60ae276}
+\label{sec:org9f87e3a}
 Statelessness in deployments is a conscious decision that was taken during the
 conception of the Serverless infrastructure model to make the management of the
 platform straight forward and less cumbersome. Statelessness simply means that
@@ -509,7 +494,7 @@ In short, the notion of function is of prime importance in a
 Function-as-a-Service workload like the name suggests.
 
 \paragraph{Triggers}
-\label{sec:orgecccbec}
+\label{sec:org9d48660}
 The functions that are hosted on a FaaS solution need to get triggered on a timely
 basis or based on an event. Usually most cloud providers provide more than a few
 ways to trigger the functions which the developer can choose from. Some of the
@@ -535,7 +520,7 @@ source storage to be used as the sources for the trigger.
 programmer can choose how often the function should be triggered on what days of
 the week, month, year, etc. 
 \paragraph{Billing}
-\label{sec:org6dbf6dc}
+\label{sec:org09327d1}
 One of the most attractive features of the FaaS service is the 'pay for what you
 use' policy. Billing model is an important constituent in the equation. Generally
 the commercial cloud providers charge you on the amount of memory that was
@@ -581,9 +566,9 @@ which is very expensive and a huge waste of resources. And this is where FaaS sh
 
 
 \subsubsection{How programming models are getting affected by this}
-\label{sec:orgb6c7260}
+\label{sec:orgc91c758}
 \paragraph{Faas + Microservices}
-\label{sec:org8fe8bf3}
+\label{sec:orgf81736f}
 In Software Systems Design, a very heavily discussed topic is if to design the
 application in a monolithic fashion or a micro-services fashion. Monolith is the
 kind of design pattern where you have one big application doing multiple
@@ -608,7 +593,7 @@ web application setup. This method is very effective resource usage wise and
 much easier to deploy and manage compared to vanilla microservices which has to
 be built and deployed independently.
 \paragraph{Statelessness a.k.a Functional programming model}
-\label{sec:orgc44f627}
+\label{sec:org98593c8}
 Like mentioned earlier, the notion of function is very important for the
 serverless platforms. It is intrinsically linked with functional programming. It
 is very interesting to note that Amazon named their FaaS solution Lambda which
@@ -623,7 +608,7 @@ the past few years in Serverless platforms. Since these languages are perfectly
 suited for stateless program it is only natural that they can be efficiently
 used to code for this environment.
 \subsubsection{Popular commercial offerings}
-\label{sec:org1faea55}
+\label{sec:orgb813ed1}
 Now that we have seen what makes FaaS an attractive field for cloud providers,
 developers, and researchers alike, it is interesting to understand the popular
 FaaS services out there.
@@ -646,7 +631,7 @@ To understand the nature of the leading commercial service providers, in this
 section we go into looking at their characteristics.
 
 \paragraph{AWS Lambda}
-\label{sec:orgd60f68e}
+\label{sec:org0712775}
 AWS lambda became publicly available in 2015 and currently dominates the
 landscape of AWS lambda. AWS Lambda has a free-tier under which it covers first
 1M function requests and 400,000 GB-secs per month. AWS Lambda functions can be written in a handful of
@@ -693,7 +678,7 @@ there is no predefined limit they keep increasing it by 500 per minute until the
 demand is met.
 
 \paragraph{Google cloud functions}
-\label{sec:org05641b9}
+\label{sec:org9133207}
 Google Cloud Providers entire the FaaS race very recently, in July 2018.
 Currently Google cloud functions do not support a lot of language runtimes. This
 includes NodeJS, Python3, Go and Java 11. The functions written can be uploaded
@@ -729,7 +714,7 @@ quite significant.
 All in all Google Cloud Functions has to go a longer way to be a more flexible solution.
 
 \paragraph{Azure functions}
-\label{sec:orgef6e4b8}
+\label{sec:org2f63344}
 Joining the world of Faas in 2016, Azure shines in a lot of places with its
 Functions where Google Cloud Function falls short. To start with Azure functions
 have a rich runtime almost comparable to AWS Lambda. They support a lot of very
@@ -765,14 +750,14 @@ functions have an embarrassingly long cold start period which is in the range of
 
 
 \subsubsection{Where Serverless computing fall short}
-\label{sec:org4b9f409}
+\label{sec:orgb9fc09e}
 Although serverless computing might sound like the silver bullet of the
 deployment solutions, it is a field that is still being rapidly grown and
 researched on. There are several staggering shortcomings for this technology
 that makes it unsuitable for certain applications. The current offering have the
 following noticeable limitations.
 \paragraph{Lack of state}
-\label{sec:org9fd2f03}
+\label{sec:orgd65c51a}
 As mentioned earlier, statelessness is a primary nature for serverless workloads
 making it easy to deploy and port agnostic of the environment and server.
 Hence serverless/auto-scaling paradigm generally push for a development style
@@ -797,7 +782,7 @@ this adds, it is a violation of the elastic nature of the Serverless
 paradigm.
 
 \subparagraph{I/O Latency}
-\label{sec:org996fedc}
+\label{sec:org4a867f8}
 Like was mentioned earlier, FaaS have had a lot of influences in the system
 architecture and programming paradigms like would with any new infrastructure
 management system. It is quite unfortunate though that, even with a paradigm
@@ -812,7 +797,7 @@ architecture is procedures that you run in databases. The code is moved to the
 data than the other way around in this.
 
 \paragraph{Coordination issues among functions}
-\label{sec:org6e9c970}
+\label{sec:org5573bfd}
 As we saw in the previous sections, FaaS workloads are usually containerized by
 the cloud provider to deploy it easily in their node pool or cluster. By nature,
 docker containers are indiscoverable units that need to be opened up explicitly
@@ -845,7 +830,7 @@ latencies as well. This includes function compositions like ETL on streaming and
 batch data alike \hyperref[ref:13]{13}
 
 \paragraph{Vendor lock-in}
-\label{sec:orgb933164}
+\label{sec:orge331829}
 It is no secret that the most widely used FaaS/serverless offerings are the ones by
 proprietary cloud providers where they hand twist the developers into complying
 to their programming environment and runtime thereby forcing devs to use their
@@ -861,7 +846,7 @@ zero control over the infrastructure and the pipeline is not transparent at all
 for any kind of performance optimization or fine tuning.
 
 \paragraph{Fixed timeouts}
-\label{sec:org32dddc1}
+\label{sec:org2b9d0b5}
 This is the one of the other bigger reasons that hinder the usage of FaaS in big
 data applications. In applications that involve heavy number crunching
 algorithms, there are chances that often the function needs to run for a longer
@@ -876,7 +861,7 @@ These are all extremely bounding as conditions especially for functions that are
 composed and a function should wait for the other functions to finish executing. 
 
 \paragraph{Cold Start}
-\label{sec:orga79a1f6}
+\label{sec:orgb88f13e}
 Cold start it the delay that the function incurs after the invocation or
 triggering of the function till the execution of the function. In the
 background, FaaS uses containers to encapsulate and execute the functions. When
@@ -916,7 +901,7 @@ innovative and introduce lighter alternatives to Linux containers in the FaaS
 platform these days.
 
 \paragraph{Parallelism}
-\label{sec:orga8c3f08}
+\label{sec:orgd0e1982}
 Current FaaS offerings are not known to have the right support for heavily
 parallel computations. In the most popular commercial platforms, an average of
 50\% parallelism was noted \hyperref[ref:17]{17}. The reason for this is noted mostly to
@@ -941,7 +926,7 @@ applications. This calls for a proactive approach in dealing with invocations.
 It could be a more push based approach as opposed to the former.
 \end{itemize}
 \paragraph{Security issues in a multi-tenant environment}
-\label{sec:orgca4fffb}
+\label{sec:org74ecb2b}
 Like was previously mentioned, the whole FaaS infrastructure offering is
 economical for the cloud provider because they get to share their node pool
 among all their standard customers making the resource cost for them very low.
@@ -957,7 +942,7 @@ cold start time. But recently the innovative new alternatives for Linux
 containers are also aimed at to fix these issues.
 
 \subparagraph{Function caches}
-\label{sec:org833db19}
+\label{sec:org4db0a31}
 Along with the above mentioned issue with multi-tenancy across customers, a
 similar issue can occur under the same customer who runs an application across
 multiple of their client. The problem is that each function has an inaccessible
@@ -968,7 +953,7 @@ by the other. If the developers are not cautious enough while coding and usage
 of variables, there is a high chance for data corruption and leakage on the platform.
 
 \paragraph{Developer friendliness}
-\label{sec:org6f4aa7a}
+\label{sec:orgb1ad301}
 In a recent survey \hyperref[ref:16]{16}, developers were asked about the challenges they face when
 using Serverless platforms. This is a very significant data to look into since
 at the end of the day the gap of the research and the end user experience is
@@ -1005,7 +990,7 @@ since the user management and the CLI access to do deployment are all
 delegated to external tools.
 \end{itemize}
 \subsection{Extract-Transform-Load(ETL) pipelines}
-\label{sec:orgfbf9a57}
+\label{sec:orgc73e921}
 In the previous sections, we talked about how serverless is the most suited but
 inefficient(with the current state of art) tool for ETL pipelines and that it is a 
 standard practice when dealing with today's data driven workloads. In this
@@ -1020,7 +1005,7 @@ in the data processing programs that would have otherwise been a single huge
 monolith - hard to manage and extremely bloated. 
 
 \paragraph{Extract}
-\label{sec:orgcb2eefa}
+\label{sec:org63a457d}
 In the present day production workloads, data can be arriving from numerous
 sources of very varied nature and behavior. Depending on their origin source,
 this data can have different formats or organizational structure. Some examples
@@ -1035,7 +1020,7 @@ validation of the data. The data that is coming from the source can be of the
 wrong format as expected, even missing some columns or corrupted somehow. In the
 extract step, these bad data are reported and the process is aborted.
 \paragraph{Transform}
-\label{sec:orgf355b82}
+\label{sec:orgc2656b3}
 This step can be considered as the brain of the whole workflow. This is the
 stage where we convert the data that was received into meaningful information.
 Transform operation often happen in multiple stages where in each stage a
@@ -1047,7 +1032,7 @@ bottleneck in a lot of ETL pipelines since data processing can be a very
 resource heavy task and if the code is written with no optimization, the whole
 pipeline will end up eating up the all the resources.
 \paragraph{Load}
-\label{sec:org86e75d4}
+\label{sec:org4aebac6}
 Like the name suggests this is the step where the data coming after the
 extraction and transformation processed get loaded into the target data store.
 This is a rather interesting process because the nature of the target store and
@@ -1062,7 +1047,7 @@ the data output overwrites the existing data in the source, in other cases the
 new data gets appended to the older ones or aggregated with the existing data.
 
 \subsubsection{How Serverless can make a difference in ETL}
-\label{sec:org4dd4a6b}
+\label{sec:org24f5374}
 Let us now look at some of the characteristics of the ETL processes that can be
 derived from the definition.
 \begin{itemize}
@@ -1095,7 +1080,7 @@ function composition and data transfer quite inefficient making it an ill suited
 candidate for ETL applications.
 
 \subsection{Problem statement}
-\label{sec:org05c1c32}
+\label{sec:org6985107}
 From the above set of evaluations, there is no doubt that Serverless is the way
 of the future infrastructure maintenance and deployment. Even with the current
 state of art FaaS offerings, 21\% of the entire workload is Data processing
@@ -1137,7 +1122,7 @@ stable enough for production workloads, and easily integratable with the common
 development tools like Github, CI/CD pipelines etc.
 
 \section{Proposed Solution}
-\label{sec:orgfdc5088}
+\label{sec:org4480666}
 
 In this section we dig in deeper into the specifications of our proposal to
 build a production ready FaaS infrastructure stack that is completely elastic
@@ -1165,7 +1150,7 @@ get into platform specific study by implementing these suggestions on a flexible
 open source FaaS solution for our proof of concept.
 
 \subsection{Function composition}
-\label{sec:orgb893293}
+\label{sec:org4e139f2}
 
 As we have already seen, in the current industrial requirements, big data
 processing is pretty inevitable as an application scenario. The nature of these
@@ -1228,7 +1213,7 @@ different approaches in which functions can be composed in a serverless
 workload.
 
 \subsubsection{Manual Compilation}
-\label{sec:org23183ea}
+\label{sec:org9ef1d5c}
 
 This the most basic and inefficient way of compiling the functions. This
 basically involves merging all the functions together to form a huge function.
@@ -1263,7 +1248,7 @@ compute is complex, function might not even completely run because of the
 hardbound limit to the running time set on most FaaS platforms. 
 
 \subsubsection{Direct function chaining}
-\label{sec:org1ad642c}
+\label{sec:org0b2dc07}
 
 \begin{figure}
 \caption{Direct function chaining}
@@ -1296,7 +1281,7 @@ def funcB():
 \end{lstlisting}
 
 \subsubsection{Composition via coordinator functions}
-\label{sec:org2ff70f3}
+\label{sec:org55695f0}
 
 In this method, a coordinator function will be used which manage the execution
 of all the functions by calling them directly. The individual functions will be
@@ -1319,7 +1304,7 @@ FaaS paradigm a bit. An example of this kind of coordination can be found here \
 
 
 \subsubsection{Event driven composition}
-\label{sec:orgae194ca}
+\label{sec:org5187425}
 
 \begin{figure}
 \caption{Event driven function composition}
@@ -1354,7 +1339,7 @@ iterations, etc. Along with this, since functions are so tightly dependent on
 the message queues, it will be slightly challenging to upgrade or version them. 
 
 \subsubsection{Workflows}
-\label{sec:orga6e84cd}
+\label{sec:org9c83013}
 
 Workflows are a very interesting architectures pattern where the system supports
 the creation of a sort of flowchart of the functional interaction. Workflows are
@@ -1420,7 +1405,7 @@ section 4.2.
 
 
 \subsection{Ephemeral Storage}
-\label{sec:org0ba3f4b}
+\label{sec:orge83ef0b}
 
 In the previous section, we saw that flexible function composition can be
 achieved via workflow pattern. Although to make this efficient state storage is
@@ -1470,7 +1455,7 @@ manage their own storage instances and manually scale resources \hyperref[ref:22
 two different storage solutions for the adaption to our FaaS extension: Pocket \& Orlic
 
 \subsubsection{Pocket}
-\label{sec:orgcb3e754}
+\label{sec:orga2fef38}
 Pocket \hyperref[ref:22]{22} is an ephemeral storage build for the Serverless workflows.
 It is a key value store suited for storing and exchanging data between hundreds
 of fine-grained, short-lived tasks. Pocket is an elastic distributed storage
@@ -1498,7 +1483,7 @@ operations.
 \end{figure}
 
 \subparagraph{Architecture}
-\label{sec:org365fee4}
+\label{sec:org1592de4}
 Like Figure \ref{fig:pocket} represents, Pocket system has one centralized controller server,
 one or more meta data servers, and multiple data plane storage servers. The
 meta data plane according to us is the most interesting in the architecture,
@@ -1516,7 +1501,7 @@ access data blocks directly from storage servers.
 \end{figure}
 
 \subparagraph{Client API}
-\label{sec:orgcb4b2eb}
+\label{sec:org0c8d032}
 Pocket provides an API to communicate with the system. There are system calls to
 each of the three planes. First of all it lets the client register and un-register of the
 jobs(control plane). The client gets to communicate with the meta data server
@@ -1537,10 +1522,10 @@ object. The nature of the ephemeral storage in discussion is assumed to be write
 and read once only. Figure \ref{fig:pocket_api_client}, describes the system calls in detail.
 
 \subparagraph{Implementation}
-\label{sec:org03843c2}
+\label{sec:orga518cb0}
 \begin{enumerate}
 \item Controller:
-\label{sec:org931dc23}
+\label{sec:org8be4121}
 Pocket is run on Kubernetes with each layer as separate docker containers. A
 resource monitoring daemon is run on each node in the cluster sending resource
 utilization info to the controller. The controller right sizes the cluster by
@@ -1552,7 +1537,7 @@ server resource usage under the target limit by precalculating the load a job
 would  put on the meta data server from its throughput and capacity allocation.
 Based on this estimate the controller select the meta data server.
 \item Meta data and Storage tier:
-\label{sec:org3781ec8}
+\label{sec:org90de139}
 These are implemented on top of Apache Crail distributed data store \hyperref[ref:23]{23}.
 Crail is designed for low latency, high throughput storage of arbitrarily sized
 data with low durability requirements. Crail provides a unified namespace across
@@ -1562,13 +1547,13 @@ storage tier and RPC library implementations. As of the storage tier, Pocket
 project implements it on DRAM, NVMe on top of ReFlex and then on generic block
 storage.
 \item Client library:
-\label{sec:org8f35887}
+\label{sec:org3c41190}
 The API is written in Python to provide better adaptability of the tool. The
 core library although is in C++
 \end{enumerate}
 
 \subparagraph{Analysis}
-\label{sec:org17b8735}
+\label{sec:org2405828}
 \begin{figure}[!h]
     \caption{Pocket Performance for get and put requests}
     \centering
@@ -1583,7 +1568,7 @@ So considering that DRAM will be used as the storage tier, it can be the
 right tool for the ephemeral storage in Serverless platforms. 
 
 \subsubsection{Olric}
-\label{sec:orgaf880b2}
+\label{sec:org1752439}
 Olric \hyperref[ref:24]{24} is a distributed in-memory key/value data store. The idea is
 that we can create a shared pool of RAM across a cluster of computers to store
 the data in, in a scalable manner. The design motives for Olric is to share
@@ -1634,7 +1619,7 @@ owners. The distributed map methods use this list to query data on the cluster.
 
 
 \subsection{Multi-tenant security and isolation}
-\label{sec:orgcaf5d36}
+\label{sec:orga0ec3e7}
 A multi-tenant cluster is shared by multiple user and/or workloads which are
 referred to as tenants \hyperref[ref:27]{27}. It is very crucial to make sure that data is
 completely segregated between the tenants and in no circumstances can data of
@@ -1674,7 +1659,7 @@ system looks like controlled by Kubernetes policies.
 \end{figure}
 
 \subsection{Monitoring and tracing}
-\label{sec:org4604332}
+\label{sec:org18be238}
 It is quite curious to note from the survey of 2018 done by serverless \hyperref[ref:16]{16} that the
 second most thing the devs are worried about the development process of a FaaS
 application is monitoring and logging. Monitoring, logging and tracing are all
@@ -1712,7 +1697,7 @@ why we need more innovations in the monitoring of Serverless functions.
 
 Let us understand first what monitoring, logging and tracing entails as functionalities. 
 \subsubsection{Logging}
-\label{sec:org0add9e6}
+\label{sec:orge63b13d}
 Logging is used to track errors that were encountered in an app and other
 debugging information of the running app. Even if the application is distributed
 or otherwise, a good logging system will accumulate the logs and provide it in a
@@ -1742,7 +1727,7 @@ should be precise and on point. It is also important to keep in mind whom is the
 log for \hyperref[ref:33]{33}. 
 
 \subsubsection{Tracing}
-\label{sec:orgf5fc9b5}
+\label{sec:org4e25b47}
 Traces are intentionally a noisier set of data that logs. When logs document
 discrete events happening in the application, traces document a much wider
 continuous control flow in the application. The idea is to track the data flow
@@ -1765,7 +1750,7 @@ parts involved in the pipeline and traces let you have a complete overview of
 your workflow in action.
 
 \subsubsection{Monitoring}
-\label{sec:orgb0347f5}
+\label{sec:org02c7759}
 Monitoring is a wider term that can be applied for both tracing and logging. But
 in this context we talk about more complex monitoring systems. Monitoring here
 helps the developer understand how their overall system works. It involves
@@ -1781,10 +1766,10 @@ application logs as well to monitoring platform so that they can get alerts as
 soon as an error appears in the application log.
 
 \subsubsection{Adaptation in FaaS}
-\label{sec:org566e66e}
+\label{sec:org4b53a90}
 
 \paragraph{Logs}
-\label{sec:org8a8f926}
+\label{sec:orge240731}
 While working with an OpenSource FaaS platforms where the isolation is managed
 by Docker, we can use the inbuilt logging system by Docker which are standard
 systemd logs \hyperref[ref:34]{34}. We will not get into details of that here.
@@ -1794,7 +1779,7 @@ propose adapting distributed tracing to trace and monitor the
 function instances.
 
 \paragraph{Tracing}
-\label{sec:orgd016b67}
+\label{sec:org8d94bd1}
 Distributed tracing is a method used to profile and monitor applications,
 especially those built using a microservices architecture. Distributed tracing
 helps pinpoint where failures occur and what causes poor performance \hyperref[ref:35]{35}.
@@ -1834,7 +1819,7 @@ trace form of specification, OpenTracing makes it easier to:
 \item Errors or exceptions during execution of each service.
 \end{itemize}
 \paragraph{Monitoring}
-\label{sec:orgcb37358}
+\label{sec:orgf24ac43}
 Monitoring of distributed systems can be heavily challenging but yet highly
 necessary. The best industry recommended way is to do Time series monitoring
 suggested by Google via the proprietary tool Borgman \hyperref[ref:37]{37}. It
@@ -1856,7 +1841,7 @@ which we discuss in the next section.
 
 
 \section{Implementation}
-\label{sec:orge7a7b74}
+\label{sec:orgd829f2f}
 For implementing the aforementioned strategies and verifying its effectiveness
 in making the Serverless workflows efficient, it is important to trial it on a
 
@@ -1870,9 +1855,9 @@ of the implementation, let us analyze the tools used in the process and the
 reasoning behind their choosing.
 
 \subsection{Tools}
-\label{sec:org9588075}
+\label{sec:org85e2c63}
 \subsubsection{Container Orchestration}
-\label{sec:org1f07485}
+\label{sec:orgaa72a1a}
 We are going to work with a containerized setup like was hinted at the beginning
 of the thesis description. Each function that is being written will be
 containerized and brought up and down, scaled up and down based on the
@@ -1885,7 +1870,7 @@ Kubernetes especially because all of the leading FaaS solutions these days work
 on both of these technologies. A gentle introduction to both tools before
 proceeding to FaaS specific solutions.
 \paragraph{Docker}
-\label{sec:org272e24b}
+\label{sec:orgb13aa6f}
 Docker \hyperref[ref:38]{38} is one of the leading Linux Containers solution that is being
 adopted very widely across all kinds of software infrastructure maintenance
 environments. According to the Docker Inc., over 3.5 million applications have
@@ -1969,7 +1954,7 @@ of containers etc.
 \end{itemize}
 
 \paragraph{Kubernetes}
-\label{sec:orgf9fb3c5}
+\label{sec:org5c4e794}
 Now that we have seen a popular containerization solution called Docker, it is
 time to see the most popular orchestration solution. Docker swarm was already
 mentioned but when it comes to modern applications, the requirement goes far
@@ -2043,7 +2028,7 @@ inside one another and each Kubernetes resource can only be in one namespace \hy
 
 
 \subsubsection{OpenFaaS}
-\label{sec:orgbd4dd37}
+\label{sec:orga6d484d}
 Now that we have seen an overview of the packaging and clustering management
 systems, it is time to look at the right platform to test out our state-ful FaaS
 idea on. Considering that one main aim of the thesis is to move away from vendor
@@ -2077,7 +2062,7 @@ bit more intuition on how functions are scheduled, executed and scaled in the
 platform. Figure \ref{fig:openfaas_workflow} goes along with the following description.
 
 \paragraph{OpenFaaS Gateway}
-\label{sec:org80520f3}
+\label{sec:org258c517}
 The gateway is the entrypoint to the FaaS infrastructure. It provides an API
 which opens an external route into the functions. The gateway does a lot of the
 main functions in the infrastructure. The gateway is basically responsible for
@@ -2110,7 +2095,7 @@ visualization and monitoring. We will be using these metrics for our monitoring.
 \end{itemize}
 
 \paragraph{faas-provider}
-\label{sec:org2d36584}
+\label{sec:org9da3017}
 faas-provider is a very flexible interface that provides CRUD(create, read,
 update, delete) to functions and the invoke capability. The information about
 the function that need to be created/updated/invoked gets fed directly from the
@@ -2138,7 +2123,7 @@ faas-provider stripping away the rest of the complexities.
 \end{figure}
 
 \paragraph{OpenFaaS watchdog}
-\label{sec:org8e245ad}
+\label{sec:org52b6905}
 
 The OpenFaaS watchdog \hyperref[ref:45]{45} is responsible for starting and monitoring functions in
 OpenFaaS. Any binary can become a function through the use of watchdog.
@@ -2150,7 +2135,7 @@ when an expensive resource needs to be maintained between requests such as a
 database connection, ML model or other data. 
 
 \paragraph{Auto-scaling}
-\label{sec:org007630b}
+\label{sec:org6673edc}
 
 OpenFaaS ships with a single auto-scaling rule defined in the mounted configuration file for AlertManager. AlertManager reads usage (requests per second) metrics from Prometheus in order to know when to fire an alert to the API Gateway.
 
@@ -2173,7 +2158,7 @@ Horizontal Pod Autoscaler \hyperref[ref:46]{46}. This is a lot more matured as a
 scheduler and we will be using that for the thesis implementation.
 
 \paragraph{NATS streaming}
-\label{sec:org171d7b1}
+\label{sec:orga83a5d3}
 
 A curiously lightweight application that has been adapted into OpenFaaS is NATS.
 NATS provides simple and secure messaging functionality to the setup. It does
@@ -2197,7 +2182,7 @@ setup, an in-memory message delivery protocol like NAT could be extremely
 useful.
 
 \paragraph{Triggers}
-\label{sec:orgd6f5c85}
+\label{sec:orgea72e40}
 OpenFaaS functions can be triggered easily by any kind of event. A small piece
 of code will convert from the event-source and trigger the function using the
 OpenFaaS Gateway API. Some of the most used triggers are:
@@ -2218,7 +2203,7 @@ communicate with faas gateway
 \end{itemize}
 
 \paragraph{Runtime supports and templates}
-\label{sec:orgcdcd2cd}
+\label{sec:orgb5366f7}
 
 OpenFaaS is one of the unique engines that supports any and all programming
 languages to write functions in because of its architecture. The way OpenFaaS
@@ -2248,7 +2233,7 @@ faas-cli deploy -f funcname.yml
 \end{lstlisting}
 
 \subsubsection{FaaS-flow}
-\label{sec:orgcdd3682}
+\label{sec:org32f0655}
 In Section 3.1, we analyzed different possible ways to do function composition.
 We saw that workflow pattern is the most efficient and flexible design for a
 FaaS application to composite functions. What this means is, the best way to go
@@ -2422,7 +2407,7 @@ autoscaling policies of the system than handling it itself. There rich features
 make us adapt faas-flow as the choice of orchestration engine for our proof of concept.
 
 \subsubsection{Prometheus}
-\label{sec:orgc77d42c}
+\label{sec:orgf24d4cb}
 In the previous section, we discussed briefly about the time-series monitoring
 approach adapted by Google. Prometheus is an Open Source monitoring and alerting
 toolkit that works exactly the way Google Borgman works. The working of
@@ -2475,7 +2460,7 @@ successful function invocations from the gateway, we can run the PromQL query
 
 
 \subsubsection{Jaeger}
-\label{sec:orgee714ed}
+\label{sec:org75b2d99}
 We discussed how OpenTracing API helps identify the bottlenecks and allows easy
 debugging in a distributed setup. One of the most popular implementations of
 OpenTracing API is Jaegar \hyperref[ref:51]{51}. Jaeger identifies that the difficulty in
@@ -2516,8 +2501,65 @@ the endpoint.
     \label{fig:jaeger_traces}
 \end{figure}
 
-\subsection{Architecture}
-\label{sec:org38bbd1d}
+\subsection{Architecture Overview}
+\label{sec:orgc039474}
+In this section, we will see how the tools mentioned above were efficiently used
+to build an orchestration system for pipelined FaaS workloads that work much better than
+the out of the box solutions. Great care was given into building a system that
+is very easy to deploy and maintain for the infrastructure providers. We believe
+that the practicality, adaptability and the accordance with the core
+philosophies of serverless architecture make our system unique.
+
+We can separate our system logically into 3 parts. The FaaS runtime, the
+workflow framework and the workflow defining client API. The functions that are
+(written in any language of preference) that does the computations exist outside the
+logic.
+
+Figure \ref{fig:arch} depicts the overall architecture of the setup. To begin
+with, we have the OpenFaaS runtime which takes care of the execution of the
+function instances upon triggers using Kubernetes and packaging the functions as
+Docker containers. We configure the setup to not scale down to zero to avoid the
+cold start time during the initial start. We might still incur a bit of cold start
+when the number of instances is scaling up upon heavy load.
+
+By default in OpenFaaS, functions are coupled with a tiny Go based server and a
+function watchdog \hyperref[ref:45]{45}. The watchdog takes care of parsing the incoming requests
+and forwards it to the function via standard IO. There is no latency between
+this call transfer since it happens internally and the watchdog process is
+co-located with the function instance. In our implementation though we remove
+the watchdog component from the function runtime since our added framework for
+the workflows take care of handling the requests and passing it between the
+functions. We try to avoid the added latency by the watchdog process since we
+already serializes and de-serializes the data as a part of data store library.
+This also means that we can test the efficiency of the orchestration setup
+without the added latency by the platform. OpenFaaS’ runtime driver for
+Kubernetes is faas-netes, which deploys functions as Kubernetes pods, and then
+delegates scheduling decisions to the Kubernetes scheduler. 
+
+We keep the NATS streaming message queue that is used by faas-netes for queuing
+of requests. The interesting thing about the NATS streaming here is that, the
+storage is in-memory only of the queued requests. This is rather interesting
+because it means that the message queue is completely autoscalable as well since
+we have the RAM pool controlled by the Kubernetes autoscaling logic. This helps
+in keeping our platform completely elastic. 
+
+The requests received by the gateway are queued in the NATS streaming. The
+workflow function orchestrated using faas-flow will receive these messages from
+the queue. The workflow framework takes care of handling the request arriving,
+formatting it in the way needed. Then the DAG is processed with the input data
+by the framework. The DAG or the workflow is a part of the state that the
+OpenFaaS runtime need to process. The whole workflow is basically stored in the
+state store along with the current state of the workflow which can be retrieved
+by the workflow framework from time to time to trigger the next function that
+needs to be executed. Whenever a function finishes its execution a FINISH event
+is sent to the message queue which is the NATS streaming, which triggers the
+workflow framework to fetch the next node to be executed from the state store
+and trigger it over HTTP via the OpenFaaS gateway. At the end of each function,
+a call is made to the OpenTracing setup to register the span of each function
+invocation which can be used for evaluation and optimizations. Once the
+execution of a particular node is over, the information about that node in the
+flow is removed from the state store and there by automatically freeing up memory.
+
 \begin{figure}[!h]
     \caption{Architecture}
     \centering
@@ -2525,16 +2567,161 @@ the endpoint.
     \label{fig:arch}
 \end{figure}
 
+The data returned from any of the function invocations are stored in an
+intermediate data store provided by us. This data is ephemeral in nature and
+exists in memory only until the workflow has successfully finished execution.
+There is a request id parameter associated with the particular invocation of a
+node or instance. The data stored will use this request ID to identify it
+uniquely and is fetched by the following function accordingly.
+
+\subsubsection{Workflow framework}
+\label{sec:org1003d76}
+The workflow framework is the most important part of our orchestration platform.
+We discussed in section 3.1 different theoretical solutions for composing
+functions. From the analysis it was quite clear that the workflow based
+orchestration provides the most amount of flexibility and scalability to the
+system. The problem of introducing something like that directly to Serverless
+platform is the complication in maintaining the state. Since we have multiple
+functions getting triggered(asynchronously at times), it gets really hard to
+realize if a function has terminated and might even lead us to a polling sort of
+methodology which is kind of inefficient. Instead we choose to mix event based
+orchestration to workflow orchestrations.
+
+The user communicates with the system via the client library. This is a form of
+domain specific format to specify the structure of the Directed Acyclic Graph.
+We use the faas-flow interface language to provide the client library. This was
+explained in detail in section 4.1.3. By default, OpenFaas runtime takes caring handling events from function like
+function termination, function error, etc. We cannot use this inherent ability
+since we want our workflow to proceed differently that the conventional way.
+Hence we tweak the function runtime to override the default event handler and
+the function executor in the OpenFaas platform. We make each functions sent out
+events to the event queue after the execution completion, on errors, etc. Upon
+receiving these events, our workflow runtime will look inside the state store
+for the next node/function to be executed according to the DAG specified via the
+client library and the respective function is triggered. The workflow library
+globally keeps a context map for each invocation. The context map contains the
+current node which is the current node/function of execution, state which
+represents the orchestration structure and the requestID which is a unique
+identification for the current request invocation. Like was mentioned earlier,
+this is used while storing the function intermediate data of each invocation.
+
+Along with the orchestration, workflow framework takes care of the trace
+handling. Each function can take three states during their lifetime - Running,
+Paused, Stopped. On each of this state update via the events, the framework
+sends logs a corresponding entry on the OpenTracing platform. This is how the
+spans and traces are logged in the system.
+
+Using the standard visual interface of OpenTracing, we can visualize these
+tracing information which would look similar to Figure \ref{fig:tracing}. Like is
+visible, there is a request ID representing the trace of the entire
+orchestration. Then you can see the spans of each node in the graph(function in
+composition). It is easy to measure the latency of each step via this interface.
+
 \begin{figure}[!h]
-    \caption{Faas flow}
+    \caption{Trace of a sample workload}
     \centering
-    \includegraphics[width=130mm]{./thesis_images/faas-flow.png}
-    \label{fig:faas-flow}
+    \includegraphics[width=100mm]{./thesis_images/tracing.png}
+    \label{fig:tracing}
 \end{figure}
+
+Along with this interface, we use a D3 based library setup to visualize the DAG
+structure that represents our function orchestration. Figure \ref{fig:dag} shows
+how the DAG looks like in our setup for a sample code that modify data based on
+a conditional "odd or even". The blocks composing the modify nodes are the ones
+that change the data or have side effects if we talk in a functional language paradigm.
+
+\begin{figure}[!h]
+    \caption{DAG of a sample workload}
+    \centering
+    \includegraphics[width=50mm]{./thesis_images/dag.png}
+    \label{fig:dag}
+\end{figure}
+
+There are certain configurable parameters in the system. We can enable or
+disable the tracing, we can set the whole system to scale from 0 than from 1, we
+can set an upper limit to the amount of memory and CPU used by the system, etc.
+The standard OpenFaaS config \hyperref[ref:63]{63} support is used for this but we found it quite
+flexible and easy to use.
+
+\subsubsection{Data store library}
+\label{sec:org7077b38}
+To store the ephemeral data between the functions like was mentioned earlier we
+propose the usage of distributed in-memory cache which can be easily scaled up
+and down. Our consideration was both Pocket and Olric. For the implementation
+though, due to technical difficulties we opted the usage of Olric.
+
+Olric was deployed as Kubernetes pods one per each node in the cluster to ensure
+that the data transfer time among the storage and the functions are minimum. To
+communicate to this library, we added a data store management library for Orlic
+extending the faas-flow library \hyperref[ref:64]{64}.
+
+The library integrates effortlessly with the DataStore object of faas-flow
+library. The DataStore interface of faas-flow first looks for a Init endpoints
+that initializes the connection with the deployed Olric setup, configures the
+timeouts and maximum number of connections. The Olric Go library is used to
+build the interface. During this initialization step we also specify the
+serialization library that needs to be used. We use Go's NewMsgPack as the
+serialization library. MessagePack \hyperref[ref:65]{65} is a binary serialization format that
+functions a bit like JSON. Small integers are encoded into a single byte, and
+typical short strings require only one extra byte in addition to the strings
+themselves. This makes it a bit better than JSON in the performance. 
+
+For each new request that is created on the faas-flow pipeline, our library
+creates a new distributed map to store the key value pairs. On the termination
+of the request, this distributed map is deleted. Alongside we take of the logic
+to set and get values to and from the distributed map during the FINISH and
+RUNNING event changes on the workflow framework. The handling of the events are
+done inherently by faas-flow as was explained earlier.  
+
+\subsubsection{Monitoring \& usage tracking}
+\label{sec:org040c809}
+We looked in detail at Prometheus as a monitoring tool in the previous section.
+As a part of the thesis implementation, we deployed Prometheus and Grafana to
+monitor the usage of the resources and scaling of the platform. The data needs
+to be appropriately exposed and formatted so that Prometheus can collect it.
+Prometheus can access data directly from the app’s client libraries or by using
+exporters. An exporter is a piece of software sitting next to the application
+that sends data to prometheus to scrape. Exporter basically accepts HTTP request
+from Prometheus and provide the data to Prometheus. For Prometheus to know what
+data to pull, it uses a Service Discovery. For example, In the case of
+Kubernetes cluster, this Service Discovery is done via Kubernetes API since it
+already has labels, names, etc. for all the applications in it. Figure
+\ref{fig:service_disc} shows the way Prometheus connects with applications and
+process the data.
+
+\begin{figure}[!h]
+    \caption{Prometheus workflow}
+    \centering
+    \includegraphics[width=80mm]{./thesis_images/service_disc.png}
+    \label{fig:service_disc}
+\end{figure}
+
+Along with the application information, we should get information about the
+nodes such as disk usage, CPU usage, etc. We use node exporter \hyperref[ref:66]{66} for this. Along
+with this, we also have to export the information about the cgroups that make up
+Docker containers. For this we use Google's cadvisor project \hyperref[ref:67]{67}. Once this
+connection is made, we can use the PromQL language to query from the scraped
+time series data.
+
+Prometheus can be easily installed on Kubernetes with the help of YAML
+configurations. Then in the configuration to specify the scraper called
+scape\textsubscript{config}, provide the Kubernetes API, kubectl. The output of the PromQL
+queries can be used to track the usage by the applications in the infrastructure
+along with the responsiveness of the system with respect to the scaling, etc.
+Figure \ref{fig:monitoring} represents a monitoring visualization setup for a
+serverless infrastructure.
+
+\begin{figure}[!h]
+    \caption{Grafana Visualization of Prometheus data}
+    \centering
+    \includegraphics[width=150mm]{./thesis_images/monitoring.jpeg}
+    \label{fig:monitoring}
+\end{figure}
+
 \section{Evaluation}
-\label{sec:org0a676c0}
+\label{sec:orgd5c7065}
 \section{Related work}
-\label{sec:org388786d}
+\label{sec:orgc8c1ea1}
 Serverless has gained a lot of attention and traction from the scientific
 community in the past few years because of its massive implications in resource
 conservation and innovative programming when one doesn't have to worry about
@@ -2619,7 +2806,7 @@ among themselves. Currently a very theoretical suggestion, FaasFS has the
 potential to be an interesting mode of handling the intermediate data issue.
 
 \section{Future work}
-\label{sec:org9b4159d}
+\label{sec:org214a602}
 The idea we presented here has a lot of potential for innovation mostly due to
 its ease of adaptability and simplistic design. A very obvious improvement to
 the platform would be the adaptation of a different isolation mechanism instead
@@ -2644,9 +2831,9 @@ application that would allow development of the workflow code in different
 languages.
 
 \section{Conclusion}
-\label{sec:orge502b64}
+\label{sec:org7e14d52}
 \section{References}
-\label{sec:orgb9399bd}
+\label{sec:org64c24a4}
 \begin{enumerate}
 \item \label{ref:1} \cite{bayliss09:_rollin_out_revol}
 \item \label{ref:2} \cite{cloudburst}
@@ -2710,5 +2897,10 @@ languages.
 \item \label{ref:60} \cite{faasflow}
 \item \label{ref:61} \cite{filesystem}
 \item \label{ref:62} \cite{v8}
+\item \label{ref:63} \cite{autoscaling}
+\item \label{ref:64} \cite{olricdatastore}
+\item \label{ref:65} \cite{msgpack}
+\item \label{ref:66} \cite{nodeexp}
+\item \label{ref:67} \cite{cadvisor}
 \end{enumerate}
 \end{document}
