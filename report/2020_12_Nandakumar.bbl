@@ -221,6 +221,39 @@
     \field{year}{2019}
   \endentry
 
+  \entry{benchmark}{misc}{}
+    \name{author}{2}{}{%
+      {{hash=BPD}{%
+         family={Barcelona-Pons},
+         familyi={B\bibinithyphendelim P\bibinitperiod},
+         given={Daniel},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=GLP}{%
+         family={García-López},
+         familyi={G\bibinithyphendelim L\bibinitperiod},
+         given={Pedro},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BPDGLP1}
+    \strng{fullhash}{BPDGLP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \verb{eprint}
+    \verb 2010.15032
+    \endverb
+    \field{title}{Benchmarking Parallelism in FaaS Platforms}
+    \verb{url}
+    \verb https://arxiv.org/abs/2010.15032
+    \endverb
+    \field{eprinttype}{arXiv}
+    \field{eprintclass}{cs.DC}
+    \field{year}{2020}
+  \endentry
+
   \entry{dockerever}{online}{}
     \name{author}{1}{}{%
       {{hash=BE}{%
@@ -320,6 +353,16 @@
     \field{title}{Faas provider}
     \verb{url}
     \verb https://github.com/openfaas/faas-provider/
+    \endverb
+  \endentry
+
+  \entry{fizzbuzz}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{title}{Fizz buzz Algorithm}
+    \verb{url}
+    \verb https://en.wikipedia.org/wiki/Fizz_buzz
     \endverb
   \endentry
 
@@ -468,6 +511,16 @@
     \field{year}{2018}
   \endentry
 
+  \entry{helmcharts}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Helm Charts for OpenFaaS}
+    \verb{url}
+    \verb https://github.com/google/cadvisor
+    \endverb
+  \endentry
+
   \entry{podscale}{online}{}
     \field{labeltitlesource}{title}
     \field{sortinit}{H}
@@ -476,6 +529,16 @@
     \verb{url}
     \verb https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autos
     \verb cale/
+    \endverb
+  \endentry
+
+  \entry{hey}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{HTTP load generator}
+    \verb{url}
+    \verb https://github.com/rakyll/hey
     \endverb
   \endentry
 
@@ -883,6 +946,26 @@
     \endverb
   \endentry
 
+  \entry{minikube}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Minikube}
+    \verb{url}
+    \verb https://minikube.sigs.k8s.io/docs/
+    \endverb
+  \endentry
+
+  \entry{minio}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Minio Object Store}
+    \verb{url}
+    \verb https://min.io/
+    \endverb
+  \endentry
+
   \entry{cloudmulti}{inproceedings}{}
     \name{author}{4}{}{%
       {{hash=OAI}{%
@@ -1039,6 +1122,16 @@
     \field{title}{Prometheus Push Gateway}
     \verb{url}
     \verb https://github.com/prometheus/pushgateway
+    \endverb
+  \endentry
+
+  \entry{requests}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Python requests modules}
+    \verb{url}
+    \verb https://requests.readthedocs.io/en/master/
     \endverb
   \endentry
 

@@ -6,6 +6,7 @@ import (
 
 	minioDataStore "github.com/faasflow/faas-flow-minio-datastore"
 	faasflow "github.com/faasflow/lib/openfaas"
+
 	"log"
 	"os"
 	"strconv"
@@ -17,18 +18,18 @@ func Define(flow *faasflow.Workflow, context *faasflow.Context) (err error) {
 	dag := flow.Dag()
 	dag.Node("start-node").Modify(func(data []byte) ([]byte, error) {
 		if len(data) == 0 {
-			data = []byte("aa-bb-cc")
+			data = []byte("0")
 		}
 		return data, nil
 	})
 	conditiondags := dag.ConditionalBranch("conditional-branch",
-		[]string{"fizz", "buzz", "identity"},
+		[]string{"0", "1"},
 		func(data []byte) []string {
 			number, err := strconv.Atoi(string(data[:len(data)-1]))
 			if err != nil {
 				panic(err)
 			}
-			if number%3 == 0 {
+			if number == 0 {
 				log.Print("The number is divisible by 3")
 				return []string{"fizz"}
 			} else if number%5 == 0 {
@@ -49,22 +50,23 @@ func Define(flow *faasflow.Workflow, context *faasflow.Context) (err error) {
 	)
 	conditiondags["fizz"].Node("node1").Modify(func(data []byte) ([]byte, error) {
 		result := fmt.Sprintf("fizz-node1(%s)", string(data))
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 		return []byte(result), nil
 	})
 
 	conditiondags["buzz"].Node("node1").Modify(func(data []byte) ([]byte, error) {
 		result := fmt.Sprintf("buzz-node1(%s)", string(data))
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 		return []byte(result), nil
 	})
 
 	conditiondags["identity"].Node("node1").Modify(func(data []byte) ([]byte, error) {
 		result := fmt.Sprintf("identity-node1(%s)", string(data))
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 		return []byte(result), nil
 	})
 	// AddVertex with Aggregator
+
 	dag.Node("end-node", faasflow.Aggregator(func(results map[string][]byte) ([]byte, error) {
 		// results can be aggregated accross the branches
 		result := ""
@@ -73,7 +75,7 @@ func Define(flow *faasflow.Workflow, context *faasflow.Context) (err error) {
 		}
 		return []byte(result), nil
 	})).Modify(func(data []byte) ([]byte, error) {
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 		log.Print("End data: ", string(data))
 		return data, nil
 	})

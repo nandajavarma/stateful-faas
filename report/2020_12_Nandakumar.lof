@@ -1,29 +1,29 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {english}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1}{\ignorespaces Virtualization through hupervisors}}{9}{figure.1}%
+\contentsline {figure}{\numberline {1}{\ignorespaces Virtualization through hupervisors}}{10}{figure.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2}{\ignorespaces Virtual Machines Vs Containers}}{11}{figure.2}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Virtual Machines Vs Containers}}{12}{figure.2}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3}{\ignorespaces Lambda cost by fucntion execution time for 100,000 executions}}{15}{figure.3}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {4}{\ignorespaces Cold start across cloud providers}}{24}{figure.4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5}{\ignorespaces Merged in the source code}}{33}{figure.5}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Merged in the source code}}{34}{figure.5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {6}{\ignorespaces Direct function chaining}}{34}{figure.6}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Direct function chaining}}{35}{figure.6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {7}{\ignorespaces Coordination functions}}{35}{figure.7}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Coordination functions}}{36}{figure.7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {8}{\ignorespaces Event driven function composition}}{36}{figure.8}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Event driven function composition}}{37}{figure.8}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {9}{\ignorespaces Workflows}}{39}{figure.9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10}{\ignorespaces Branching example with DAGs}}{39}{figure.10}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Branching example with DAGs}}{40}{figure.10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {11}{\ignorespaces Pocket system architecture}}{42}{figure.11}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {12}{\ignorespaces Pocket Client API}}{42}{figure.12}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Pocket Client API}}{43}{figure.12}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {13}{\ignorespaces Pocket Performance for get and put requests}}{44}{figure.13}%
 \defcounter {refsection}{0}\relax 
@@ -33,40 +33,58 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {16}{\ignorespaces AWS Cloudwatch log of the same function}}{48}{figure.16}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {17}{\ignorespaces Spans and traces}}{51}{figure.17}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Spans and traces}}{52}{figure.17}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {18}{\ignorespaces Kubernetes infrastructure}}{56}{figure.18}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Kubernetes infrastructure}}{57}{figure.18}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {19}{\ignorespaces OpenFaaS workflow}}{58}{figure.19}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {20}{\ignorespaces OpenFaaS conceptual design with Kubernetes}}{59}{figure.20}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {21}{\ignorespaces faas-provider}}{60}{figure.21}%
+\contentsline {figure}{\numberline {21}{\ignorespaces faas-provider}}{61}{figure.21}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {22}{\ignorespaces Simple chaining orchestration with openfaas}}{65}{figure.22}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {23}{\ignorespaces Asynchronous function chaining}}{66}{figure.23}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {24}{\ignorespaces Parallel execution function chaining}}{66}{figure.24}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Parallel execution function chaining}}{67}{figure.24}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {25}{\ignorespaces Event based workflows}}{68}{figure.25}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {26}{\ignorespaces State store logical view}}{68}{figure.26}%
+\contentsline {figure}{\numberline {26}{\ignorespaces State store logical view}}{69}{figure.26}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {27}{\ignorespaces Data Store logical view}}{69}{figure.27}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {28}{\ignorespaces Prometheus Architecture}}{70}{figure.28}%
+\contentsline {figure}{\numberline {28}{\ignorespaces Prometheus Architecture}}{71}{figure.28}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {29}{\ignorespaces Jaeger Architecture}}{71}{figure.29}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Jaeger Architecture}}{72}{figure.29}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {30}{\ignorespaces Jaeger UI}}{72}{figure.30}%
+\contentsline {figure}{\numberline {30}{\ignorespaces Jaeger UI}}{73}{figure.30}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {31}{\ignorespaces Architecture}}{74}{figure.31}%
+\contentsline {figure}{\numberline {31}{\ignorespaces Architecture}}{75}{figure.31}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {32}{\ignorespaces Trace of a sample workload}}{76}{figure.32}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Trace of a sample workload}}{77}{figure.32}%
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {33}{\ignorespaces DAG of a sample workload}}{77}{figure.33}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {34}{\ignorespaces Prometheus workflow}}{78}{figure.34}%
+\contentsline {figure}{\numberline {34}{\ignorespaces Prometheus workflow}}{79}{figure.34}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {35}{\ignorespaces Grafana Visualization of Prometheus data}}{79}{figure.35}%
+\contentsline {figure}{\numberline {35}{\ignorespaces Grafana Visualization of Prometheus data}}{80}{figure.35}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {36}{\ignorespaces Fizz buzz workload}}{84}{figure.36}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {37}{\ignorespaces Benchmark summary from hey for composition with ephemeral storage}}{85}{figure.37}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {38}{\ignorespaces Benchmark summary from hey for composition with ephemeral storage with higher load}}{86}{figure.38}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {39}{\ignorespaces Execution time - Composition with ephemeral storage}}{87}{figure.39}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {40}{\ignorespaces Scaling - Composition with ephemeral storage}}{87}{figure.40}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {41}{\ignorespaces Benchmark summary from hey for composition with block storage}}{88}{figure.41}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {42}{\ignorespaces Benchmark summary from hey for composition with block storage - higher load}}{89}{figure.42}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {43}{\ignorespaces Benchmark summary from hey for manual composition with block storage}}{90}{figure.43}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {44}{\ignorespaces Benchmark summary from hey for manual composition with block storage and heavy load}}{91}{figure.44}%

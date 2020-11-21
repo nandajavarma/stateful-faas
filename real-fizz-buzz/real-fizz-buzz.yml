@@ -1,0 +1,20 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: https://faas.quickalgorithm.com
+functions:
+  mapreduce-faas-flow:
+    lang: faas-flow
+    handler: ./real-fizz-buzz
+    image: nandajavarma/real-fizz-buzz:latest
+    build_args:
+      GO111MODULE: on
+    labels:
+      faas-flow: 1
+    annotations:
+      faas-flow-desc: "This adds the function composition to mapreduce"
+    environment_file:
+      - flow.yml
+    secrets:
+      - s3-secret-key
+      - s3-access-key
